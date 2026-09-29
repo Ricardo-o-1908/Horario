@@ -1,0 +1,400 @@
+% =====================================================================
+%  CLASE 09 -- Drenaje longitudinal de caminos y carreteras
+% =====================================================================
+\clase{09}{Drenaje longitudinal de caminos y carreteras}
+
+\section{Drenaje superficial de caminos y carreteras}
+Se debe diseñar un correcto drenaje superficial del agua que fluye por los
+caminos y carreteras porque:
+\begin{itemize}
+  \item El agua afecta al pavimento provocando problemas de socavación y
+        otros de mecánica de suelos.
+  \item No se deben interrumpir cursos de agua existentes, como quebradas.
+\end{itemize}
+\paragraph{Lectura de referencia:} Manual de Carreteras (MOP), Volumen N°~3
+\emph{Instrucciones y Criterios de Diseño} (Capítulo 3.700: Diseño del
+drenaje, saneamiento, mecánica e hidráulica fluvial) y Volumen N°~2
+\emph{Procedimientos de Estudios Viales} (Capítulo 2.400), disponibles en
+\url{https://mc.mop.gob.cl/}.
+
+Existen dos tipos de drenaje:
+\begin{itemize}
+  \item Drenaje longitudinal.
+  \item Drenaje transversal.
+\end{itemize}
+
+\section{Drenaje longitudinal}
+Las obras hidráulicas son el \textbf{contrafoso} (a media ladera, intercepta
+el agua que escurre por la ladera) y la \textbf{cuneta} (junto a la calzada).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  % ladera en planta
+  \fill[suelo!80] (0,0) rectangle (7,4);
+  \fill[aguaclara] (4.2,0) rectangle (4.6,4);
+  \fill[aguaclara] (6.9,0) rectangle (7.05,4);
+  \fill[gray!50] (7.05,0) rectangle (8.2,4);
+  \foreach \y in {0.4,1.2,2.0,2.8,3.6} \draw[white,very thick] (7.62,\y) -- (7.62,\y+0.4);
+  \foreach \x/\l in {0.8/h_7,1.7/h_6,2.6/h_5,3.5/h_4,5.3/h_3,6.2/h_2}
+    \draw (\x,0) .. controls (\x+0.2,1.3) and (\x-0.2,2.7) .. (\x+0.1,4) node[pos=0,below]{$\l$};
+  \node[below] at (6.9,0) {$h_1$};
+  \draw (0.5,2.0) ellipse (0.3 and 0.8); \node at (0.5,2.0) {$h_9$};
+  \foreach \x in {1.1,2.0,2.9,3.7,4.9,5.8} \draw[-{Stealth},cyan!60!blue,line width=2pt] (\x,2) -- (\x+0.5,2);
+  \draw[flecha,azulusm] (4.4,3) -- (4.4,1);
+  \draw[flecha,azulusm] (6.97,3) -- (6.97,1);
+  \node[above,azulusm] at (1.5,4.1) {Curvas de nivel};
+  \node[above,azulusm] at (4.4,4.1) {Contrafoso};
+  \node[above,azulusm] at (7.1,4.1) {Cuneta};
+  \node[azulusm,right] at (8.3,0.2) {Vista en planta};
+\end{tikzpicture}
+\caption{Contrafoso y cuneta en vista en planta: el agua de la ladera es
+interceptada antes de llegar a la calzada.}
+\end{figure}
+
+\paragraph{Objetivo:} evitar que las aguas que escurren por una ladera
+lleguen a la plataforma vial (carretera). El agua que escurre por el
+contrafoso y la cuneta se descarga a una quebrada, río, lago o mar.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[left color=suelo!90!black,right color=suelo!60] (0,0) -- (0,4) -- (1,3.8) -- (1.8,3.5) -- (2.4,3.3)
+     -- (2.4,2.6) -- (3.0,2.6) -- (3.1,3.2) -- (3.6,3.0) -- (4.2,2.4) -- (4.8,1.6) -- (5.3,0.8) -- (5.6,0.3) -- (5.6,0) -- cycle;
+  \fill[gray!50] (5.6,0) -- (5.6,0.4) -- (5.75,0.4) -- (6.0,0.05) -- (7.6,0.35) -- (8.6,0.25) -- (8.6,0) -- cycle;
+  \draw[dashed] (6.0,0.05) -- (8.4,0.05);
+  \node at (7.3,0.15) {\scriptsize $i_2$};
+  \draw[<-] (2.7,2.6) -- (3.3,3.8) node[above,azulusm]{Contrafoso};
+  \draw[<-] (5.85,0.15) -- (5.6,1.3) node[above,azulusm]{Cuneta};
+  \draw[<-] (7.6,0.4) -- (8.0,1.1) node[above,azulusm]{Bombeo};
+  \node[azulusm] at (6.5,4.5) {Perfil transversal};
+\end{tikzpicture}
+\caption{Perfil transversal de un camino a media ladera.}
+\end{figure}
+
+\subsection{Recomendaciones de diseño de la cuneta}
+\begin{itemize}
+  \item Ancho: $w\geq0.5$ [m].
+  \item Pendiente transversal:
+  \begin{itemize}
+    \item $i_1\geq8\%$ para cunetas con ancho superior a 0.5 [m].
+    \item 30\% máximo para cunetas de ancho de 0.5 [m], para aprovechar de
+          mejor forma la capacidad de la cuneta y la eficiencia de los sumideros.
+  \end{itemize}
+  \item Pendiente longitudinal mínima de la cuneta:
+  \begin{itemize}
+    \item 0.12\% para cunetas revestidas.
+    \item 0.25\% para cunetas sin revestir.
+  \end{itemize}
+  \item Bombeo o pendiente de la calzada: $i_2\approx2\sim4\%$.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[gray!50] (0,0) rectangle (0.5,2);
+  \fill[gray!40] (0.5,0) -- (0.5,0.1) -- (2.2,1.0) -- (6.5,1.5) -- (7.5,1.35) -- (7.5,0) -- cycle;
+  \draw (0.5,0.1) -- (2.2,1.0) -- (6.5,1.5) -- (7.5,1.35);
+  \draw[dashed] (2.2,0) -- (2.2,2.2);
+  \draw[cota] (0.5,1.8) -- (2.2,1.8) node[midway,above]{$w$};
+  \draw[dashed] (2.2,1.0) -- (6.8,1.0);
+  \draw (1.3,0.1) -- (1.8,0.1); \draw (1.3,0.1) arc (0:28:0.8); \node at (1.5,0.4) {$i_1$};
+  \draw (5.8,1.0) arc (180:174:1.2); \node at (5.4,1.15) {$i_2$};
+  \draw[<-] (6.5,1.55) -- (6.9,2.1) node[above,azulusm]{Bombeo};
+\end{tikzpicture}
+\caption{Geometría de la cuneta.}
+\end{figure}
+
+Para el correcto diseño del contrafoso y cuneta se debe considerar el cálculo de:
+\begin{itemize}
+  \item Caudal de diseño.
+  \item Altura de agua (velocidad de escurrimiento).
+  \item Periodo de retorno.
+\end{itemize}
+
+\section{Caudal máximo}
+Cuando no se cuenta con registros de caudales, se deben usar fórmulas de
+precipitación--escorrentía. En general se trabaja con cuencas pequeñas
+(área $<10$ [km$^2$]), lo que se traduce en tiempos de concentración cortos:
+\begin{center}
+\colorbox{azulusm}{\parbox{0.5\textwidth}{\centering\color{white}\large Duración tormenta $(t_d)>t_c$}}
+\end{center}
+Por lo tanto, es válido el uso de la \textbf{fórmula racional} (área $<25$ [km$^2$]):
+\begin{formula}
+$\displaystyle Q_{max}=\frac{C\cdot\bar\imath(t_c)\cdot A}{3.6}\ \ [\text{m}^3/\text{s}]$\\[4pt]
+$\bar\imath(t_c)$ en mm/h;\quad $A$: área aportante pluvial en km$^2$
+\end{formula}
+Para el cálculo del tiempo de concentración se pueden utilizar las fórmulas
+vistas en hidrología, pero se debe verificar $t_c\geq10$ [min].
+
+\section{Tiempo de concentración}
+Recomendaciones del Volumen 3, Manual de Carreteras:
+\begin{table}[H]
+\centering\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+\textbf{Autor} & \textbf{Expresión} & \textbf{Observaciones}\\
+\midrule
+Normas Españolas & $T_c=18\,L^{0.76}/S^{0.19}$ & \\
+California Culverts Practice (1942) & $T_c=57\,(L^3/H)^{0.385}$ & Cuencas de montaña\\
+Giandotti & $T_c=60\,\dfrac{4A^{0.5}+1.5L}{0.8\,H_m^{0.5}}$ & Cuencas pequeñas con pendiente\\
+SCS (1975) & $T_c=3.42\,L^{0.8}\left(\frac{1000}{CN}-9\right)^{0.7}/S^{0.5}$ & Cuencas rurales\\
+\bottomrule
+\end{tabular}}
+\caption{Tabla 3.702.501.A: tiempos de concentración para cuencas.}
+\end{table}
+Notación: $T_c$: tiempo de concentración (min); $L$: longitud del cauce
+(km); $S$: pendiente (\%); $A$: área de la cuenca (km$^2$); $H_m$: diferencia
+de nivel (m) entre la cota media de la cuenca y la salida; $H$: diferencia de
+nivel total entre cotas extremas de la cuenca (m); $CN$: curva número.
+
+\begin{table}[H]
+\centering\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+\textbf{Autor} & \textbf{Expresión} & \textbf{Observaciones}\\
+\midrule
+Federal Aviation Agency (1970) & $T_c=3.26\,(1.1-C)\,L^{0.5}/(100S)^{0.33}$ & Aeropuertos\\
+Izzard (1946) & $T_c=525.28\,(0.0000276\,i+C)\,L_s^{0.33}/(i^{0.667}S^{0.333})$ & Experimentos de laboratorio\\
+Morgali y Linsley (1965) & $T_c=7\,L_s^{0.6}\,n^{0.6}/(i^{0.4}S^{0.3})$ & Flujo superficial\\
+\bottomrule
+\end{tabular}}
+\caption{Tabla 3.702.501.B: tiempos de concentración para áreas planas.}
+\end{table}
+Notación: $L_s$: longitud de escurrimiento superficial (m); $i$: intensidad
+de lluvia (mm/h); $C$: coeficiente de escurrimiento; $n$: rugosidad
+superficial de Manning. ¡Revisar clases de hidrología!
+
+\section{Precipitación de diseño}
+\begin{itemize}
+  \item Si se tienen datos horarios se pueden obtener las curvas IDF.
+  \item Si sólo se cuenta con registros diarios, se pueden utilizar:
+  \begin{itemize}
+    \item La fórmula de Grunsky:
+    \begin{formula}
+    $\displaystyle i_t=i_{24}\sqrt{\frac{24}{t}}\ \ \left[\frac{\text{mm}}{\text{h}}\right]$
+    \end{formula}
+    \item Coeficientes de duración y frecuencia (V3, Manual de Carreteras):
+    \begin{formula}
+    $P_t^T=K\cdot CD_t\cdot CF_T\cdot P_D^{10}$
+    \end{formula}
+  \end{itemize}
+\end{itemize}
+donde $P_t^T$: lluvia con período de retorno de $T$ años y duración $t$
+horas; $P_D^{10}$: lluvia diaria (8 AM a 8 AM) con 10 años de período de
+retorno obtenida de una estación pluviométrica; $CD_t$: coeficiente de
+duración para $t$ horas; $CF_T$: coeficiente de frecuencia para $T$ años de
+período de retorno; $K$: coeficiente de corrección para la lluvia máxima
+$P_D^{10}$ medida entre 8 AM y 8 AM respecto de las 24 h más lluviosas de la
+tormenta, para el que se ha adoptado un valor $K=1.1$.
+
+Para duraciones inferiores a una hora:
+\begin{itemize}
+  \item La fórmula de Grunsky.
+  \item La fórmula de Bell (1969, V3 Manual de Carreteras):
+  \begin{formula}
+  $P_t^T=\left(0.54\,t^{0.25}-0.50\right)\left(0.21\ln T+0.52\right)P_1^{10}$
+  \end{formula}
+  con $P_t^T$: precipitación (mm) con período de retorno $T$ años y duración
+  $t$ minutos; $P_1^{10}$: precipitación (mm) con $T=10$ años y duración de 1 hora.
+\end{itemize}
+
+\section{Coeficiente de escorrentía}
+\begin{table}[H]
+\centering
+\begin{tabular}{lc}
+\toprule
+\textbf{Tipo de terreno} & \textbf{Coeficiente de escurrimiento}\\
+\midrule
+Pavimentos de adoquín & 0.50 -- 0.70\\
+Pavimentos asfálticos & 0.70 -- 0.95\\
+Pavimentos en concreto & 0.80 -- 0.95\\
+Suelo arenoso con vegetación y pendiente 2\% -- 7\% & 0.15 -- 0.20\\
+Suelo arcilloso con pasto y pendiente 2\% -- 7\% & 0.25 -- 0.65\\
+Zonas de cultivo & 0.20 -- 0.40\\
+\bottomrule
+\end{tabular}
+\caption{Tabla 3.702.503.A: coeficientes de escurrimiento $C$.}
+\end{table}
+
+\begin{table}[H]
+\centering\scriptsize
+\begin{tabularx}{\textwidth}{>{\raggedright}p{1.8cm}XXXX}
+\toprule
+\textbf{Factor} & \textbf{Extremo} & \textbf{Alto} & \textbf{Normal} & \textbf{Bajo}\\
+\midrule
+Relieve & 0.28--0.35: escarpado con pendientes mayores que 30\% & 0.20--0.28: montañoso con pendientes entre 10 y 30\% & 0.14--0.20: con cerros y pendientes entre 5 y 10\% & 0.08--0.14: relativamente plano con pendientes menores al 5\%\\
+\addlinespace
+Infiltración & 0.12--0.16: suelo rocoso, o arcilloso con capacidad de infiltración despreciable & 0.08--0.12: suelos arcillosos o limosos con baja capacidad de infiltración, mal drenados & 0.06--0.08: normales, bien drenados, textura mediana, limos arenosos, suelos arenosos & 0.04--0.06: suelos profundos de arena u otros suelos bien drenados con alta capacidad de infiltración\\
+\addlinespace
+Cobertura vegetal & 0.12--0.16: cobertura escasa, terreno sin vegetación o escasa cobertura & 0.08--0.12: poca vegetación, terrenos cultivados o naturales, menos del 20\% del área con buena cobertura vegetal & 0.06--0.08: regular a buena; 50\% del área con praderas o bosques, no más del 50\% cultivado & 0.04--0.06: buena a excelente; 90\% del área con praderas, bosques o cobertura equivalente\\
+\addlinespace
+Almacenamiento superficial & 0.10--0.12: despreciable, pocas depresiones superficiales, sin zonas húmedas & 0.08--0.10: baja, sistema de cauces superficiales pequeños bien definidos, sin zonas húmedas & 0.06--0.08: normal; posibilidad de almacenamiento buena, zonas húmedas, pantanos, lagunas y lagos & 0.04--0.06: capacidad alta, sistema hidrográfico poco definido, buenas planicies de inundación o gran cantidad de zonas húmedas, lagunas o pantanos\\
+\bottomrule
+\end{tabularx}
+\caption{Tabla 3.702.503.B: coeficientes de escorrentía $C$ para $T=10$ años
+(se suman los aportes de cada factor). Si $T>10$ años, amplificar el
+resultado por: $T=25$: $C\times1.10$; $T=50$: $C\times1.20$; $T=100$: $C\times1.25$.}
+\end{table}
+
+\section{Altura de agua $h$}
+Por tratarse de flujo a superficie libre, con el ancho o algún otro dato
+geométrico dado se utiliza la fórmula de Manning:
+\begin{formula}
+$\displaystyle\frac{Q\cdot n}{\sqrt s}=\frac{\Omega^{5/3}}{\Psi^{2/3}}$\qquad
+$\Omega$: área de escurrimiento;\quad $\Psi$: perímetro mojado
+\end{formula}
+\begin{itemize}
+  \item Generalmente los contrafosos están construidos de tierra: $n=0.023\sim0.025$.
+  \item Se espera que el escurrimiento sea subcrítico; sin embargo, se debe
+        verificar con la altura crítica.
+\end{itemize}
+
+\subsection{Rugosidad de Manning}
+Se pueden usar rugosidades características, dependiendo del tipo de
+revestimiento del canal (extracto de la Tabla 3.705.1.A, valores mínimo,
+normal y máximo):
+\begin{table}[H]
+\centering\small
+\begin{tabular}{llccc}
+\toprule
+\textbf{Revestimiento} & \textbf{Descripción} & \textbf{Mín.} & \textbf{Normal} & \textbf{Máx.}\\
+\midrule
+Hormigón & Platachado & 0.011 & 0.013 & 0.015\\
+ & Alisado con regla & 0.013 & 0.015 & 0.016\\
+ & Alisado con ripio a la vista en el fondo & 0.015 & 0.017 & 0.020\\
+ & Sin alisar & 0.014 & 0.017 & 0.020\\
+ & Gunita, sección regular & 0.016 & 0.019 & 0.023\\
+ & Gunita, sección ondulada & 0.018 & 0.022 & 0.025\\
+Fondo de hormigón alisado & Piedra acomodada en mortero & 0.015 & 0.017 & 0.020\\
+\quad con lados de: & Piedra distribuida al azar en mortero & 0.017 & 0.020 & 0.024\\
+ & Empedrado o enrocado (rip rap) & 0.020 & 0.030 & 0.035\\
+Fondo de grava con lados de: & Hormigón (con moldaje) & 0.017 & 0.020 & 0.025\\
+ & Empedrado o rip rap & 0.023 & 0.033 & 0.036\\
+Ladrillo & Barnizado o vidriado & 0.011 & 0.013 & 0.015\\
+ & En mortero de cemento & 0.012 & 0.015 & 0.018\\
+Albañilería & Empedrado cementado & 0.017 & 0.025 & 0.030\\
+ & Empedrado libre & 0.023 & 0.032 & 0.035\\
+Asfalto & Liso & 0.013 & 0.013 & --\\
+ & Rugoso & 0.016 & 0.016 & --\\
+Cubierto con vegetación & & 0.030 & -- & 0.500\\
+\bottomrule
+\end{tabular}
+\caption{Coeficientes de rugosidad de Manning en canales.}
+\end{table}
+
+\subsection{Cálculo de altura normal y crítica}
+Utilizar lo aprendido en Hidráulica Teórica. Se puede ayudar de software
+(p.~ej.\ HCANALES) para determinar rápidamente $h_n$ y $h_c$.
+
+\section{Velocidades de escurrimiento}
+\paragraph{Velocidades máximas} (evitar problemas de socavación):
+\begin{table}[H]
+\centering
+\begin{tabular}{cc}
+\toprule
+$V_{max}$ [m/s] & Tipo de suelo\\
+\midrule
+0.6 & Limo\\
+0.9 & Arena\\
+1.2 & Arcilla\\
+3.0 & Asfalto\\
+4.5 & Hormigón\\
+\bottomrule
+\end{tabular}
+\end{table}
+\paragraph{Velocidades mínimas} (evitar problemas de sedimentación):
+\begin{formula}
+$v_{min}=0.4\sim0.5$ [m/s]
+\end{formula}
+La condición de velocidad mínima también se puede controlar por la pendiente
+de diseño (fondo del contrafoso):
+\begin{table}[H]
+\centering
+\begin{tabular}{cc}
+\toprule
+$S_{min}$ [\%] & Tipo de suelo\\
+\midrule
+0.25 & Tierra\\
+0.15 & Asfalto\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Revancha de seguridad ($R$):} evitar el rebalse del contrafoso
+debido a alguna condición no prevista en el diseño.
+\begin{formula}
+$R=0.15\sim0.2\,h$
+\end{formula}
+
+\section{Geometría y periodo de retorno}
+\paragraph{Geometría}
+\begin{itemize}
+  \item En caso de contrafosos de suelo natural, se recomiendan secciones de
+        diseño trapezoidales.
+  \item Además, se debe verificar que $\theta<\phi$, con $\phi$: ángulo de
+        fricción del suelo.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[suelo!80] (-0.8,0) -- (0.4,0) -- (-0.3,2.6) -- (-0.8,2.6) -- cycle;
+  \fill[suelo!80] (4.4,0) -- (5.6,0) -- (5.6,2.6) -- (5.1,2.6) -- cycle;
+  \fill[gray!30] (-0.3,2.6) -- (5.1,2.6) -- (4.85,1.7) -- (-0.05,1.7) -- cycle;
+  \fill[top color=aguaclara,bottom color=agua] (-0.05,1.7) -- (4.85,1.7) -- (4.4,0) -- (0.4,0) -- cycle;
+  \draw[thick] (-0.8,2.6) -- (-0.3,2.6) -- (0.4,0) -- (4.4,0) -- (5.1,2.6) -- (5.6,2.6);
+  \pic at (0.4,1.72) {nivelagua};
+  \draw[dashed] (4.4,0) -- (5.6,0);
+  \draw (5.1,0) arc (0:75:0.7); \node at (5.25,0.35) {$\theta$};
+  \draw[cota] (5.9,0) -- (5.9,1.7) node[midway,right]{$h$};
+  \draw[cota] (5.9,1.7) -- (5.9,2.6) node[midway,right]{$R=0.15\sim0.2\,h$};
+\end{tikzpicture}
+\caption{Sección trapezoidal del contrafoso con revancha $R$.}
+\end{figure}
+
+\paragraph{Periodo de retorno de diseño}
+\begin{itemize}
+  \item Dependerá del tipo de camino y su importancia.
+  \item También se puede diseñar considerando el riesgo de falla:
+\end{itemize}
+\begin{formula}
+$\displaystyle R=1-\left[1-\frac1T\right]^n$
+\end{formula}
+\begin{table}[H]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+& \multicolumn{2}{c}{$T$ [años]} & Vida útil & \multicolumn{2}{c}{Riesgo de falla $R$ [\%]}\\
+\cmidrule(lr){2-3}\cmidrule(lr){5-6}
+\textbf{Tipo de obra} & Diseño & Verificación & supuesta $n$ [años] & Diseño & Verificación\\
+\midrule
+Carreteras & 10 & 25 & 10 & 65 & 34\\
+Caminos & 5 & 10 & 5 & 67 & 41\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Bajadas de agua: rápidos o canal en gradería}
+\begin{itemize}
+  \item Su función es proteger de la erosión a los taludes de terraplenes y
+        cortes, conduciendo el agua hasta un sitio seguro (cuneta al pie del talud).
+  \item Diámetro mínimo de 200 mm para $H/V\geq4$.
+  \item Gradería para razones $H/V$ 4:1 o menores.
+  \item Pueden ser canaletas semicirculares en metal corrugado, $H/V$ 2:1.
+  \item Velocidades de 5 m/s para el diseño hidráulico.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[gray!25] (0,0) -- (0,0.4) -- (6,3.4) -- (6,0) -- cycle;
+  \draw (0,0.4) -- (6,3.4);
+  \draw[thick,azulusm] (0,0.4) \foreach \i in {0,...,6}{ -- ++(0,0.43) -- ++(0.86,0) };
+  \foreach \i in {0,...,6} \draw[flecha,cyan!70!blue] ({0.86*\i+0.7},{0.43*\i+0.95}) -- ++(-0.5,-0.25);
+  \node[align=center] at (4.5,1.0) {Canal en gradería\\(corte longitudinal)};
+\end{tikzpicture}
+\caption{Bajada de agua escalonada (canal en gradería) sobre un talud.}
+\end{figure}

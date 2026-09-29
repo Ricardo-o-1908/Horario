@@ -1,0 +1,374 @@
+% =====================================================================
+%  CLASE 10 -- Drenaje transversal de caminos y carreteras: alcantarillas
+% =====================================================================
+\clase{10}{Drenaje transversal de caminos y carreteras: alcantarillas}
+
+\section{Drenaje transversal de caminos y carreteras}
+El objetivo es no interrumpir cursos de agua existentes, por ejemplo: ríos,
+quebradas, esteros, etc. Existen distintas soluciones:
+\begin{enumerate}
+  \item \textbf{Tubos de hormigón o HDPE} (polietileno de alta densidad):
+  \begin{itemize}
+    \item Si se tiene más de un tubo, la distancia libre entre tubos debe ser $D/2$.
+    \item Solución utilizada para caudales pequeños.
+    \item Más recomendaciones constructivas en el Manual de Carreteras V4.
+  \end{itemize}
+  \item \textbf{Cajones de hormigón armado:}
+  \begin{itemize}
+    \item Recomendaciones constructivas en el Manual de Carreteras V4.
+    \item La solución de cajones múltiples compite con puentes pequeños.
+  \end{itemize}
+  \item \textbf{Puentes} (estribos y cepas): solución utilizada cuando se
+        tienen caudales de magnitud importante, por ejemplo ríos o grandes quebradas.
+\end{enumerate}
+Tanto para cajones como para tubos se deben considerar \textbf{muros guía} a
+la entrada y salida. También se conocen como \textbf{atraviesos o alcantarillas}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[suelo!80] (0,0) rectangle (9,1.8);
+  \fill[gray!25] (0,1.8) .. controls (2.5,1.8) and (3.3,0.4) .. (4.5,0.4) .. controls (5.7,0.4) and (6.5,1.8) .. (9,1.8) -- cycle;
+  \draw[thick] (0,1.8) -- (9,1.8);
+  \draw[thick,fill=white] (4.5,1.0) circle (0.65);
+  \begin{scope} \clip (4.5,1.0) circle (0.65); \fill[aguaclara] (3.8,0.3) rectangle (5.2,1.2); \end{scope}
+  \draw[thick] (4.5,1.0) circle (0.65);
+  \pic at (4.5,1.22) {nivelagua};
+  \draw[dashed] (3.85,1.0) -- (3.85,-0.4) (5.15,1.0) -- (5.15,-0.4);
+  \draw[cota] (3.85,-0.3) -- (5.15,-0.3) node[midway,below]{$D$};
+  \draw[<-] (6.3,1.4) -- (7.2,2.3) node[above,azulusm]{Terraplén};
+  \draw[<-] (5.4,0.7) -- (6.6,-0.3) node[right,azulusm]{Material de relleno};
+\end{tikzpicture}
+\caption{Alcantarilla de tubo bajo un terraplén (corte transversal al cauce).}
+\end{figure}
+
+\section{Alcantarillas}
+\begin{itemize}
+  \item Son conductos relativamente cortos a través de los cuales se cruza el
+        agua por debajo del camino o carretera, desde un lado al otro de éste.
+        Se entiende por alcantarilla una \textbf{estructura de drenaje} cuya
+        luz, medida paralela al eje de la carretera, sea de \textbf{hasta seis
+        metros (ancho)}; losas mayores se tratarán como puentes (MC, 3.703.101).
+  \item Se consideran estructuras menores en el diseño y construcción de una
+        vía, pero deben ser diseñadas y construidas para soportar las cargas
+        del tránsito, el peso de tierra sobre ellas y las cargas durante la construcción.
+  \item El diseño consiste en determinar el \textbf{diámetro más económico}
+        que permita pasar el caudal de diseño sin exceder la carga máxima de
+        entrada y atendiendo criterios de arrastre de sedimentos (velocidades
+        de escurrimiento).
+  \item Criterios para este tipo de obras:
+  \begin{enumerate}[label=\alph*)]
+    \item En planta, las obras se dispondrán en la dirección del cauce.
+    \item En perfil, se deberá ajustar al perfil de la obra.
+    \item La sección debe respetar las dimensiones del cauce natural y no
+          provocar fuertes estrechamientos.
+  \end{enumerate}
+\end{itemize}
+
+\subsection{Algunas recomendaciones (Horacio Mery)}
+\begin{itemize}
+  \item El nivel aguas arriba sea similar al que se tiene en el cauce para la
+        crecida de diseño. ¿Para qué?
+  \item El nivel de aguas arriba debe resguardar la seguridad del terraplén.
+  \item La mayoría de las alcantarillas se diseñan para operar con
+        escurrimiento libre cercano al crítico, logrando $Fr$ entre 0.7 y 0.9.
+  \item Se busca maximizar el caudal pasante, reduciendo la sección
+        transversal y por tanto el costo.
+\end{itemize}
+
+\paragraph{Tragedia del estero Minte (07/05/1995).} El ancho de la
+alcantarilla era algo estrecho frente a las precipitaciones (192 mm de agua
+en 48 horas); la entrada de la alcantarilla se tapó con árboles y barro,
+generando la falla de la autopista, que causó la muerte de 27 personas, 15
+de ellas niños. La justicia dictaminó que el Estado fue responsable como
+consecuencia de un mal diseño.
+
+\section{Diseño hidráulico de alcantarillas}
+\subsection{Recomendaciones de diseño}
+\begin{itemize}
+  \item La tubería o cajón debe seguir la línea de flujo del agua (en planta,
+        alineada con el cauce; no forzar el cauce a cruzar perpendicular al camino).
+  \item En un cauce amplio es mejor usar tubos múltiples que dispersen el
+        flujo, en lugar de concentrarlo en un solo tubo.
+  \item La tubería o cajón debe seguir la pendiente del terreno: no instalarla
+        muy profunda ni muy alta; no alterar la elevación del fondo del canal.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \foreach \X/\ok in {0/0,5/1}{
+  \begin{scope}[xshift=\X cm]
+    \fill[gray!50] (-0.3,1.2) rectangle (3.7,2.0);
+    \ifnum\ok=0
+      \fill[aguaclara,draw=azulusm] (0.9,3.2) -- (1.5,3.2) -- (1.6,2.0) -- (1.0,2.0) -- cycle;
+      \fill[aguaclara,draw=azulusm] (1.0,1.2) -- (1.6,1.2) -- (1.5,0) -- (0.9,0) -- cycle;
+      \fill[gray!20,draw] (1.0,1.2) rectangle (1.6,2.0);
+      \draw[rojo,line width=3pt] (2.3,0.3) -- (3.1,1.0) (2.3,1.0) -- (3.1,0.3);
+    \else
+      \fill[aguaclara,draw=azulusm] (1.8,3.2) -- (2.4,3.2) -- (1.9,2.0) -- (1.3,2.0) -- cycle;
+      \fill[aguaclara,draw=azulusm] (1.0,1.2) -- (1.6,1.2) -- (1.1,0) -- (0.5,0) -- cycle;
+      \fill[gray!20,draw] (1.3,2.0) -- (1.9,2.0) -- (1.6,1.2) -- (1.0,1.2) -- cycle;
+      \draw[azulusm,line width=3pt] (2.4,0.7) -- (2.7,0.3) -- (3.4,1.1);
+    \fi
+  \end{scope}}
+\end{tikzpicture}
+\caption{La alcantarilla debe seguir la línea de flujo del cauce (derecha), no
+forzar un cruce perpendicular (izquierda).}
+\end{figure}
+
+% ---------------------------------------------------------------------
+% Macro: perfil longitudinal de una alcantarilla
+% #1: contenido extra
+\newcommand{\perfilalcantarilla}[1]{%
+\begin{tikzpicture}[font=\small,scale=1.0]
+  % fondo inclinado
+  \draw[thick,gray!70!black] (0,0.6) -- (9,0);
+  \draw[dashed] (0,0.2) -- (8,0.2);
+  % alcantarilla (cajón) y terraplén
+  \fill[suelo!80] (3.1,2.6) -- (3.4,2.8) -- (7.6,2.5) -- (7.9,2.0) -- (7.9,1.4) -- (3.1,1.8) -- cycle;
+  \draw[thick] (3.0,2.8) -- (3.0,1.85) -- (8.0,1.5) -- (8.0,2.0);
+  #1
+\end{tikzpicture}}
+
+\subsection{Criterio 1: diseño con control de entrada}
+Se diseña la alcantarilla para que el escurrimiento en ella sea
+\textbf{torrencial}:
+\begin{center}
+\colorbox{azulusm}{\parbox{0.7\textwidth}{\centering\color{white}\large
+Independencia aguas arriba de lo que ocurre aguas abajo}}
+\end{center}
+Así, asumiendo la condición más crítica, es decir aguas arriba de la
+alcantarilla se tiene escurrimiento de río:
+\begin{center}
+\colorbox{azulusm}{\parbox{0.7\textwidth}{\centering\color{white}\large
+Caída hidráulica en la entrada de la alcantarilla}}
+\end{center}
+
+\begin{figure}[H]
+\centering
+\perfilalcantarilla{
+  \fill[aguaclara] (0,0.6) -- (0,2.4) .. controls (2,2.3) and (2.6,1.4) .. (3.1,1.1) .. controls (5,0.7) and (7,0.4) .. (8,0.35) -- (8,0.06) -- cycle;
+  \draw[azulusm,thick] (0,2.4) .. controls (2,2.3) and (2.6,1.4) .. (3.1,1.1) .. controls (5,0.7) and (7,0.4) .. (8,0.35);
+  \draw[cota] (0.3,0.58) -- (0.3,2.4) node[midway,right]{$H=h_n$};
+  \draw[cota] (3.2,0.4) -- (3.2,1.08) node[midway,right]{$h_c$};
+  \draw[cota] (7.3,0.12) -- (7.3,1.55) node[midway,left]{$D$};
+  \draw[cota] (8.2,0.05) -- (8.2,0.35) node[midway,right]{$h_T$};
+  \node[azulusm] at (0.8,2.8) {Río}; \node[azulusm,rotate=-5] at (5.4,0.9) {Torrente};
+  \node at (1.5,0.35) {$S_D$};
+}
+\caption{Control de entrada: escurrimiento de río aguas arriba y torrente en la alcantarilla.}
+\end{figure}
+
+\paragraph{Sección rectangular.} Con $H=h+\frac{v^2}{2g}$:
+\[
+H_c=\frac32h_c,\qquad h_c=\sqrt[3]{\frac{Q^2}{gb^2}}
+\]
+Despreciando pérdidas de energía, $H_c=H$; y considerando $D=H_c$:
+\begin{formula}
+$\displaystyle D=\frac32\frac{1}{\sqrt[3]g}\left(\frac Qb\right)^{2/3}$
+\end{formula}
+Para determinar el ancho $b$ de la alcantarilla se impone $D=H$. Luego,
+considerando la ecuación de Manning para $h=h_c=\frac23H$:
+\begin{formula}
+$\displaystyle S_c=\frac23g\cdot H\cdot n^2\left(\frac{b+\frac43H}{\frac23H\cdot b}\right)^{4/3}$
+\end{formula}
+La pendiente de diseño debe cumplir con
+\[
+S_D\geq S_c\ \Rightarrow\ \text{torrente};\qquad\text{si } S_D\leq S_c\ \Rightarrow\ S_D=S_c
+\]
+Una vez definida la geometría se debe verificar que $v<5$ [m/s].
+
+\paragraph{Sección circular} (considerando $h_c=0.7D$, con $D$ en [m] y $Q$ en [m$^3$/s]):
+\begin{formula}
+$Q=1.425\,D^{5/2}\qquad\qquad\displaystyle S_c=\frac{31.14\,n^2}{D^{1/3}}$
+\end{formula}
+Por seguridad se debe diseñar con $D>H$.
+
+\begin{table}[H]
+\centering\small
+\renewcommand{\arraystretch}{2.0}
+\begin{tabular}{l>{$}c<{$}>{$}c<{$}>{$}c<{$}>{$}c<{$}}
+\toprule
+\textbf{Sección} & \text{Área } A & \text{Perímetro } P & \text{Radio hidráulico } R_h & \text{Ancho superficial } b_s\\
+\midrule
+Rectangular & by & b+2y & \dfrac{by}{b+2y} & b\\
+Trapezoidal & (b+ky)y & b+2y\sqrt{1+k^2} & \dfrac{(b+ky)y}{b+2y\sqrt{1+k^2}} & b+2ky\\
+Triangular & ky^2 & 2y\sqrt{1+k^2} & \dfrac{ky}{2\sqrt{1+k^2}} & 2ky\\
+Circular & \dfrac{(\theta-\operatorname{sen}\theta)D^2}{8} & \dfrac{\theta D}{2} & \left(1-\dfrac{\operatorname{sen}\theta}{\theta}\right)\dfrac D4 & \operatorname{sen}\left(\dfrac\theta2\right)D\ \text{ó}\ 2\sqrt{y(D-y)}\\
+Parabólica & \dfrac23 yb_s & b_s+\dfrac{8y^2}{3b_s} & \dfrac{2b_s^2y}{3b_s^2+8y^2} & \dfrac{3A}{2y}\\
+\bottomrule
+\end{tabular}
+\caption{Elementos geométricos de secciones típicas; en la sección circular
+$\theta=2\cos^{-1}\left(1-\frac{2y}{D}\right)$.}
+\end{table}
+
+\subsection{Criterio 2: diseño y verificación}
+Se toman en cuenta los caudales correspondientes a 2 períodos de retorno:
+\begin{itemize}
+  \item $T_1$: diseño con control de entrada, p.~ej.\ $T_1=25$ años.
+  \item $T_2$: verificación a sección completa, p.~ej.\ $T_2=50$ años
+        (entrada ahogada).
+\end{itemize}
+Se busca que el flujo no cause sobrepresiones en la cara superior del cajón.
+
+\paragraph{Verificación a sección completa.} Se calcula la pendiente normal
+para $Q_{2D}$ ($T_2$) imponiendo $h_n=D$:
+\begin{formula}
+Sección circular: $\displaystyle S_n=\frac{10.3\,Q_{2D}^2\cdot n^2}{D^{16/3}}$\qquad\qquad
+Sección rectangular: $\displaystyle\frac{Q_{2D}\cdot n}{\sqrt{S_n}}=\Omega\cdot R_H^{2/3}$
+\end{formula}
+La comparación con la pendiente de diseño ($S_D$) genera tres casos:
+\begin{enumerate}
+  \item $S_D>S_n$
+  \item $S_D=S_n$
+  \item $S_D<S_n$
+\end{enumerate}
+
+\paragraph{Caso 1: $S_D>S_n$.} La alcantarilla actúa como compuerta
+(contracción a la entrada). Se debe calcular $H'$ para verificar que no se
+inunde el camino. Se conserva la energía entre (1) y (2):
+\begin{formula}
+$\displaystyle H'=c_c\cdot D+\frac{1}{2g}\left(\frac{Q_{2D}}{b\cdot c_c\cdot D}\right)^2,\qquad c_c\approx0.611$
+\end{formula}
+
+\begin{figure}[H]
+\centering
+\perfilalcantarilla{
+  \fill[aguaclara] (0,0.6) -- (0,2.7) -- (3.0,2.7) -- (3.0,1.85) .. controls (3.4,1.2) and (4,1.0) .. (5,0.85) .. controls (6.5,0.55) and (7.5,0.4) .. (8,0.35) -- (8,0.06) -- cycle;
+  \draw[azulusm,thick] (0,2.7) -- (3.0,2.7);
+  \draw[azulusm,thick] (3.0,1.85) .. controls (3.4,1.2) and (4,1.0) .. (5,0.85) .. controls (6.5,0.55) and (7.5,0.4) .. (8,0.35);
+  \pic at (2.5,2.72) {nivelagua};
+  \draw[cota] (1.3,0.52) -- (1.3,2.7) node[midway,right]{$H'$};
+  \draw[cota] (4.3,0.33) -- (4.3,0.95) node[midway,right]{$h_2=c_cD$};
+  \draw[cota] (7.3,0.12) -- (7.3,1.55) node[midway,left]{$D$};
+  \node at (1.3,0.2) {(1)}; \node at (4.3,0) {(2)};
+  \node[azulusm] at (0.6,2.4) {Río}; \node[azulusm,rotate=-5] at (6,0.95) {Torrente};
+}
+\caption{Caso 1 ($S_D>S_n$): la alcantarilla actúa como compuerta.}
+\end{figure}
+
+\paragraph{Caso 2: $S_D=S_n$.} Se puede realizar un balance de energía entre
+(1) y (2) considerando la pérdida singular a la entrada:
+\begin{formula}
+$\displaystyle H'=D+\frac1{2g}\,(k_e+1)\cdot\frac{Q_{2D}^2}{(D\cdot b)^2}$
+\end{formula}
+El valor de $k_e$ dependerá de la forma del flujo de entrada:
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+Tipo de entrada & $k_e$\\
+\midrule
+Tubo que sobresale del muro (entrada reentrante) & 0.9\\
+Entrada abocinada (redondeada) & 0.2\\
+Entrada a ras del muro (arista viva) & 0.5\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Caso 3: $S_D<S_n$.} Se producen sobrepresiones sobre la cara
+posterior de la alcantarilla; el escurrimiento aguas arriba se ve
+influenciado por lo que ocurre aguas abajo. Se realiza un balance de energía
+entre (1) y (2) considerando las pérdidas singulares y por fricción:
+\begin{formula}
+$\displaystyle H'=D+\frac{v_2^2}{2g}+\Lambda_e+J\cdot L-S_D\cdot L,\qquad
+\Lambda_e=k_e\frac{v_2^2}{2g},\qquad J=\frac{v_2^2\cdot n^2}{R_H^{4/3}}$
+\end{formula}
+
+\begin{figure}[H]
+\centering
+\perfilalcantarilla{
+  \fill[aguaclara] (0,0.6) -- (0,2.7) -- (3.0,2.7) -- (3.0,1.85) -- (8.0,1.5) -- (8.0,0.0) -- (0,0.6);
+  \draw[azulusm,thick] (0,2.7) -- (3.0,2.7);
+  \pic at (2.5,2.72) {nivelagua};
+  \foreach \y in {0.3,0.6,0.9,1.2} \draw[->,azulusm] (8.0,\y) .. controls (8.4,\y) .. (8.8,\y+0.2);
+  \draw[cota] (1.3,0.52) -- (1.3,2.7) node[midway,right]{$H'$};
+  \draw[cota] (7.3,0.06) -- (7.3,1.55) node[midway,left]{$D$};
+  \draw[dashed] (3.0,0.37) -- (3.0,-0.6) (8.0,0.0) -- (8.0,-0.6);
+  \draw[cota] (3.0,-0.5) -- (8.0,-0.5) node[midway,below]{$L$};
+  \node at (1.3,0.2) {(1)}; \node[right] at (8.0,-0.2) {(2)};
+}
+\caption{Caso 3 ($S_D<S_n$): alcantarilla trabajando a sección llena.}
+\end{figure}
+
+\paragraph{Adicional: control de salida.} La pendiente aguas abajo es tan
+pequeña que el escurrimiento de río ahoga al atravieso. Se realiza un
+balance de energía entre (1) y (3) considerando las pérdidas singulares
+(contracción a la entrada y expansión a la salida) y por fricción:
+\begin{formula}
+$\displaystyle H'=D+\frac{v_2^2}{2g}+\Lambda_e+\Lambda_s+J\cdot L-S_D\cdot L$
+\end{formula}
+donde
+\[
+\Lambda_s=k_s\frac{(v_2-v_3)^2}{2g},\qquad\Lambda_e=k_e\frac{v_2^2}{2g},\qquad J=\frac{v_2^2\cdot n^2}{R_H^{4/3}},
+\]
+\[
+k_s=0.22-0.44\ \ (k_s=0.4\ \text{recomendado})
+\]
+y $h_3=h_{n3}$ es la altura normal aguas abajo. Referencia: FHWA, \emph{Hydraulic
+Design of Highway Culverts},
+\url{https://www.fhwa.dot.gov/engineering/hydraulics/library_arc.cfm?id=13&pub_number=7}.
+
+\subsection{Períodos de retorno}
+\begin{table}[H]
+\centering\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llcccccc}
+\toprule
+& & \multicolumn{2}{c}{$T$ [años]} & Vida útil & \multicolumn{2}{c}{Riesgo de falla [\%]}\\
+\cmidrule(lr){3-4}\cmidrule(lr){6-7}
+\textbf{Tipo de obra} & \textbf{Ruta} & Diseño & Verif. & $n$ [años] & Diseño & Verif.\\
+\midrule
+Puentes y viaductos & Carreteras & 200 & 300 & 50 & 22 & 15\\
+ & Caminos & 100 & 150 & 50 & 40 & 28\\
+Alcantarillas ($S>1.75$ m$^2$) o $H$ terrap.\ $\geq10$ m & Carreteras & 100 & 150 & 50 & 40 & 28\\
+\quad y estructuras enterradas & Caminos & 50 & 100 & 30 & 45 & 26\\
+Alcantarillas ($S<1.75$ m$^2$) & Carreteras & 50 & 100 & 50 & 64 & 40\\
+ & Caminos & 25 & 50 & 30 & 71 & 45\\
+\bottomrule
+\end{tabular}}
+\caption{Períodos de retorno (Manual de Carreteras, Volumen 3). $S$ es el área útil de la alcantarilla.}
+\end{table}
+
+\subsection{Alturas y velocidades}
+\begin{table}[H]
+\centering\small
+\begin{tabular}{llll}
+\toprule
+\textbf{Tipo de cauce} & \textbf{Tubos} & \textbf{Cajones} & \textbf{Losas} ($L\leq6.0$ m)$^*$\\
+\midrule
+Canales & $D$ (diámetro) & $H$ (altura total) & $H-0.10$ m\\
+Diseño cauces naturales & $D+0.3$ m & $H+0.3$ m & $H-0.10$ m\\
+Verificación cauces naturales & $D+0.6$ m & $H+0.6$ m & $H$\\
+\multicolumn{4}{l}{\quad Pero $H_e$ máximo no puede sobrepasar la cota exterior del SAP $-0.3$ m}\\
+\bottomrule
+\end{tabular}
+\caption{Tabla 3.703.301.A: carga hidráulica de diseño ($H_e$, m).
+$^*$Si $L>6.0$ m, revancha como en puentes.}
+\end{table}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Tipo de terreno} & \textbf{Flujo intermitente} [m/s] & \textbf{Flujo permanente} [m/s]\\
+\midrule
+Arena fina (no coloidal) & 0.75 & 0.75\\
+Arcilla arenosa (no coloidal) & 0.75 & 0.75\\
+Arcilla limosa (no coloidal) & 0.90 & 0.90\\
+Arcilla fina & 1.00 & 1.00\\
+Ceniza volcánica & 1.20 & 1.00\\
+Grava fina & 1.50 & 1.20\\
+Arcilla dura (coloidal) & 1.80 & 1.40\\
+\multicolumn{3}{l}{\emph{Material graduado (no coloidal):}}\\
+\quad desde arcilla a grava & 2.00 & 1.50\\
+\quad desde limo a grava & 2.10 & 1.70\\
+Grava & 2.30 & 1.80\\
+Grava gruesa & 2.40 & 2.00\\
+Desde grava a piedras (bajo 15 cm) & 2.70 & 2.10\\
+Desde grava a piedras (sobre 20 cm) & 3.00 & 2.40\\
+\bottomrule
+\end{tabular}
+\caption{Tabla 3.703.301.B: velocidades máximas admisibles en canales no
+revestidos (fuente: Manual de Carreteras de California).}
+\end{table}

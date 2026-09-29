@@ -1,0 +1,571 @@
+% =====================================================================
+%  CLASE 12 -- Sistemas de drenaje de aguas lluvias
+% =====================================================================
+\clase{12}{Sistemas de drenaje urbano de aguas lluvias}
+
+\section{Motivación}
+Las inundaciones de calles en temporales son frecuentes en ciudades con
+sistemas de drenaje insuficientes o mal mantenidos (sumideros tapados, calles
+anegadas). Ver: \emph{La historia del alcantarillado del Santiago del
+Centenario y su resistencia ante la lluvia}.
+
+\section{Sistemas de drenaje de aguas lluvias}
+El objetivo de estos sistemas es \textbf{evitar la inundación de las calles}:
+el agua escurre por las calles (con pendientes $S_x$, $S_y$), es captada por
+sumideros y conducida por colectores hasta un cauce receptor (río).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[gray!30,rounded corners=8pt] (-0.3,-0.3) rectangle (6.9,6.9);
+  \foreach \i in {0,1,2} \foreach \j in {0,1,2}
+    \fill[suelo!80,rounded corners=4pt] ({0.2+2.2*\i},{0.6+2.2*\j}) rectangle ({1.8+2.2*\i},{2.2+2.2*\j});
+  \foreach \i in {0,1,2} \foreach \j in {0,1,2}{
+    \draw[fill=white] ({2.0+2.2*\i},{0.4+2.2*\j}) circle (0.17);
+    \draw[flecha,azulusm] ({0.3+2.2*\i},{0.4+2.2*\j}) -- ({1.75+2.2*\i},{0.4+2.2*\j});
+    \draw[flecha,azulusm] ({2.0+2.2*\i},{2.1+2.2*\j}) -- ({2.0+2.2*\i},{0.65+2.2*\j});}
+  \draw[flecha,azulusm,line width=2pt] (6.4,0.4) -- (7.3,-0.4) node[right]{Río};
+  \draw[flecha] (3,7.1) -- (4,7.1) node[midway,above]{$S_x$};
+  \draw[flecha] (-0.5,5.5) -- (-0.5,4.5) node[midway,left]{$S_y$};
+\end{tikzpicture}
+\caption{Esquema de una red urbana: escurrimiento por las calles, captación
+en sumideros/cámaras (círculos) y descarga al río.}
+\end{figure}
+
+\begin{itemize}
+  \item Las obras de drenaje están diseñadas para captar, retener, almacenar,
+        infiltrar, transportar y descargar aguas lluvias.
+  \item Las obras hidráulicas de drenaje son para redes domiciliaria,
+        secundaria y primaria.
+  \item En la red domiciliaria y secundaria se da mayor importancia a la
+        infiltración y al almacenamiento.
+  \item En la red primaria se da relevancia al transporte y descarga en las
+        redes de aguas abajo.
+\end{itemize}
+Referencia: \emph{Manual de Drenaje Urbano (MDU)}, DOH: Cap.~4 Estudios
+Básicos; Cap.~5 Técnicas de Diseño de Redes; Cap.~6 Diseño Hidráulico de Obras.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\scriptsize,node distance=0.5cm,
+  caja/.style={draw,fill=#1,minimum width=1.7cm,minimum height=0.7cm,align=center}]
+  \node[caja=gray!20] (r) {Redes};
+  \node[caja=rojo!20,right=of r] (d) {Red\\domiciliaria};
+  \node[caja=suelo!40,right=of d] (s) {Red\\secundaria};
+  \node[caja=green!25,right=of s] (p) {Red\\primaria};
+  \node[caja=aguaclara,right=of p] (n) {Red\\natural};
+  \node[caja=gray!20,below=of r] (e) {Elementos\\propios};
+  \node[caja=rojo!20,below=of d] (d2) {Techos\\pavimentos};
+  \node[caja=suelo!40,below=of s] (s2) {Calles\\sumideros};
+  \node[caja=green!25,below=of p] (p2) {Cauces\\descargas};
+  \node[caja=aguaclara,below=of n] (n2) {Zonas\\inundables};
+  \draw[->] (d) -- (s); \draw[->] (s) -- (p); \draw[->] (p) -- (n);
+  \foreach \a/\b in {d2/d,s2/s,p2/p,n2/n} \draw[->] (\a) -- (\b);
+\end{tikzpicture}
+\caption{Organización de las redes de drenaje urbano (MDU, Fig.~5.1.2).
+Complementos: infiltración, almacenamiento y conducción.}
+\end{figure}
+
+Estos sistemas están compuestos por: \textbf{cunetas}, \textbf{sumideros},
+\textbf{cámaras de observación} y \textbf{colectores de aguas lluvias}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[gray!50] (0,0) -- (0,1.8) -- (0.3,1.8) -- (0.3,0.9) -- (4,1.8) -- (7.7,0.9) -- (7.7,1.8) -- (8,1.8) -- (8,0) -- cycle;
+  \fill[aguaclara] (0.3,0.9) -- (0.3,1.25) -- (1.7,1.25) -- cycle;
+  \fill[aguaclara] (7.7,0.9) -- (7.7,1.25) -- (6.3,1.25) -- cycle;
+  \fill[sueloclaro] (0.5,-1.3) rectangle (7.5,0);
+  \draw[thick,fill=white] (4,-0.6) circle (0.5);
+  \begin{scope}\clip (4,-0.6) circle (0.5); \fill[aguaclara] (3.4,-1.2) rectangle (4.6,-0.75);\end{scope}
+  \draw[thick] (4,-0.6) circle (0.5);
+  \draw (1.0,0.9) -- (1.8,0.9); \draw (1.8,0.9) arc (0:14:0.8); \node at (2.1,1.0) {$i$};
+  \draw[<-] (0.7,1.1) -- (-0.8,2.2) node[above,azulusm,align=center]{Pendiente transversal\\o bombeo};
+  \draw[<-] (4.5,-0.8) -- (8.2,-1.0) node[right,azulusm,align=left]{Colector de\\aguas lluvias};
+  \draw[->,azulusm,thick] (1.2,1.0) .. controls (2.2,0.2) .. (3.5,-0.5);
+  \draw[->,azulusm,thick] (6.8,1.0) .. controls (5.8,0.2) .. (4.5,-0.5);
+\end{tikzpicture}
+\caption{Perfil transversal de una calle: cunetas a ambos lados (bombeo $i$)
+que descargan, vía sumideros, al colector.}
+\end{figure}
+
+\section{Tipos de obras}
+Las obras dependen de la capacidad de conducción ($Q$) requerida:
+\begin{itemize}
+  \item Cuneta simple.
+  \item Cuneta compuesta.
+  \item Colector de aguas lluvias (con sumideros y cámaras).
+\end{itemize}
+
+% Macro sección de cuneta: #1=1 compuesta
+\newcommand{\seccioncuneta}[1]{%
+\begin{tikzpicture}[font=\small]
+  \fill[gray!55] (0,0) rectangle (0.3,1.7);
+  \ifnum#1=1
+    \fill[gray!40] (0.3,0) -- (0.3,0.1) -- (1.8,0.9) -- (5.5,1.4) -- (6.3,1.25) -- (6.3,0) -- cycle;
+    \fill[aguaclara] (0.3,0.1) -- (0.3,1.1) -- (3.5,1.1) -- (1.8,0.9) -- cycle;
+    \draw (0.3,0.1) -- (1.8,0.9) -- (5.5,1.4) -- (6.3,1.25);
+    \draw[dashed] (1.8,0.9) -- (5.8,0.9) (1.8,-0.2) -- (1.8,0.9);
+    \draw[cota] (0.3,-0.1) -- (1.8,-0.1) node[midway,below]{$w$};
+    \node at (1.3,0.3) {$i_1$}; \node at (4.9,1.1) {$i_2$};
+    \draw[cota] (0.3,1.35) -- (3.5,1.35) node[midway,above]{$b$};
+  \else
+    \fill[gray!40] (0.3,0) -- (0.3,0.4) -- (5.5,1.2) -- (6.3,1.05) -- (6.3,0) -- cycle;
+    \fill[aguaclara] (0.3,0.4) -- (0.3,0.85) -- (3.2,0.85) -- cycle;
+    \draw (0.3,0.4) -- (5.5,1.2) -- (6.3,1.05);
+    \draw[dashed] (0.3,0.4) -- (5.8,0.4);
+    \node at (4.9,0.6) {$i$};
+    \draw[cota] (0.3,1.1) -- (3.2,1.1) node[midway,above]{$b$};
+    \draw[cota] (0.1,0.4) -- (0.1,0.85) node[midway,left]{$y$};
+    \draw[cota] (-0.4,0.4) -- (-0.4,1.7) node[midway,left]{$h_s$};
+  \fi
+  \draw[<-] (5.5,1.45) -- (5.9,1.9) node[above,azulusm]{Bombeo};
+\end{tikzpicture}}
+
+\section{Cuneta simple}
+Conformada por la calle misma y la solera.
+\begin{itemize}
+  \item Destinada para caudales pequeños.
+  \item Para su diseño se debe determinar la pendiente transversal de la
+        calle ($i$, bombeo) en función de:
+  \begin{itemize}
+    \item Ancho máximo permitido ($b_{max}=1-2$ [m]).
+    \item Pendiente longitudinal de la calle ($S=3\%-10\%$).
+    \item Revisar Tabla 5.3.4 del MDU.
+  \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\seccioncuneta{0}
+\caption{Corte transversal de una cuneta simple: $y=b\cdot i\leq h_s\approx15$ [cm].}
+\end{figure}
+
+Utilizando la ecuación de Manning:
+\[
+Q=\frac{\sqrt S}{n}\Omega\cdot R_H^{2/3},\qquad
+\Omega=\frac{b\cdot y}{2}=\frac{b^2\cdot i}{2},\qquad R_H=\frac\Omega\Psi,\qquad
+\Psi=b\cdot i+b\sqrt{i^2+1}\approx b(i+1)
+\]
+\begin{formula}
+$\displaystyle Q=\frac{\sqrt S}{n}\,\frac{b^2\cdot i}{2}\left(\frac{b\cdot i}{2(i+1)}\right)^{2/3}$\qquad $i$ varía entre 2 -- 4\%
+\end{formula}
+
+\section{Cuneta compuesta}
+Se usan cuando el ancho de inundación está en el rango de 1 a 2 [m] para una
+cuneta simple y se requiere mayor capacidad.
+\begin{itemize}
+  \item Generalmente utilizadas en carreteras.
+  \item El ancho superficial ($b$) se calcula con la fórmula de Manning,
+        teniendo en cuenta que $b\leq1-2$ [m].
+  \item Revisar Tabla 5.3.5 del MDU.
+  \item Si $b<w$, el cálculo se debe realizar como cuneta simple.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\seccioncuneta{1}
+\caption{Corte transversal de una cuneta compuesta (con zarpa de ancho $w$).}
+\end{figure}
+
+\begin{formula}
+$\displaystyle Q=0.315\frac{\sqrt S}{n}b^{8/3}\left[i_2+(i_1-i_2)\left(\frac wb\right)^2\right]^{5/3}$
+\end{formula}
+con $w$: ancho de la zarpa ($w\approx0.6$ [m]); $S$: pendiente longitudinal
+de la calle; $i_2$: bombeo de la calle (2 -- 4\%); $i_1$: pendiente
+transversal de la zarpa (2 -- 10\%).
+
+\section{Sumideros}
+Obras de arte que se utilizan para captar el agua de la calle hacia el colector.
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Tipo} & \textbf{Características}\\
+\midrule
+Horizontal de fondo (tipo S3 y S4, SERVIU) & Usado para un amplio rango de pendientes. Inconvenientes: peatones, ciclistas, obstrucción.\\
+Lateral (tipo S2, SERVIU) & Funciona admitiendo basuras; su capacidad decrece para pendientes longitudinales mayores al 3\%, donde se recomienda cuneta con pendiente longitudinal para mayor captación.\\
+Mixto (tipo S1 y S2, SERVIU) & Funciona admitiendo basuras; capacidad de captación aumenta 10\% con respecto al sumidero horizontal.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,x={(1cm,0cm)},y={(0.5cm,0.35cm)},z={(0cm,1cm)}]
+  % losa
+  \draw[fill=gray!15] (0,0,0) -- (5,0,0) -- (5,4,0) -- (0,4,0) -- cycle;
+  \draw[fill=gray!35] (0,4,0) -- (5,4,0) -- (5,4,0.6) -- (0,4,0.6) -- cycle;
+  % rejilla
+  \draw[fill=gray!60] (1.2,2.4,0) -- (3.8,2.4,0) -- (3.8,3.6,0) -- (1.2,3.6,0) -- cycle;
+  \foreach \x in {1.45,1.7,...,3.6} \draw[white] (\x,2.45,0) -- (\x,3.55,0);
+  \draw[cota] (1.2,2.1,0) -- (3.8,2.1,0) node[midway,below]{$L$};
+  \draw[cota] (4.1,2.4,0) -- (4.1,3.6,0) node[midway,right]{$w$};
+\end{tikzpicture}
+\caption{Sumidero horizontal de fondo junto a la solera: reja de largo $L$ y
+ancho $w$ ($w=0.4\sim0.7$ [m], $L=1\sim2$ [m]).}
+\end{figure}
+
+\subsection{Sumidero horizontal de fondo}
+El caudal máximo de captación depende del funcionamiento:
+\begin{enumerate}
+  \item \textbf{Actuando como vertedero} (alturas de agua pequeñas): un
+        vertedero es un punto de control; produce un peralte del
+        escurrimiento aguas arriba.
+  \begin{formula}
+  $\displaystyle Q_m=1.66\,(L_e+2\cdot w_e)\,h^{1.5}\ [\text{m}^3/\text{s}]\qquad\text{si } h<1.6\frac{A_e}{L_e+2w_e}$
+  \end{formula}
+  \item \textbf{Actuando como orificio} (alturas de agua mayores): el
+        sumidero se ahoga.
+  \begin{formula}
+  $\displaystyle Q_m=2.66\cdot A_e\cdot h^{0.5}\ [\text{m}^3/\text{s}]\qquad\text{si } h\geq1.6\frac{A_e}{L_e+2w_e}$
+  \end{formula}
+\end{enumerate}
+donde $w_e=w-e\cdot n_L$: ancho efectivo [m]; $L_e=L-e\cdot n_T$: largo
+efectivo [m]; $A_e=L_e\cdot w_e$: área efectiva [m$^2$]; $n_L$: número de
+barras longitudinales; $n_T$: número de barras transversales; $e$: diámetro o
+espesor de las barras [m]; $h$: altura de agua en la calle frente al sumidero [m].
+
+\paragraph{Eficiencia.} El sumidero no siempre logra captar toda el agua que
+circula por la cuneta:
+\begin{formula}
+$Q_s=\begin{cases}\eta_HQ & \eta_HQ<Q_m\\ Q_m & \eta_HQ\geq Q_m\end{cases}$
+\end{formula}
+\[
+\eta_H=R_f\cdot\eta_0+R_s(1-\eta_0),\qquad
+\eta_0=1-\left(1-\frac w{b_s}\right)^{2.67},
+\]
+\[
+R_s=\frac{1}{1+\dfrac{0.0828\,v^{1.8}}{i\cdot L^{2.3}}},\qquad
+R_f=1-0.295(v-v_0)
+\]
+todos acotados entre 0 y 1; $\eta_H$: eficiencia del sumidero de fondo;
+$Q_s$: caudal captado [m$^3$/s]; $Q$: caudal que circula por la cuneta
+[m$^3$/s]; $v$: velocidad del agua en la calle frente al sumidero [m/s];
+$v_0$: velocidad a la que ocurre el primer fenómeno de salpicadura en la reja [m/s].
+
+\subsection{Sumidero lateral}
+\begin{formula}
+$Q_m=\begin{cases}1.27\cdot L\cdot h^{1.5} & h<a\quad\text{(vertedero)}\\ 2.66\cdot L\cdot a\cdot h^{0.5} & h\geq a\quad\text{(ahogado)}\end{cases}$
+\end{formula}
+Recomendable su uso sólo para pendientes longitudinales $S<3\%$.
+
+\paragraph{Eficiencia}
+\begin{formula}
+$Q_s=\begin{cases}\eta_LQ & \eta_LQ<Q_m\\ Q_m & \eta_LQ\geq Q_m\end{cases}\qquad
+\eta_L=\begin{cases}1 & h>a\\ 1-\left(1-\dfrac{L}{L_T}\right)^{1.8} & h\leq a\end{cases}$
+\end{formula}
+\[
+\begin{aligned}
+&\text{Cuneta compuesta:} && L_T=0.81\,Q^{0.42}\cdot S^{0.3}(n\cdot i)^{-0.6}\ [\text{m}]\\
+&\text{Cuneta simple } (w=0): && L_T=0.81\,Q^{0.42}\cdot S^{0.3}(n\cdot i_2)^{-0.6}\ [\text{m}]
+\end{aligned}
+\]
+con $n$: rugosidad de Manning; $S$: pendiente longitudinal de la calle;
+$L_T$: largo necesario para captar todo el caudal ($L_{T,min}=L$).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[gray!30] (0,0) rectangle (2.5,5);
+  \fill[gray!55] (-0.2,0) rectangle (0,5); \fill[gray!55] (2.5,0) rectangle (2.7,1.6); \fill[gray!55] (2.5,3.0) rectangle (2.7,5);
+  \draw[dashed,thick] (1.2,0) -- (1.2,5);
+  \draw[flecha,azulusm] (2.0,4.9) -- (2.0,4.0) node[pos=0,right]{$Q$};
+  \foreach \y in {3.6,3.1,2.6,2.1} \draw[->,azulusm] (2.0,\y+0.3) .. controls (2.3,\y) .. (2.5,\y-0.1);
+  \draw[flecha,azulusm,line width=2pt] (2.5,2.3) -- (3.3,2.3) node[right]{$\eta_LQ$};
+  \draw[cota] (2.9,1.6) -- (2.9,3.0) node[pos=0.8,right]{$L$};
+  \draw[cota] (4.2,1.2) -- (4.2,3.6) node[midway,right]{$L_T$};
+  \draw[dashed] (2.7,1.2) -- (4.3,1.2) (2.7,3.6) -- (4.3,3.6);
+  \node[below] at (1.8,0) {$(1-\eta_L)Q$};
+\end{tikzpicture}
+\caption{Sumidero lateral (vista en planta): capta $\eta_LQ$ y deja pasar $(1-\eta_L)Q$.}
+\end{figure}
+
+\subsection{Sumideros mixtos}
+\begin{itemize}
+  \item Combinación de ambos tipos (de fondo y lateral).
+  \item La experiencia indica que sólo existe un pequeño aumento del caudal
+        de captación respecto a sumideros de fondo ($\approx10\%$).
+  \item Se recomienda su uso en zonas con muchos árboles de hoja caduca, ya
+        que de emergencia puede funcionar el sumidero lateral.
+\end{itemize}
+\begin{formula}
+$Q_s=\begin{cases}(\eta_H+\eta_L)Q & (\eta_H+\eta_L)Q<Q_m\\ Q_m & (\eta_H+\eta_L)Q\geq Q_m\end{cases}$
+\end{formula}
+
+\subsection{Factor de seguridad de eficiencia}
+Las eficiencias empíricas o calculadas suponen que el sumidero está limpio.
+En la práctica esta situación rara vez ocurre; por lo tanto, es importante
+incluir un factor de seguridad $F$:
+\begin{formula}
+$\eta_d=F\cdot\eta$
+\end{formula}
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Caudal aportante} & \textbf{Mantención y limpieza} & \textbf{Factor de seguridad}\\
+\midrule
+Inferior a 30 l/s & Buena & 1.0\\
+ & Mala & 0.8\\
+Superior a 30 l/s & Buena & 0.7\\
+ & Mala & 0.6\\
+\bottomrule
+\end{tabular}
+\caption{Estimación de un factor de seguridad para sumideros (MDU, Tabla 6.5.13).}
+\end{table}
+Caudales altos tienden a llevar más basura y por lo tanto a taparse; por ello
+se recomienda que siempre se haga con ventana lateral, así ésta no se tenga
+en cuenta para el cálculo de la eficiencia.
+
+\subsection{Distancia entre sumideros}
+\begin{itemize}
+  \item Se debe garantizar que el flujo no pase las condiciones de seguridad.
+  \item Para la red primaria, el caudal máximo en la calle debe calcularse
+        mediante el modelo lluvia--escorrentía SWMM.
+  \item Para la red secundaria, el flujo que llega a la calle se puede
+        estimar por el método racional.
+\end{itemize}
+\begin{formula}
+$\displaystyle Q_{captado}=\frac{C\cdot i\cdot A}{3600}=\eta_dQ_{max}
+\quad\Longrightarrow\quad
+L=\frac{A}{b_c}=\frac{3600\,(F\cdot\eta)\,Q_{max}}{C\cdot i\cdot b_c}$
+\end{formula}
+\[
+\text{Calzada con doble bombeo: } b_c=0.5\cdot e+w_c;\qquad\text{calle con bombeo único: } b_c=e+w_c
+\]
+donde $L$: separación entre sumideros [m]; $A$: área aportante [m$^2$];
+$w_c$: ancho de los terrenos aportantes [m]; $e$: ancho de la calle [m]; $C$:
+coeficiente de escorrentía; $i$: intensidad de diseño [mm/h] ($T_r=2$ años,
+$D_{min}=30$ minutos).
+
+\subsection{Consideraciones de diseño (cunetas y sumideros)}
+\begin{itemize}
+  \item Para tormentas menores ($T_r=2$ a 10 años), la calzada no podrá
+        inundarse más del ancho recomendado. Para el cálculo del tiempo de
+        concentración se pueden utilizar las fórmulas vistas en hidrología,
+        pero se debe verificar $t_c\geq30$ [min].
+  \item Para tormentas mayores ($T_r=50$ a 100 años), la calzada no podrá
+        inundarse con altura mayor a la solera y en todos los casos $h<15$ cm.
+\end{itemize}
+
+\section{Colectores de aguas lluvias}
+\begin{itemize}
+  \item Se utilizan en el caso de que $b>1-2$ [m] (excede lo permitido para una cuneta).
+  \item Su diseño considera caudales ($Q$) pequeños y medianos.
+  \item Se utilizan tuberías de diámetro mínimo de 300 [mm] y máximo 2 [m]:
+        tubos o cajones de cemento comprimido (C.C.C.) o tubos de HDPE.
+  \item MDU 6.7.2: colectores de diámetro pequeño ($D<1.2$ m), $T_r=2-10$ años.
+  \item MDU 6.7.2: colectores de diámetro mayor ($D>1.2$ m), $T_r=5-10$ años.
+\end{itemize}
+
+La elección del tamaño queda definida por el caudal y los requisitos de
+velocidad del flujo. La altura se puede calcular con la fórmula de Manning:
+\[
+Q=\frac{\sqrt S}{n}A\cdot R_H^{2/3}
+\]
+\begin{itemize}
+  \item Bajo condiciones normales se debe verificar que $h\leq0.8D$.
+  \item Para el diseño se considera la condición crítica ($h=0.8D$).
+  \item Bajo condiciones excepcionales podría exceder el límite de $0.8D$
+        (p.~ej.\ $T_r=50$ años), pero siempre sin presión.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.35\textwidth}\centering
+\begin{tikzpicture}[font=\small]
+  \begin{scope}\clip (0,0) circle (1.2); \fill[aguaclara] (-1.3,-1.3) rectangle (1.3,0.72);\end{scope}
+  \draw[thick] (0,0) circle (1.2);
+  \draw (-0.96,0.72) -- (0.96,0.72);
+  \draw (-0.96,0.72) -- (0,0) -- (0.96,0.72);
+  \draw[->] (0,0) ++(-127:0.4) arc (-127:127:0.4) node[pos=0.5,right]{$\theta$};
+  \pic at (0,0.74) {nivelagua};
+  \draw[cota] (-1.6,-1.2) -- (-1.6,1.2) node[midway,left]{$D$};
+  \draw[cota] (1.5,-1.2) -- (1.5,0.72) node[midway,right]{$h$};
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.55\textwidth}
+\[
+\begin{gathered}
+A=\frac{(\theta-\operatorname{sen}\theta)\,D^2}{8},\qquad
+R_h=\left(1-\frac{\operatorname{sen}\theta}{\theta}\right)\frac D4\\
+\theta=2\cos^{-1}\left(1-\frac{2h}{D}\right)
+\end{gathered}
+\]
+\end{minipage}
+\caption{Sección circular parcialmente llena.}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Situación} & $h$ [m] & $\theta$ [grados] & $A_m$ [m$^2$] & $P_m$ [m] & $R_h$ [m]\\
+\midrule
+Sección completa & $D$ & 360 & $0.785D^2$ & $3.142D$ & $0.250D$\\
+Caudal máximo & $0.95D$ & 308 & $0.771D^2$ & $2.686D$ & $0.287D$\\
+Sección diseño & $0.80D$ & 254 & $0.674D^2$ & $2.217D$ & $0.304D$\\
+\bottomrule
+\end{tabular}
+\caption{Propiedades de secciones especiales en ductos circulares (MDU, Tabla 6.7.13).}
+\end{table}
+
+Además, se debe verificar:
+\begin{itemize}
+  \item \textbf{Velocidad mínima} (evitar depósito de sedimentos dentro de la
+        tubería, autolavado):
+  \begin{formula}
+  $\displaystyle V_c=0.397\,\frac{D^{2/3}\sqrt S}{n}\geq0.6\ [\text{m/s}]$
+  \end{formula}
+  \item \textbf{Velocidad máxima} (evitar socavación):
+\end{itemize}
+\begin{table}[H]
+\centering
+\begin{tabular}{lc}
+\toprule
+\textbf{Tipo de tubería} & \textbf{Velocidad máxima} [m/s]\\
+\midrule
+Concreto simple hasta 45 cm de diámetro & 3.0\\
+Concreto reforzado de 61 cm de diámetro o mayores & 3.5\\
+Fibrocemento & 5.0\\
+Policloruro de vinilo (PVC) & 5.0\\
+Polietileno de alta densidad & 5.0\\
+Tubería de acero corrugado & 4.5\\
+Tubería de acero corrugado revestido en shotcrete & 3.0\\
+Polímero reforzado con fibra de vidrio (PRFV) & 3.5\\
+\bottomrule
+\end{tabular}
+\caption{Velocidad máxima permisible en colectores de pequeño diámetro (MDU,
+Tabla 6.7.14; fuente: Comisión Nacional del Agua, México, 2009).}
+\end{table}
+
+\section{Recomendaciones de diseño de colectores}
+\paragraph{Pendientes longitudinales muy grandes.} Si se tienen pendientes
+$S$ muy grandes, dentro de las soluciones para reducir la velocidad se encuentran:
+\begin{itemize}
+  \item \textbf{Cámaras de observación:} se colocan para escalonar el
+        escurrimiento, de forma tal que las tuberías no registren velocidades
+        mayores a lo permitido ($v_{max}$), con $S_D<S$.
+  \item \textbf{Dientes disipadores de energía:} reducen la altura de
+        velocidad; se usan en cajones de hormigón; ¡alto costo!
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[gray!50] (0,3.0) -- (9,1.2) -- (9,1.4) -- (0,3.2) -- cycle;
+  \node[above] at (4.5,2.3) {$S$};
+  \foreach \x/\yt in {2/2.6,5.5/1.9}{
+    \fill[gray!25,draw] (\x,\yt) rectangle (\x+0.6,\yt-2.0);}
+  \draw[thick] (0,1.6) -- (2,1.25) (0,1.8) -- (2,1.45);
+  \draw[thick] (2.6,0.8) -- (5.5,0.35) (2.6,1.0) -- (5.5,0.55);
+  \draw[thick] (6.1,-0.1) -- (9,-0.5) (6.1,0.1) -- (9,-0.3);
+  \node at (1,1.2) {$S_D$}; \node at (4,0.3) {$S_D$}; \node at (7.5,-0.6) {$S_D$};
+  \node[azulusm,align=center] at (8,2.4) {Cámaras de\\observación};
+  \draw[->,azulusm] (7.2,2.3) -- (6.1,1.4);
+  \node at (4,-0.8) {$S_D<S$};
+\end{tikzpicture}
+\caption{Cámaras de observación para escalonar un colector en una calle de gran pendiente.}
+\end{figure}
+
+\paragraph{Trampas de arena.} Se deben colocar si existen:
+\begin{itemize}
+  \item Cambios de dirección.
+  \item Cambios de pendiente.
+  \item Tramos largos sin ninguna perturbación en el flujo (cámaras cada
+        $50\sim130$ [m]).
+\end{itemize}
+La trampa de arena es la zona de la cámara ubicada bajo la profundidad de la
+tubería; retiene los sedimentos que trae el flujo y se debe limpiar cada
+cierto tiempo.
+
+\paragraph{Profundidad de instalación.} Colector de aguas lluvias a 1.8 [m]
+bajo la superficie; red de agua potable a $1\sim1.5$ [m].
+
+\paragraph{Diámetros mínimos.} Para posibilitar la limpieza y correcto
+funcionamiento. Desde el punto de vista administrativo, existen dos tipos de
+colectores:
+\begin{itemize}
+  \item Primarios ($D>0.8$ [m]): dependen de la Dirección de Obras Hidráulicas (DOH).
+  \item Secundarios ($D\leq0.8$ [m]): dependen del SERVIU.
+\end{itemize}
+
+\section{Obtención de caudales de diseño}
+Se tiene una serie de cuencas conectadas a través de una red de colectores.
+Como las cuencas son de tamaño pequeño, se asumen condiciones meteorológicas
+homogéneas, es decir, la precipitación es la misma en todas las cuencas.
+Generalmente se utiliza la fórmula racional para el cálculo de $Q$.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \foreach \x/\y/\n in {0/2.2/1,3.5/1.8/2,7/1.5/3}{
+    \fill[green!55!black!60,draw=green!30!black] (\x,\y) .. controls (\x-0.9,\y+0.6) and (\x-0.7,\y+1.8) .. (\x+0.1,\y+1.9)
+      .. controls (\x+0.9,\y+2.0) and (\x+1.1,\y+0.9) .. (\x,\y);
+    \node at (\x+1.0,\y+1.7) {$A_\n$};
+    \fill[white,draw] (\x,\y) circle (0.07);}
+  \draw[flecha,azulusm,thick] (0,2.2) -- (3.5,1.8) node[midway,above]{$Q_{D1},L_1$} node[midway,below=4pt,draw,circle,inner sep=1pt]{1};
+  \draw[flecha,azulusm,thick] (3.5,1.8) -- (7,1.5) node[midway,above]{$Q_{D2},L_2$} node[midway,below=4pt,draw,circle,inner sep=1pt]{2};
+  \draw[flecha,azulusm,thick] (7,1.5) -- (9.5,1.2) node[midway,above]{$Q_{D3},L_3$} node[midway,below=4pt,draw,circle,inner sep=1pt]{3} node[right]{Río};
+\end{tikzpicture}
+\caption{Serie de cuencas conectadas por colectores.}
+\end{figure}
+
+\paragraph{Colector 1:} sólo aporta caudal la cuenca 1:
+\[
+Q_1=\frac{C_1\cdot\bar\imath(t_c)\cdot A_1}{3.6}\quad\Longrightarrow\quad Q_{D1}=Q_1
+\]
+
+\paragraph{Colector 2:} las cuencas 1 y 2 aportan caudal al colector 2. El
+caudal de diseño corresponde a:
+\begin{formula}
+$Q_{D2}=\max(Q_{D1},Q_2,Q_{2I})$
+\end{formula}
+donde $Q_{D1}$: caudal de diseño del colector 1; $Q_2$: caudal máximo
+aportado por la cuenca 2; $Q_{2I}$: caudal máximo aportado por las cuencas 1 y 2:
+\[
+Q_{2I}=\frac{\bar C_{1,2}\cdot\bar\imath(t_{c2I})\cdot(A_1+A_2)}{3.6},\qquad
+\bar C_{1,2}=\frac{C_1+C_2}{2},\qquad
+t_{c2I}=\max(t_{c1}+t_{t1},\,t_{c2}),\qquad t_{t1}=\frac{L_1}{v_1}
+\]
+
+\paragraph{Colector 3:} el procedimiento es similar al caso del colector 2:
+\begin{formula}
+$Q_{D3}=\max(Q_{D2},Q_3,Q_{3I})$
+\end{formula}
+\[
+Q_{3I}=\frac{\bar C_{1,2,3}\cdot\bar\imath(t_{c3I})\cdot(A_1+A_2+A_3)}{3.6},\qquad
+\bar C_{1,2,3}=\frac{C_1+C_2+C_3}{3},
+\]
+\[
+t_{c3I}=\max(t_{c2I}+t_{t2},\,t_{c3}),\qquad t_{t2}=\frac{L_2}{v_2}
+\]
+
+\paragraph{Hidrograma unitario triangular del SCS.} Si se dispone de la
+distribución temporal de la precipitación (hietograma), una alternativa es
+utilizar el hidrograma de crecidas del SCS:
+\begin{formula}
+$\displaystyle t_p=\frac{t_{LL}}{2}+0.6\cdot t_c\ \ [\text{h}],\qquad t_r=1.67\cdot t_p\ \ [\text{h}],\qquad t_B=2.67\cdot t_p\ \ [\text{h}]$
+\end{formula}
+Igualando el volumen de escorrentía directa con el área del hidrograma:
+\[
+V_{ed}=P_{ef}\cdot A=\frac12Q_p\cdot t_B
+\quad\Longrightarrow\quad
+\boxed{Q_p=\frac{2\cdot P_{ef}\cdot A}{2.67\left(\frac{t_{LL}}{2}+0.6\cdot t_c\right)}}
+\]
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \draw[flecha] (0,0) -- (7,0) node[right]{$t$};
+  \draw[flecha] (0,0) -- (0,3) node[left]{$Q$};
+  \fill[azulusm] (0,3.4) rectangle (0.6,3.2); \node[right] at (0.6,3.3) {$P_{ef}$ (duración $t_{LL}$)};
+  \draw[azulusm,thick] (0,0) -- (2.2,2.4) -- (6,0);
+  \draw[dashed] (0,2.4) node[left]{$Q_p$} -- (2.2,2.4) -- (2.2,0);
+  \draw[cota] (0,-0.3) -- (2.2,-0.3) node[midway,below]{$t_p$};
+  \draw[cota] (2.2,-0.3) -- (6,-0.3) node[midway,below]{$t_r$};
+  \draw[cota] (0,-0.9) -- (6,-0.9) node[midway,below]{$t_B$};
+\end{tikzpicture}
+\caption{Hidrograma unitario triangular del SCS.}
+\end{figure}

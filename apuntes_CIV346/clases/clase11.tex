@@ -1,0 +1,201 @@
+% =====================================================================
+%  CLASE 11 -- Drenaje transversal: puentes
+% =====================================================================
+\clase{11}{Drenaje transversal de caminos y carreteras: puentes}
+
+\section{Diseño hidráulico de puentes}
+Cuando el caudal a atravesar es muy grande, la única alternativa es la
+construcción de un puente.
+\begin{itemize}
+  \item \textbf{Opción 1: terraplén y estribos} (más económico). \emph{Método
+        fusible}: el objetivo es que el río, en una crecida, se lleve el
+        terraplén y no la estructura.
+  \item \textbf{Opción 2: puente que cubre todo el cauce, con cepas} (¡alto costo!).
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.48\textwidth}\centering
+\begin{tikzpicture}[font=\small,scale=0.8]
+  \fill[suelo!80] (0,3) .. controls (0.8,3) and (0.8,1.5) .. (2,1.3) -- (2.4,0.6) -- (4.4,0.6) -- (4.8,1.3) .. controls (6,1.5) and (6.2,3) .. (7,3) -- (7,0) -- (0,0) -- cycle;
+  \fill[sueloclaro] (2,1.4) -- (2.4,0.6) -- (3.0,0.6) -- (3.0,1.4) -- cycle;
+  \fill[sueloclaro] (3.9,1.4) -- (3.9,0.6) -- (4.4,0.6) -- (4.8,1.4) -- cycle;
+  \fill[aguaclara] (3.0,0.6) rectangle (3.9,0.9);
+  \draw[very thick,gray] (1.2,1.45) -- (5.8,1.45);
+  \draw[thick] (3.0,0.6) -- (3.0,1.45) (3.9,0.6) -- (3.9,1.45);
+  \node[azulusm] at (3.45,2.4) {Terraplén};
+  \draw[->,azulusm] (3.1,2.2) -- (2.6,1.1); \draw[->,azulusm] (3.8,2.2) -- (4.3,1.1);
+\end{tikzpicture}
+\caption{Opción 1: terraplén y estribos.}
+\end{subfigure}\hfill
+\begin{subfigure}{0.48\textwidth}\centering
+\begin{tikzpicture}[font=\small,scale=0.8]
+  \fill[suelo!80] (0,3) .. controls (0.3,1.5) and (1.2,1.5) .. (1.8,0.6) -- (5.2,0.6) .. controls (5.8,1.5) and (6.7,1.5) .. (7,3) -- (7,0) -- (0,0) -- cycle;
+  \fill[aguaclara] (3.1,0.6) rectangle (3.9,0.8);
+  \fill[gray!60] (0,3) rectangle (7,3.2);
+  \foreach \x in {1.2,5.8} \fill[gray!60] (\x-0.1,1.5) rectangle (\x+0.1,3);
+\end{tikzpicture}
+\caption{Opción 2: puente con cepas.}
+\end{subfigure}
+\caption{Alternativas para cruzar un cauce de gran caudal.}
+\end{figure}
+
+\subsection{Recomendaciones de diseño}
+\begin{itemize}
+  \item No generar resaltos.
+  \item Evitar que el peraltamiento del escurrimiento aguas arriba produzca
+        inundaciones que antes no ocurrían.
+  \item Que no se generen velocidades excesivas que puedan provocar problemas
+        de socavación.
+\end{itemize}
+(Ejemplo reciente: desborde del Canal San Carlos, 16 de junio de 2024.)
+
+\section{Opción 1: terraplén y estribos}
+Considerando escurrimiento de río en el cauce (ancho $b$) que se contrae al
+ancho $L$ del puente. Se definen las secciones (1) aguas abajo, (2) en la
+contracción y (3) aguas arriba.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[top color=aguaclara,bottom color=agua] (0,0) rectangle (8,2.6);
+  \fill[sueloclaro,draw] (3.2,1.9) rectangle (4.4,2.6);
+  \fill[sueloclaro,draw] (3.2,0) rectangle (4.4,0.7);
+  \fill[gray!60] (3.2,1.8) rectangle (4.4,1.9); \fill[gray!60] (3.2,0.7) rectangle (4.4,0.8);
+  \draw[cota] (0.9,0) -- (0.9,2.6) node[midway,left]{$b$};
+  \draw[cota] (3.8,0.8) -- (3.8,1.8) node[midway,left]{$L$};
+  \foreach \x/\n in {2.6/3,4.4/2,5.4/1} {\draw[rojo,dashed,thick] (\x,-0.4) -- (\x,3.0); \node[rojo,below] at (\x,-0.4) {(\n)};}
+  \node[azulusm] at (6.6,3.3) {Terraplén};
+  \draw[->,azulusm] (6.2,3.1) -- (4.3,2.4); \draw[->,azulusm] (6.9,3.1) .. controls (7.8,-0.6) and (5,-0.6) .. (4.3,0.3);
+  \draw[flecha,azulusm] (7.6,1.3) -- (6.9,1.3);
+\end{tikzpicture}
+\caption{Contracción del cauce por terraplenes y estribos (vista en planta;
+el flujo va de (3) hacia (1)).}
+\end{figure}
+
+La momenta (fuerza específica) en cada sección es:
+\begin{formula}
+$\displaystyle M_1=\frac{Q^2}{g(b\cdot h_1)}+\frac{h_1}{2}(b\cdot h_1)\qquad
+M_2=\frac{Q^2}{g(L\cdot h_2)}+\frac{h_2}{2}(b\cdot h_2)$
+\end{formula}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=8cm,height=6cm,xmin=0,xmax=10,ymin=0,ymax=5,axis lines=left,
+  xlabel={$M$},ylabel={$h$},xtick=\empty,ytick=\empty,clip=false,font=\small]
+  \addplot[thick,azulusm,domain=0.35:4.6,samples=60] ({6/x+x^2/2*0.9},{x});
+  \addplot[thick,rojo,domain=0.45:4.6,samples=60] ({9/x+x^2/2*0.9},{x});
+  \addplot[thick,green!60!black,domain=0.5:4.6,samples=60] ({11/x+x^2/2*0.9},{x});
+  \addplot[thick,orange,domain=0.55:4.6,samples=60] ({13/x+x^2/2*0.9},{x});
+  \draw[dashed] (axis cs:0,3.4) node[left]{$h_{n1}$} -- (axis cs:{6/3.4+3.4^2*0.45},3.4) -- (axis cs:{6/3.4+3.4^2*0.45},0) node[below]{$M_1(h_{n1})$};
+\end{axis}
+\end{tikzpicture}
+\caption{Curvas de momenta: sección 1 (azul) y sección 2 con $M_{c2}<M_1$
+(rojo), $M_{c2}=M_1$ (verde) y $M_{c2}>M_1$ (naranja, se produce resalto).}
+\end{figure}
+
+Para la sección (2) se tiene:
+\[
+\frac{\partial M_2}{\partial h_2}=0\quad\Longrightarrow\quad h_{c2,M}=\sqrt[3]{\frac{Q^2}{g\cdot b\cdot L}}
+\]
+Por lo tanto, para definir el largo mínimo del puente ($L$), tal que no se
+produzca resalto, se considera la condición crítica, resultando el siguiente
+sistema de ecuaciones:
+\begin{formula}
+$M_1=M_{2c}\quad(1)\qquad\qquad\displaystyle h_{c2,M}=\sqrt[3]{\frac{Q^2}{g\cdot b\cdot L}}\quad(2)$
+\end{formula}
+donde
+\[
+M_{2c}=\frac{Q^2}{g(L\cdot h_{2c,M})}+\frac{h_{2c,M}}{2}(b\cdot h_{2c,M}),\qquad
+M_1=\frac{Q^2}{g(b\cdot h_1)}+\frac{h_1}{2}(b\cdot h_1)\ \ \text{(conocido)}
+\quad\Longrightarrow\quad\boxed{L\geq L_{min}}
+\]
+
+Con $L$ definido para que no se produzca resalto, se puede realizar un
+balance de energía entre (1) y (2):
+\begin{formula}
+$\displaystyle h_2+\frac{v_2^2}{2g}=h_{n1}+\frac{v_1^2}{2g}+\Lambda_s$
+\end{formula}
+donde las pérdidas singulares a la salida se calculan a través de la
+ecuación de Borda--Carnot:
+\begin{formula}
+$\displaystyle\Lambda_s=\frac{(v_2-v_1)^2}{2g}-\frac{(h_{n1}-h_2)^2}{2h_{n1}}$
+\end{formula}
+Además, $v_1=\dfrac{Q}{h_{n1}b}$ y $v_2=\dfrac{Q}{h_2L}$, de donde se obtiene $h_2$.
+
+Luego, realizando un balance de energía entre (2) y (3):
+\begin{formula}
+$\displaystyle h_3+\frac{v_3^2}{2g}=h_2+\frac{v_2^2}{2g}+\Lambda_e,\qquad
+v_3=\frac{Q}{h_3b},\qquad\Lambda_e=k_e\frac{v_2^2}{2g},\quad k_e=0.1\sim0.3$
+\end{formula}
+de donde se obtiene $h_3$. Se debe verificar que
+\[
+h_3<h_{max}\qquad\qquad v_2<v_{max}
+\]
+Si no se cumple alguna de las condiciones, se debe elegir un $L$ mayor y
+recalcular todo hasta que se cumplan; o bien, a partir de dichas condiciones
+se determinan $L$ y $h_2$ y se verifica que no haya resalto.
+
+\paragraph{Conservación del momentum lineal entre (3) y (2).} También se
+puede aplicar, con:
+\[
+n=\frac{b_3}{b_2},\qquad X_3=\frac{h_3}{h_{c2}},\qquad X_2=\frac{h_2}{h_{c2}},\qquad h_{c2}=\sqrt[3]{\frac{Q^2}{g\,b_2^2}}
+\]
+\begin{formula}
+$\displaystyle\frac{1}{X_2}-\frac{1}{nX_3}=\frac12\left(X_3^2-X_2^2\right)$\qquad
+($X_2$: 1 -- 6;\quad $n$: 1 -- 4.5)
+\end{formula}
+
+\section{Opción 2: cepas --- ecuación de Yarnell}
+\begin{itemize}
+  \item Basada en miles de experimentos realizados entre 1927 y 1936 en
+        cauces obstruidos por el efecto de las cepas de diferentes puentes.
+  \item Método válido si no se producen resaltos a la salida del puente.
+\end{itemize}
+\begin{formula}
+$\displaystyle\frac{h_3-h_1}{h_1}=\frac{\Delta h}{h_1}=K\cdot Fr_1^2\left(K+5Fr_1^2-0.6\right)\left(\sigma+1.5\sigma^4\right)$
+\end{formula}
+donde $n$: número de cepas; $b$: ancho del puente [m]; $\sigma=1-\frac{b_e}{b}$:
+constante de ancho efectivo (fracción obstruida); $b_e=b-n\cdot D$: ancho
+efectivo del puente [m]; $K$: factor de forma de la cepa (sección
+transversal), $K=0.9\sim1.15$; $Fr_1$: número de Froude de la sección 1
+(aguas abajo).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,rotate=-20]
+  \fill[top color=aguaclara,bottom color=agua] (0,0) rectangle (6,3);
+  \fill[gray!40] (2.4,-0.6) rectangle (3.6,3.6);
+  \foreach \y in {0.5,1.3,2.1} \fill[gray!70,rounded corners=3pt,draw] (2.3,\y) rectangle (3.7,\y+0.45);
+  \foreach \y in {0.35,1.1,1.9,2.75} \draw[azulusm,thick] (0.5,\y) .. controls (2,\y) and (4,\y) .. (5.5,\y);
+  \draw[rojo,dashed,thick] (1.8,-0.5) -- (1.8,3.5) node[above]{(3)};
+  \draw[rojo,dashed,thick] (4.2,-0.5) -- (4.2,3.5) node[above]{(1)};
+  \draw[cota] (5.7,0) -- (5.7,3) node[midway,right]{$b$};
+  \draw[cota] (2.1,1.3) -- (2.1,1.75) node[midway,left]{$D$};
+\end{tikzpicture}
+\caption{Cepas en el cauce (vista en planta).}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lc}
+\toprule
+\textbf{Forma de la cepa del puente} & \textbf{Coeficiente de Yarnell, $K$}\\
+\midrule
+Nariz y cola semicircular & 0.90\\
+Cepas de doble cilindro con diafragma de conexión & 0.95\\
+Cepas de doble cilindro sin diafragma & 1.05\\
+Nariz y cola triangular de 90° & 1.05\\
+Nariz y cola cuadrada & 1.25\\
+Estructura tipo \emph{trestle bent} de diez pilotes & 2.50\\
+\bottomrule
+\end{tabular}
+\caption{Coeficiente de pila de Yarnell.}
+\end{table}
+
+\section{Períodos de retorno}
+Se utilizan los mismos períodos de retorno del Manual de Carreteras,
+Volumen 3, presentados en la clase anterior: para puentes y viaductos,
+$T=200$ años (diseño) y 300 años (verificación) en carreteras, y $T=100$ y
+150 años en caminos, con vida útil de 50 años.
