@@ -1221,29 +1221,195 @@ local function push(s) stack[#stack + 1] = s; inval() end
 local function pop() if #stack > 1 then stack[#stack] = nil end; inval() end
 
 local C = {
-  title = {25, 65, 135}, titleTx = {255, 255, 255}, sel = {195, 220, 250},
-  tx = {0, 0, 0}, dim = {105, 105, 105}, err = {200, 0, 0}, foot = {232, 232, 232},
-  M = {205, 30, 30}, V = {20, 140, 45}, N = {40, 70, 205}, D = {150, 50, 170},
-  mem = {60, 60, 60}, light = {200, 200, 200}, load = {215, 110, 0}, sup = {0, 110, 120},
+  title = {14, 38, 72}, title2 = {32, 84, 150}, titleTx = {255, 255, 255},
+  accent = {242, 138, 36}, bg = {243, 246, 250}, card = {255, 255, 255},
+  border = {200, 209, 222}, grid = {228, 234, 243}, sel = {218, 232, 252}, selBar = {32, 104, 214},
+  tx = {22, 28, 38}, dim = {110, 118, 130}, err = {200, 30, 30}, foot = {232, 236, 242},
+  ok = {20, 140, 70}, row = {248, 250, 253},
+  M = {210, 36, 36}, V = {20, 140, 45}, N = {36, 84, 214}, D = {150, 50, 170},
+  mem = {45, 52, 64}, light = {196, 204, 216}, load = {232, 118, 0}, sup = {0, 118, 128},
 }
 local function col(gc, c) gc:setColorRGB(c[1], c[2], c[3]) end
 local function font(gc, sz, st) gc:setFont("sansserif", st or "r", sz) end
 
-local function drawHeader(gc, title, right)
-  col(gc, C.title); gc:fillRect(0, 0, W, 17)
-  col(gc, C.titleTx); font(gc, 10, "b")
-  gc:drawString(title, 4, 1, "top")
-  if right then
-    font(gc, 9)
-    local w = gc:getStringWidth(right)
-    gc:drawString(right, W - w - 4, 2, "top")
+-- degradado vertical por franjas
+local function grad(gc, x, y, w, h, c1, c2)
+  local step = 2
+  for i = 0, h - 1, step do
+    local t = h > 1 and i / (h - 1) or 0
+    gc:setColorRGB(floor(c1[1] + (c2[1] - c1[1]) * t), floor(c1[2] + (c2[2] - c1[2]) * t),
+                   floor(c1[3] + (c2[3] - c1[3]) * t))
+    gc:fillRect(x, y + i, w, min(step, h - i))
   end
 end
 
+-- rectangulo redondeado relleno
+local function fillRound(gc, x, y, w, h, r)
+  r = min(r, floor(h / 2), floor(w / 2))
+  if r < 1 then gc:fillRect(x, y, w, h); return end
+  gc:fillRect(x + r, y, w - 2 * r, h)
+  gc:fillRect(x, y + r, r, h - 2 * r)
+  gc:fillRect(x + w - r, y + r, r, h - 2 * r)
+  local d = 2 * r
+  gc:fillArc(x, y, d, d, 90, 90)
+  gc:fillArc(x + w - d - 1, y, d, d, 0, 90)
+  gc:fillArc(x, y + h - d - 1, d, d, 180, 90)
+  gc:fillArc(x + w - d - 1, y + h - d - 1, d, d, 270, 90)
+end
+
+-- contorno redondeado
+local function strokeRound(gc, x, y, w, h, r)
+  r = min(r, floor(h / 2), floor(w / 2))
+  local d = 2 * r
+  gc:drawLine(x + r, y, x + w - r, y)
+  gc:drawLine(x + r, y + h, x + w - r, y + h)
+  gc:drawLine(x, y + r, x, y + h - r)
+  gc:drawLine(x + w, y + r, x + w, y + h - r)
+  if r >= 1 then
+    gc:drawArc(x, y, d, d, 90, 90)
+    gc:drawArc(x + w - d, y, d, d, 0, 90)
+    gc:drawArc(x, y + h - d, d, d, 180, 90)
+    gc:drawArc(x + w - d, y + h - d, d, d, 270, 90)
+  end
+end
+
+-- fondo tipo plano (cuadricula)
+local function gridBg(gc, x, y, w, h, step)
+  step = step or 12
+  col(gc, C.card); gc:fillRect(x, y, w, h)
+  col(gc, C.grid)
+  for gx = x + step, x + w - 1, step do gc:fillRect(gx, y, 1, h) end
+  for gy = y + step, y + h - 1, step do gc:fillRect(x, gy, w, 1) end
+end
+
+-- logo: pequena armadura
+local function drawLogo(gc, x, y, s, c)
+  col(gc, c)
+  gc:setPen("thin", "smooth")
+  local p = {{0, 1}, {0.5, 0}, {1, 1}}
+  gc:drawLine(x, y + s, x + s, y + s)
+  gc:drawLine(x, y + s, x + s / 2, y)
+  gc:drawLine(x + s / 2, y, x + s, y + s)
+  gc:drawLine(x + s / 4, y + s / 2, x + s / 2, y + s)
+  gc:drawLine(x + s / 2, y + s, x + 3 * s / 4, y + s / 2)
+  gc:drawLine(x + s / 4, y + s / 2, x + 3 * s / 4, y + s / 2)
+end
+
+local function drawHeader(gc, title, right)
+  grad(gc, 0, 0, W, 17, C.title2, C.title)
+  col(gc, C.accent); gc:fillRect(0, 17, W, 1)
+  drawLogo(gc, 4, 3, 11, C.accent)
+  col(gc, C.titleTx); font(gc, 10, "b")
+  gc:drawString(title, 20, 1, "top")
+  if right then
+    font(gc, 9)
+    local w = gc:getStringWidth(right)
+    col(gc, {190, 208, 235})
+    gc:drawString(right, W - w - 5, 2, "top")
+  end
+end
+
+-- pie con "chips" de teclas: "enter:abrir|esc:volver"
 local function drawFooter(gc, text, err)
-  col(gc, C.foot); gc:fillRect(0, H - 14, W, 14)
-  col(gc, err and C.err or C.dim); font(gc, 7)
-  gc:drawString(text or "", 3, H - 13, "top")
+  grad(gc, 0, H - 14, W, 14, {240, 243, 248}, {222, 228, 237})
+  col(gc, C.border); gc:fillRect(0, H - 14, W, 1)
+  text = text or ""
+  font(gc, 7)
+  if err or not text:find(":") then
+    col(gc, err and C.err or C.dim)
+    gc:drawString(text, 4, H - 13, "top")
+    return
+  end
+  local x = 3
+  for chunk in text:gmatch("[^|]+") do
+    local k, d = chunk:match("^([^:]*):(.*)$")
+    if not k then k, d = "", chunk end
+    local kw = gc:getStringWidth(k) + 6
+    local dw = gc:getStringWidth(d)
+    if x + kw + dw + 4 > W then break end
+    if k ~= "" then
+      col(gc, C.title2); fillRound(gc, x, H - 12, kw, 11, 3)
+      col(gc, C.titleTx); gc:drawString(k, x + 3, H - 13, "top")
+      x = x + kw + 2
+    end
+    col(gc, C.tx); gc:drawString(d, x, H - 13, "top")
+    x = x + dw + 7
+  end
+end
+
+-- iconos de 12x12 para los menus
+local function drawIcon(gc, name, x, y, c)
+  col(gc, c)
+  gc:setPen("thin", "smooth")
+  if name == "node" then
+    gc:fillArc(x + 3, y + 3, 7, 7, 0, 360)
+    gc:drawLine(x, y + 6, x + 12, y + 6); gc:drawLine(x + 6, y, x + 6, y + 12)
+  elseif name == "section" then
+    gc:fillRect(x + 1, y + 1, 11, 3); gc:fillRect(x + 5, y + 3, 3, 7); gc:fillRect(x + 1, y + 9, 11, 3)
+  elseif name == "bar" then
+    gc:setPen("medium", "smooth"); gc:drawLine(x + 2, y + 10, x + 10, y + 2); gc:setPen("thin", "smooth")
+    gc:fillArc(x, y + 8, 4, 4, 0, 360); gc:fillArc(x + 8, y, 4, 4, 0, 360)
+  elseif name == "support" then
+    gc:fillPolygon({x + 6, y + 1, x + 1, y + 9, x + 11, y + 9, x + 6, y + 1})
+    gc:drawLine(x, y + 11, x + 12, y + 11)
+  elseif name == "nload" then
+    gc:drawLine(x + 6, y, x + 6, y + 9)
+    gc:fillPolygon({x + 2, y + 6, x + 10, y + 6, x + 6, y + 11, x + 2, y + 6})
+  elseif name == "mload" then
+    gc:drawLine(x, y + 1, x + 12, y + 1)
+    for i = 0, 2 do
+      local ax = x + 1 + i * 5
+      gc:drawLine(ax, y + 1, ax, y + 8)
+      gc:fillPolygon({ax - 2, y + 7, ax + 2, y + 7, ax, y + 10, ax - 2, y + 7})
+    end
+    gc:drawLine(x, y + 11, x + 12, y + 11)
+  elseif name == "var" then
+    font(gc, 9, "bi"); gc:drawString("x", x + 2, y - 3, "top")
+  elseif name == "eye" then
+    gc:drawArc(x, y + 2, 12, 8, 0, 360); gc:fillArc(x + 4, y + 4, 4, 4, 0, 360)
+  elseif name == "play" then
+    gc:fillPolygon({x + 2, y, x + 12, y + 6, x + 2, y + 12, x + 2, y})
+  elseif name == "frame" then
+    gc:setPen("medium", "smooth")
+    gc:drawLine(x + 1, y + 12, x + 1, y + 3); gc:drawLine(x + 1, y + 3, x + 11, y + 3)
+    gc:drawLine(x + 11, y + 3, x + 11, y + 12)
+    gc:setPen("thin", "smooth")
+  elseif name == "truss" then
+    drawLogo(gc, x, y, 11, c)
+  elseif name == "go" then
+    gc:fillRect(x, y + 5, 7, 3)
+    gc:fillPolygon({x + 6, y + 1, x + 12, y + 6, x + 6, y + 11, x + 6, y + 1})
+  elseif name == "book" then
+    gc:drawRect(x + 1, y + 1, 10, 10); gc:fillRect(x + 1, y + 1, 3, 11)
+    gc:drawLine(x + 6, y + 4, x + 9, y + 4); gc:drawLine(x + 6, y + 7, x + 9, y + 7)
+  elseif name == "help" then
+    gc:drawArc(x, y, 12, 12, 0, 360); font(gc, 7, "b"); gc:drawString("?", x + 4, y - 1, "top")
+  elseif name == "info" then
+    gc:drawArc(x, y, 12, 12, 0, 360); font(gc, 7, "b"); gc:drawString("i", x + 5, y - 1, "top")
+  elseif name == "diagram" then
+    gc:drawLine(x, y + 3, x + 12, y + 3)
+    gc:drawPolyLine({x, y + 3, x + 3, y + 9, x + 6, y + 11, x + 9, y + 9, x + 12, y + 3})
+  elseif name == "reaction" then
+    gc:drawLine(x + 6, y + 2, x + 6, y + 11)
+    gc:fillPolygon({x + 2, y + 5, x + 10, y + 5, x + 6, y, x + 2, y + 5})
+    gc:drawLine(x, y + 11, x + 12, y + 11)
+  elseif name == "disp" then
+    gc:drawPolyLine({x, y + 10, x + 4, y + 4, x + 8, y + 8, x + 12, y + 1})
+  elseif name == "forces" then
+    gc:drawLine(x, y + 6, x + 12, y + 6)
+    gc:fillPolygon({x, y + 6, x + 4, y + 2, x + 4, y + 10, x, y + 6})
+    gc:fillPolygon({x + 12, y + 6, x + 8, y + 2, x + 8, y + 10, x + 12, y + 6})
+  elseif name == "table" then
+    gc:drawRect(x, y + 1, 12, 10); gc:drawLine(x, y + 4, x + 12, y + 4)
+    gc:drawLine(x + 4, y + 1, x + 4, y + 11); gc:drawLine(x + 8, y + 1, x + 8, y + 11)
+  elseif name == "check" then
+    gc:setPen("medium", "smooth")
+    gc:drawLine(x + 1, y + 6, x + 5, y + 10); gc:drawLine(x + 5, y + 10, x + 11, y + 2)
+    gc:setPen("thin", "smooth")
+  elseif name == "warn" then
+    gc:fillPolygon({x + 6, y, x + 12, y + 11, x, y + 11, x + 6, y})
+    col(gc, C.card); gc:fillRect(x + 5, y + 4, 2, 4); gc:fillRect(x + 5, y + 9, 2, 1)
+  end
 end
 
 local function fitText(gc, s, wmax)
@@ -1264,7 +1430,7 @@ local function msgBox(title, lines) end  -- se define mas abajo
 local Menu = {}; Menu.__index = Menu
 function Menu.new(title, items, footer)
   return setmetatable({title = title, items = items, sel = 1, off = 0,
-                       footer = footer or "Flechas + enter, numero, esc = volver"}, Menu)
+                       footer = footer or "enter:abrir|1-9:elegir|esc:volver"}, Menu)
 end
 function Menu:getItems() return type(self.items) == "function" and self.items() or self.items end
 function Menu:paint(gc)
@@ -1272,23 +1438,41 @@ function Menu:paint(gc)
   drawHeader(gc, type(self.title) == "function" and self.title() or self.title)
   if self.split then drawPreviewPane(gc, self, H - 15) end
   local W = self.split and SPLIT or W
-  local rh, y0 = 15, 20
+  col(gc, C.bg); gc:fillRect(0, 18, W, H - 32)
+  local rh, y0 = self.split and 17 or 19, 21
   local vis = floor((H - 16 - y0) / rh)
   if self.sel > #items then self.sel = #items end
   if self.sel < 1 then self.sel = 1 end
   if self.sel > self.off + vis then self.off = self.sel - vis end
   if self.sel <= self.off then self.off = self.sel - 1 end
-  font(gc, self.split and 9 or 10)
   for r = 1, vis do
     local i = self.off + r
     local it = items[i]
     if not it then break end
     local y = y0 + (r - 1) * rh
-    if i == self.sel then col(gc, C.sel); gc:fillRect(2, y - 1, W - 4, rh) end
+    local selected = (i == self.sel)
+    if selected then
+      col(gc, C.sel); fillRound(gc, 3, y - 1, W - 6, rh - 2, 4)
+      col(gc, C.selBar); fillRound(gc, 3, y - 1, 3, rh - 2, 1)
+    end
+    -- numero en circulo
+    local num = i <= 9 and tostring(i) or (i == 10 and "0" or "")
+    local cx = 9
+    if num ~= "" then
+      col(gc, selected and C.selBar or C.light)
+      gc:fillArc(cx, y + (rh - 15) / 2, 12, 12, 0, 360)
+      col(gc, C.titleTx); font(gc, 7, "b")
+      gc:drawString(num, cx + 6 - gc:getStringWidth(num) / 2, y + (rh - 15) / 2 - 1, "top")
+    end
+    local tx = cx + 16
+    if it.icon then
+      drawIcon(gc, it.icon, tx, y + (rh - 15) / 2, selected and C.selBar or C.title2)
+      tx = tx + 17
+    end
     col(gc, it.dim and C.dim or C.tx)
+    font(gc, self.split and 9 or 10, selected and "b" or "r")
     local lab = type(it.label) == "function" and it.label() or it.label
-    local pre = i <= 9 and (i .. ". ") or (i == 10 and "0. " or "   ")
-    gc:drawString(fitText(gc, pre .. lab, W - 12), 6, y, "top")
+    gc:drawString(fitText(gc, lab, W - tx - 6), tx, y + (rh - 17) / 2, "top")
   end
   drawFooter(gc, self.footer)
 end
@@ -1312,7 +1496,8 @@ function Menu:char(ch)
 end
 function Menu:esc() pop() end
 function Menu:click(x, y)
-  local i = self.off + floor((y - 20) / 15) + 1
+  if self.split and x > SPLIT then return end
+  local i = self.off + floor((y - 21) / (self.split and 17 or 19)) + 1
   if i >= 1 and i <= #self:getItems() then
     if i == self.sel then self:enter() else self.sel = i end
   end
@@ -1329,27 +1514,34 @@ function List:paint(gc)
   drawHeader(gc, self.title, #items .. " elem.")
   drawPreviewPane(gc, self, H - 15)
   local W = SPLIT
-  local rh, y0 = 14, 20
+  col(gc, C.bg); gc:fillRect(0, 18, W, H - 32)
+  local rh, y0 = 15, 21
   local n = #items + 1
   local vis = floor((H - 16 - y0) / rh)
   if self.sel > n then self.sel = n end
   if self.sel > self.off + vis then self.off = self.sel - vis end
   if self.sel <= self.off then self.off = self.sel - 1 end
-  font(gc, 9)
   for r = 1, vis do
     local i = self.off + r
     if i > n then break end
     local y = y0 + (r - 1) * rh
-    if i == self.sel then col(gc, C.sel); gc:fillRect(2, y - 1, W - 4, rh) end
+    if i == self.sel then
+      col(gc, C.sel); fillRound(gc, 2, y - 1, W - 4, rh - 1, 4)
+      col(gc, C.selBar); fillRound(gc, 2, y - 1, 3, rh - 1, 1)
+    elseif i <= #items and i % 2 == 0 then
+      col(gc, C.row); gc:fillRect(2, y - 1, W - 4, rh - 1)
+    end
     if i <= #items then
-      col(gc, C.tx)
-      gc:drawString(fitText(gc, items[i], W - 10), 5, y, "top")
+      col(gc, C.tx); font(gc, 9, i == self.sel and "b" or "r")
+      gc:drawString(fitText(gc, items[i], W - 12), 8, y, "top")
     else
-      col(gc, C.title)
-      gc:drawString("[+] Agregar nuevo...", 5, y, "top")
+      col(gc, C.accent); gc:fillArc(7, y + 1, 11, 11, 0, 360)
+      col(gc, C.titleTx); gc:fillRect(10, y + 6, 5, 1); gc:fillRect(12, y + 4, 1, 5)
+      col(gc, C.title2); font(gc, 9, "b")
+      gc:drawString("Agregar nuevo", 22, y, "top")
     end
   end
-  drawFooter(gc, self.msg or "enter editar  + nuevo  del borrar  p vista  esc volver", self.msg ~= nil)
+  drawFooter(gc, self.msg or "enter:editar|+:nuevo|del:borrar|p:vista|esc:volver", self.msg ~= nil)
   self.msg = nil
 end
 function List:arrow(k)
@@ -1372,7 +1564,8 @@ function List:back()
 end
 function List:esc() pop() end
 function List:click(x, y)
-  local i = self.off + floor((y - 20) / 14) + 1
+  if x > SPLIT then return end
+  local i = self.off + floor((y - 21) / 15) + 1
   if i >= 1 and i <= #self.items() + 1 then
     if i == self.sel then self:enter() else self.sel = i end
   end
@@ -1418,53 +1611,75 @@ function Form:paint(gc)
   local split = self.split
   if split then drawPreviewPane(gc, self, H - 30) end
   local W = split and SPLIT or W
-  local rh, y0 = split and 26 or 16, 20
+  col(gc, C.bg); gc:fillRect(0, 18, W, H - 47)
+  local rh, y0 = split and 26 or 17, 21
   self.rh = rh
   local nv = floor((H - 30 - y0) / rh)
   if self.sel > self.off + nv then self.off = self.sel - nv end
   if self.sel <= self.off then self.off = self.sel - 1 end
-  local lx, vx, vy, bh = 5, 124, 0, 14
-  if split then vx, vy = 4, 11 end
+  local lx, vx, vy, bh = 6, 124, 0, 14
+  if split then vx, vy = 5, 11 end
   for r = 1, nv do
     local i = self.off + r
     if i > n then break end
     local y = y0 + (r - 1) * rh
-    if i == self.sel then col(gc, C.sel); gc:fillRect(2, y - 1, W - 4, rh) end
+    local selected = (i == self.sel)
+    if selected and i <= #vis then
+      col(gc, C.sel); fillRound(gc, 2, y - 2, W - 4, rh, 4)
+      col(gc, C.selBar); fillRound(gc, 2, y - 2, 3, rh, 1)
+    end
     if i <= #vis then
       local fd = vis[i]
       local lab = type(fd.label) == "function" and fd.label(self.vals) or fd.label
-      font(gc, split and 7 or 9); col(gc, C.tx)
-      gc:drawString(fitText(gc, lab, split and (W - 8) or (vx - lx - 4)), lx, y + (split and -1 or 1), "top")
+      font(gc, split and 7 or 9, selected and "b" or "r"); col(gc, selected and C.selBar or C.dim)
+      if not split then col(gc, C.tx) end
+      gc:drawString(fitText(gc, lab, split and (W - 10) or (vx - lx - 4)), lx + (split and 2 or 0),
+                    y + (split and -2 or 0), "top")
       local v = self.vals[fd.k]
       y = y + vy
+      local bw = W - vx - 6
       if fd.t == "txt" then
-        col(gc, {255, 255, 255}); gc:fillRect(vx, y, W - vx - 5, bh)
-        col(gc, C.dim); gc:drawRect(vx, y, W - vx - 5, bh)
+        col(gc, C.card); fillRound(gc, vx, y, bw, bh, 3)
+        if selected then
+          col(gc, C.selBar); strokeRound(gc, vx, y, bw, bh, 3)
+          strokeRound(gc, vx + 1, y + 1, bw - 2, bh - 2, 2)
+        else
+          col(gc, C.border); strokeRound(gc, vx, y, bw, bh, 3)
+        end
         col(gc, C.tx); font(gc, 10)
         local chars = utf8chars(v)
-        local wmax = W - vx - 12
+        local wmax = bw - 8
         local first = 1
-        local cur = (i == self.sel) and self.cur or #chars
+        local cur = selected and self.cur or #chars
         local function seg(a, b) return table.concat(chars, "", a, b) end
         while first < cur and gc:getStringWidth(seg(first, cur)) > wmax do first = first + 1 end
         local shown = seg(first, #chars)
-        gc:drawString(fitText(gc, shown, wmax + 6), vx + 3, y, "top")
-        if i == self.sel then
-          local cx = vx + 3 + gc:getStringWidth(seg(first, cur))
-          col(gc, C.err); gc:fillRect(cx, y + 2, 1, bh - 4)
+        gc:drawString(fitText(gc, shown, wmax + 4), vx + 4, y - 1, "top")
+        if selected then
+          local cx = vx + 4 + gc:getStringWidth(seg(first, cur))
+          col(gc, C.accent); gc:fillRect(cx, y + 2, 2, bh - 4)
         end
       elseif fd.t == "opt" then
-        col(gc, C.title); font(gc, 9, "b")
-        gc:drawString(fitText(gc, "< " .. (fd.opts[v] or "?") .. " >", W - vx - 4), vx, y + 1, "top")
+        col(gc, selected and C.selBar or C.title2); fillRound(gc, vx, y, bw, bh, 7)
+        col(gc, C.titleTx); font(gc, 9, "b")
+        local txt = fitText(gc, fd.opts[v] or "?", bw - 26)
+        gc:drawString(txt, vx + bw / 2 - gc:getStringWidth(txt) / 2, y, "top")
+        gc:fillPolygon({vx + 5, y + 7, vx + 10, y + 3, vx + 10, y + 11, vx + 5, y + 7})
+        gc:fillPolygon({vx + bw - 5, y + 7, vx + bw - 10, y + 3, vx + bw - 10, y + 11, vx + bw - 5, y + 7})
       elseif fd.t == "chk" then
-        col(gc, C.dim); gc:drawRect(vx, y + 2, 10, 10)
-        if v then col(gc, C.title); gc:fillRect(vx + 2, y + 4, 7, 7) end
-        col(gc, C.tx); font(gc, 9)
-        gc:drawString(v and "Si" or "No", vx + 16, y + 1, "top")
+        -- interruptor
+        col(gc, v and C.ok or C.light); fillRound(gc, vx, y + 1, 24, 12, 6)
+        col(gc, C.card); gc:fillArc(v and (vx + 13) or (vx + 1), y + 2, 10, 10, 0, 360)
+        col(gc, C.tx); font(gc, 9, "b")
+        gc:drawString(v and "Si" or "No", vx + 30, y, "top")
       end
     else
-      col(gc, C.title); font(gc, 10, "b")
-      gc:drawString("[ ACEPTAR ]", W / 2 - 35, y + (split and 4 or 0), "top")
+      local bw = split and (W - 20) or 110
+      local bx = (W - bw) / 2
+      local by = y + (split and 4 or 1)
+      col(gc, selected and C.accent or C.title2); fillRound(gc, bx, by, bw, 16, 8)
+      col(gc, C.titleTx); font(gc, 10, "b")
+      gc:drawString("ACEPTAR", bx + bw / 2 - gc:getStringWidth("ACEPTAR") / 2, by, "top")
     end
   end
   -- ayuda
@@ -1474,10 +1689,11 @@ function Form:paint(gc)
     if fd.t == "opt" then help = (fd.help and fd.help .. "  " or "") .. "<- -> cambia"
     elseif fd.t == "chk" then help = "<- -> o espacio cambia" end
   end
-  col(gc, {245, 245, 225}); gc:fillRect(0, H - 29, realW, 15)
-  col(gc, self.err and C.err or C.tx); font(gc, 7)
-  gc:drawString(fitText(gc, help, realW - 6), 3, H - 27, "top")
-  drawFooter(gc, "teclear reemplaza, <- -> edita  enter sig.  esc cancela")
+  col(gc, self.err and {253, 232, 232} or {252, 246, 226}); gc:fillRect(0, H - 29, realW, 15)
+  col(gc, self.err and C.err or C.accent); gc:fillRect(0, H - 29, 3, 15)
+  col(gc, self.err and C.err or C.tx); font(gc, 7, self.err and "b" or "r")
+  gc:drawString(fitText(gc, help, realW - 10), 7, H - 27, "top")
+  drawFooter(gc, "enter:siguiente|<- ->:editar|esc:cancelar")
 end
 function Form:move(d)
   local n = #self:visible() + 1
@@ -1572,12 +1788,12 @@ function TextView:paint(gc)
       local s, style = ln, nil
       if type(ln) == "table" then s, style = ln[1], ln[2] end
       local ind = ""
-      if gc:getStringWidth(s) <= W - 10 then
+      if gc:getStringWidth(s) <= W - 24 then
         self.lines[#self.lines + 1] = {s, style}
       else
         local cur = ""
         for word in s:gmatch("%S+%s*") do
-          if gc:getStringWidth(cur .. word) > W - 10 and cur ~= "" then
+          if gc:getStringWidth(cur .. word) > W - 24 and cur ~= "" then
             self.lines[#self.lines + 1] = {cur, style}
             cur = "   " .. word
           else
@@ -1589,27 +1805,32 @@ function TextView:paint(gc)
     end
   end
   drawHeader(gc, self.title)
-  local rh, y0 = 13, 19
-  self.vis = floor((H - 15 - y0) / rh)
+  col(gc, C.bg); gc:fillRect(0, 18, W, H - 32)
+  col(gc, C.card); fillRound(gc, 3, 20, W - 6, H - 37, 5)
+  col(gc, C.border); strokeRound(gc, 3, 20, W - 7, H - 38, 5)
+  local rh, y0 = 13, 22
+  self.vis = floor((H - 19 - y0) / rh)
   local maxoff = max(0, #self.lines - self.vis)
   if self.off > maxoff then self.off = maxoff end
   for r = 1, self.vis do
     local ln = self.lines[self.off + r]
     if not ln then break end
     local st = ln[2]
-    if st == "h" then col(gc, C.title); font(gc, 9, "b")
+    if st == "h" then
+      col(gc, C.accent); gc:fillRect(6, y0 + (r - 1) * rh + 2, 2, 9)
+      col(gc, C.title2); font(gc, 9, "b")
     elseif st == "e" then col(gc, C.err); font(gc, 9, "b")
     elseif st == "d" then col(gc, C.dim); font(gc, 9)
     else col(gc, C.tx); font(gc, 9) end
-    gc:drawString(ln[1], 4, y0 + (r - 1) * rh, "top")
+    gc:drawString(ln[1], st == "h" and 11 or 8, y0 + (r - 1) * rh, "top")
   end
   if #self.lines > self.vis then
-    local bh = H - 15 - y0
+    local bh = H - 19 - y0
     local th = max(10, bh * self.vis / #self.lines)
     local ty = y0 + (bh - th) * (maxoff > 0 and self.off / maxoff or 0)
-    col(gc, C.light); gc:fillRect(W - 4, ty, 3, th)
+    col(gc, C.light); fillRound(gc, W - 9, ty, 3, th, 1)
   end
-  drawFooter(gc, self.footer or "flechas desplazan   esc volver")
+  drawFooter(gc, self.footer or "^v:desplazar|<- ->:pagina|esc:volver")
 end
 function TextView:arrow(k)
   local vis = self.vis or 10
@@ -1623,7 +1844,7 @@ function TextView:enter() pop() end
 
 msgBox = function(title, lines)
   if type(lines) == "string" then lines = {lines} end
-  push(TextView.new(title, lines, "enter/esc para cerrar"))
+  push(TextView.new(title, lines, "enter:cerrar|esc:cerrar|^v:desplazar"))
 end
 
 ------------------------- Dibujo de la estructura ----------------------------
@@ -1844,11 +2065,12 @@ end
 function StructView:paint(gc)
   local G = self.G
   drawHeader(gc, "Estructura", #G.nodes .. " nudos, " .. #G.mems .. " barras")
+  gridBg(gc, 0, 18, W, H - 32, 14)
   if #G.nodes == 0 then drawFooter(gc, "Sin nudos"); return end
   local tr, sc = makeView(G.nodes, 0, 18, W, H - 32, 32)
   drawFrame(gc, G, tr, self.sup, {labels = self.labels})
   if self.loads then drawLoads(gc, App.model, G, tr) end
-  drawFooter(gc, "tab numeros  c cargas  esc volver")
+  drawFooter(gc, "tab:numeros|c:cargas|esc:volver")
 end
 function StructView:tab() self.labels = not self.labels end
 function StructView:char(ch) if ch == "c" or ch == "C" then self.loads = not self.loads end end
@@ -1884,10 +2106,12 @@ function Diagram:paint(gc)
   local qi = ({N = 2, V = 3, M = 4})[q]
   local mb = res.mems[self.sel]
   drawHeader(gc, "Diagrama " .. QNAME[q], "barra " .. self.sel .. "/" .. #res.mems)
+  gridBg(gc, 0, 18, W, H - 47, 14)
   self:drawBody(gc, 0, 18, W, H - 46, 30)
   -- informacion
-  col(gc, {245, 245, 225}); gc:fillRect(0, H - 29, W, 15)
-  font(gc, 7); col(gc, C.tx)
+  col(gc, {236, 242, 252}); gc:fillRect(0, H - 29, W, 15)
+  col(gc, C[q]); gc:fillRect(0, H - 29, 3, 15)
+  font(gc, 7, "b"); col(gc, C.tx)
   local info
   if q == "D" then
     local D = {0, 0, 0, 0, 0, 0}
@@ -1900,8 +2124,8 @@ function Diagram:paint(gc)
     info = string.format("b%d (%d-%d) L=%s  max=%s @%s  min=%s @%s", self.sel, mb.i, mb.j, fmt(mb.L, 3),
                          fmtShort(e.mx), fmt(e.xmx, 2), fmtShort(e.mn), fmt(e.xmn, 2))
   end
-  gc:drawString(fitText(gc, info, W - 6), 3, H - 27, "top")
-  drawFooter(gc, "<-> barra  m v n d tipo  ^v escala  tab etiq.  enter tabla")
+  gc:drawString(fitText(gc, info, W - 10), 7, H - 27, "top")
+  drawFooter(gc, "<- ->:barra|m v n d:tipo|^v:escala|tab:valores|enter:tabla")
 end
 
 -- dibuja el diagrama dentro del rectangulo (x0, y0, w, h)
@@ -2171,14 +2395,20 @@ drawPreviewPane = function(gc, scr, ybot)
   local x0 = SPLIT + 1
   local w = W - x0
   local y0 = 18
-  col(gc, {250, 250, 253}); gc:fillRect(x0, y0 - 1, w, ybot - y0 + 1)
-  col(gc, C.title); gc:fillRect(SPLIT, y0 - 1, 1, ybot - y0 + 1)
+  gridBg(gc, x0, y0, w, ybot - y0, 12)
+  col(gc, C.border); gc:fillRect(SPLIT, y0, 1, ybot - y0)
+  col(gc, C.selBar); gc:fillRect(SPLIT + 1, y0, 1, ybot - y0)
   if not App.model then return end
   local model = previewModel(scr)
   local st = previewState(model)
   local mode = PV_MODES[PV.mode]
-  font(gc, 7); col(gc, C.title)
-  gc:drawString("p: " .. PV_NAMES[mode], x0 + 3, y0, "top")
+  font(gc, 7, "b")
+  local tag = PV_NAMES[mode]
+  local tw = gc:getStringWidth(tag) + 22
+  col(gc, C.title2); fillRound(gc, x0 + 3, y0 + 2, tw, 11, 5)
+  col(gc, C.accent); gc:fillArc(x0 + 5, y0 + 3, 9, 9, 0, 360)
+  col(gc, C.titleTx); gc:drawString("p", x0 + 7, y0 + 1, "top")
+  gc:drawString(tag, x0 + 17, y0 + 1, "top")
   -- elemento resaltado
   local hlNode, hlMem
   local hl = scr.hl
@@ -2193,7 +2423,7 @@ drawPreviewPane = function(gc, scr, ybot)
       elseif key == "ml" then hlMem = it.mem end
     end
   end
-  local top, bot = y0 + 10, ybot - 12
+  local top, bot = y0 + 14, ybot - 14
   if st.G and #st.G.nodes > 0 then
     local tr
     if mode ~= "E" and st.res then
@@ -2211,8 +2441,8 @@ drawPreviewPane = function(gc, scr, ybot)
           local e = st.dg.data[m].ext[qi]
           mx = max(mx, e.mx); mn = min(mn, e.mn)
         end
-        font(gc, 7); col(gc, C[mode])
-        gc:drawString(fitText(gc, "max " .. fmtShort(mx) .. "  min " .. fmtShort(mn), w - 6), x0 + 3, bot - 11, "top")
+        font(gc, 7, "b"); col(gc, C[mode])
+        gc:drawString(fitText(gc, "max " .. fmtShort(mx) .. "   min " .. fmtShort(mn), w - 6), x0 + 4, bot - 13, "top")
       end
     else
       tr = makeView(st.G.nodes, x0, top, w, bot - top, 20)
@@ -2227,14 +2457,19 @@ drawPreviewPane = function(gc, scr, ybot)
     end
   end
   -- estado
-  font(gc, 7)
+  font(gc, 7, "b")
   if st.err then
-    col(gc, C.err)
-    local ls = wrapLines(gc, st.err, w - 6, 3)
-    for i, l in ipairs(ls) do gc:drawString(l, x0 + 3, bot - 11 * (#ls - i), "top") end
+    local ls = wrapLines(gc, st.err, w - 14, 3)
+    local hh = 11 * #ls + 3
+    col(gc, {253, 232, 232}); fillRound(gc, x0 + 3, ybot - hh - 2, w - 6, hh, 4)
+    col(gc, C.err); gc:fillRect(x0 + 3, ybot - hh - 2, 3, hh)
+    for i, l in ipairs(ls) do gc:drawString(l, x0 + 9, ybot - hh - 2 + 11 * (i - 1), "top") end
   else
-    col(gc, st.good and C.V or C.dim)
-    gc:drawString(fitText(gc, st.msg or "", w - 6), x0 + 3, bot, "top")
+    local msg = fitText(gc, st.msg or "", w - 26)
+    local mw = gc:getStringWidth(msg) + 20
+    col(gc, st.good and {222, 245, 230} or {235, 238, 243}); fillRound(gc, x0 + 3, ybot - 14, mw, 12, 6)
+    col(gc, st.good and C.ok or C.dim); gc:fillArc(x0 + 6, ybot - 12, 8, 8, 0, 360)
+    gc:drawString(msg, x0 + 17, ybot - 15, "top")
   end
 end
 
@@ -2741,25 +2976,25 @@ function App.results()
   local res = App.res
   local truss = res.kind == "truss"
   local items = {
-    {label = truss and "Grafico fuerzas axiales" or "Diagramas M, V, N, deformada",
+    {label = truss and "Grafico fuerzas axiales" or "Diagramas M, V, N, deformada", icon = "diagram",
      action = function() if ensureSolved() then push(Diagram.new()) end end},
-    {label = "Reacciones", action = function() if ensureSolved() then App.showReactions() end end},
-    {label = "Desplazamientos", action = function() if ensureSolved() then App.showDisplacements() end end},
-    {label = truss and "Fuerzas axiales (lista)" or "Esfuerzos en extremos",
+    {label = "Reacciones", icon = "reaction", action = function() if ensureSolved() then App.showReactions() end end},
+    {label = "Desplazamientos", icon = "disp", action = function() if ensureSolved() then App.showDisplacements() end end},
+    {label = truss and "Fuerzas axiales (lista)" or "Esfuerzos en extremos", icon = "forces",
      action = function() if ensureSolved() then App.showEndForces() end end},
-    {label = "Tabla por barra", action = function()
+    {label = "Tabla por barra", icon = "table", action = function()
       if not ensureSolved() then return end
       local its = {}
       for m, mb in ipairs(App.res.mems) do
         its[#its + 1] = {label = "Barra " .. m .. " (" .. mb.i .. "-" .. mb.j .. ")",
-                         action = function() App.memberTable(m) end}
+                         icon = "bar", action = function() App.memberTable(m) end}
       end
       push(Menu.new("Elija barra", its))
     end},
-    {label = "Verificar equilibrio", action = function() if ensureSolved() then App.showEquilibrium() end end},
+    {label = "Verificar equilibrio", icon = "check", action = function() if ensureSolved() then App.showEquilibrium() end end},
   }
   if #res.warn > 0 then
-    items[#items + 1] = {label = "Avisos (" .. #res.warn .. ")", action = function() msgBox("Avisos", res.warn) end}
+    items[#items + 1] = {label = "Avisos (" .. #res.warn .. ")", icon = "warn", action = function() msgBox("Avisos", res.warn) end}
   end
   local lt = res.ns > 0 and (" letras: " .. table.concat(res.syms, ",")) or ""
   push(Menu.new("Resultados" .. lt, items))
@@ -2780,26 +3015,26 @@ end
 function App.modelMenu()
   local fr = function() return M().kind ~= "truss" end
   local items = {
-    {label = function() return "Nudos (" .. #M().nodes .. ")" end,
+    {icon = "node", label = function() return "Nudos (" .. #M().nodes .. ")" end,
      action = function() push(listScreen("Nudos", "nodes", nodeStr, editNode, delNode)) end},
-    {label = function() return "Secciones / material (" .. #M().secs .. ")" end,
+    {icon = "section", label = function() return "Secciones / material (" .. #M().secs .. ")" end,
      action = function() push(listScreen("Secciones", "secs", secStr, editSec, delSec)) end},
-    {label = function() return "Barras (" .. #M().mems .. ")" end,
+    {icon = "bar", label = function() return "Barras (" .. #M().mems .. ")" end,
      action = function() push(listScreen("Barras", "mems", memStr, editMem, delMem)) end},
-    {label = function() return "Apoyos (" .. #M().sups .. ")" end,
+    {icon = "support", label = function() return "Apoyos (" .. #M().sups .. ")" end,
      action = function() push(listScreen("Apoyos", "sups", supStr, editSup)) end},
-    {label = function() return "Cargas en nudos (" .. #M().nl .. ")" end,
+    {icon = "nload", label = function() return "Cargas en nudos (" .. #M().nl .. ")" end,
      action = function() push(listScreen("Cargas en nudos", "nl", nlStr, editNL)) end},
-    {label = function() return "Cargas en barras (" .. #M().ml .. ")" end,
+    {icon = "mload", label = function() return "Cargas en barras (" .. #M().ml .. ")" end,
      action = function() push(listScreen("Cargas en barras", "ml", mlStr, editML)) end},
-    {label = function() return "Variables / letras (" .. #M().vars .. ")" end,
+    {icon = "var", label = function() return "Variables / letras (" .. #M().vars .. ")" end,
      action = function() push(listScreen("Variables", "vars", varStr, editVar, delVar)) end},
-    {label = "Ver estructura", action = function()
+    {label = "Ver estructura", icon = "eye", action = function()
       local s = StructView.new(); if s then push(s) end end},
-    {label = "RESOLVER y ver resultados", action = function() App.results() end},
+    {label = "RESOLVER y ver resultados", icon = "play", action = function() App.results() end},
   }
   local mm = Menu.new(function() return fr() and "Marco / Portico / Viga" or "Enrejado / Armadura" end, items,
-                      "flechas/numero + enter   p cambia vista   esc volver")
+                      "enter:abrir|p:cambia vista|esc:volver")
   mm.split = true
   push(mm)
 end
@@ -2852,7 +3087,7 @@ end
 local function examplesMenu()
   local its = {}
   for i, ex in ipairs(Examples) do
-    its[#its + 1] = {label = ex[1], action = function()
+    its[#its + 1] = {label = ex[1], icon = (i >= 4) and "truss" or "frame", action = function()
       App.model = ex[2](); App.res = nil
       while #stack > 1 do stack[#stack] = nil end
       App.modelMenu()
@@ -2861,20 +3096,116 @@ local function examplesMenu()
   push(Menu.new("Ejemplos", its))
 end
 
-local mainMenu = Menu.new("ESTRUCTURAS 2D  (tipo DOVAS)", {
-  {label = "Nuevo marco / portico / viga", action = function() newModelConfirm("frame") end},
-  {label = "Nuevo enrejado / armadura", action = function() newModelConfirm("truss") end},
-  {label = function()
+------------------------- Portada ---------------------------------------------
+local Splash = {}; Splash.__index = Splash
+function Splash.new()
+  local sp = setmetatable({t = 0}, Splash)
+  local ok, res = pcall(Eng.solve, Examples[3][2]())
+  if ok then
+    sp.dg = Diagram.new("M", res)
+    sp.dg.sel = 0; sp.dg.labels = false; sp.dg.zoom = 0
+  end
+  return sp
+end
+function Splash:tick()
+  self.t = self.t + 1
+  if self.t == 32 and timer then pcall(timer.start, 0.5) end
+end
+function Splash:paint(gc)
+  if not self.started then
+    self.started = true
+    if timer then pcall(timer.start, 0.05) end
+  end
+  local t = self.t
+  grad(gc, 0, 0, W, H, C.title2, C.title)
+  -- cuadricula tenue
+  gc:setColorRGB(38, 76, 128)
+  for x = 8, W, 16 do gc:fillRect(x, 0, 1, H) end
+  for y = 8, H, 16 do gc:fillRect(0, y, W, 1) end
+  -- titulo
+  font(gc, 24, "b")
+  local title = "ESTRUCTURAS 2D"
+  local tw = gc:getStringWidth(title)
+  local tx = (W - tw) / 2 + 12
+  drawLogo(gc, tx - 30, 12, 22, C.accent)
+  col(gc, C.titleTx); font(gc, 24, "b")
+  gc:drawString(title, tx, 4, "top")
+  local lw = floor(min(1, t / 12) * (tw + 30))
+  col(gc, C.accent); gc:fillRect((W - lw) / 2, 38, lw, 2)
+  font(gc, 9); gc:setColorRGB(190, 210, 238)
+  local sub = "Analisis matricial de marcos y enrejados"
+  gc:drawString(sub, (W - gc:getStringWidth(sub)) / 2, 42, "top")
+  -- tarjeta con un portico real resuelto
+  local cx, cy, cw, ch = 60, 60, W - 120, 104
+  gc:setColorRGB(8, 24, 48); fillRound(gc, cx + 2, cy + 3, cw, ch, 8)
+  col(gc, C.card); fillRound(gc, cx, cy, cw, ch, 8)
+  col(gc, C.grid)
+  for x = cx + 12, cx + cw - 6, 12 do gc:fillRect(x, cy + 4, 1, ch - 8) end
+  for y = cy + 12, cy + ch - 6, 12 do gc:fillRect(cx + 4, y, cw - 8, 1) end
+  if self.dg then
+    self.dg.zoom = min(1, max(0, (t - 6) / 16)) * 1.1
+    if self.dg.zoom > 0 then
+      self.dg:drawBody(gc, cx + 4, cy + 12, cw - 8, ch - 16, 14)
+    else
+      local tr = makeView(self.dg.res.nodes, cx + 4, cy + 12, cw - 8, ch - 16, 14)
+      drawFrame(gc, self.dg.G, tr, self.dg.sup, {})
+    end
+  end
+  col(gc, C.M); fillRound(gc, cx + 6, cy + 5, 58, 11, 5)
+  col(gc, C.titleTx); font(gc, 7, "b"); gc:drawString("Momento M", cx + 11, cy + 3, "top")
+  -- rasgos
+  font(gc, 7, "b"); gc:setColorRGB(190, 210, 238)
+  local feats = {"Hiperestaticos", "Enrejados", "Cargas con letras", "N  V  M"}
+  local fx = 8
+  for i, f in ipairs(feats) do
+    local fw = gc:getStringWidth(f) + 10
+    fx = fx + fw + 4
+  end
+  fx = (W - (fx - 8 - 4)) / 2
+  for _, f in ipairs(feats) do
+    local fw = gc:getStringWidth(f) + 10
+    gc:setColorRGB(28, 64, 112); fillRound(gc, fx, 170, fw, 12, 6)
+    gc:setColorRGB(200, 218, 242); gc:drawString(f, fx + 5, 169, "top")
+    fx = fx + fw + 4
+  end
+  -- invitacion
+  if t < 32 or t % 2 == 0 then
+    col(gc, C.accent); font(gc, 10, "b")
+    local m = "Presione ENTER para comenzar"
+    gc:drawString(m, (W - gc:getStringWidth(m)) / 2, 185, "top")
+  end
+  font(gc, 7); gc:setColorRGB(130, 158, 196)
+  local v = "TI-Nspire CX II  -  Metodo de rigidez  -  v2.0"
+  gc:drawString(v, (W - gc:getStringWidth(v)) / 2, 200, "top")
+end
+function Splash:leave()
+  if timer then pcall(timer.stop) end
+  pop()
+end
+Splash.enter = Splash.leave
+Splash.esc = Splash.leave
+Splash.tab = Splash.leave
+Splash.click = Splash.leave
+Splash.arrow = Splash.leave
+Splash.char = Splash.leave
+Splash.back = Splash.leave
+
+local mainMenu = Menu.new("ESTRUCTURAS 2D", {
+  {label = "Nuevo marco / portico / viga", icon = "frame", action = function() newModelConfirm("frame") end},
+  {label = "Nuevo enrejado / armadura", icon = "truss", action = function() newModelConfirm("truss") end},
+  {icon = "go", label = function()
      if not App.model then return "Continuar (sin modelo)" end
      return "Continuar modelo actual (" .. (App.model.kind == "truss" and "enrejado" or "marco") .. ")"
    end, action = function()
      if App.model then App.modelMenu() else msgBox("Aviso", "No hay modelo. Cree uno nuevo o cargue un ejemplo.") end
    end},
-  {label = "Ejemplos", action = examplesMenu},
-  {label = "Ayuda", action = help},
-}, "Tecla menu = accesos rapidos")
+  {label = "Ejemplos", icon = "book", action = examplesMenu},
+  {label = "Ayuda", icon = "help", action = help},
+  {label = "Acerca de / portada", icon = "info", action = function() push(Splash.new()) end},
+}, "enter:abrir|1-6:elegir|menu:accesos rapidos")
 function mainMenu:esc() end
 stack[1] = mainMenu
+stack[2] = Splash.new()
 
 ------------------------- Eventos TI-Nspire ----------------------------------
 local function showError(e)
@@ -2907,6 +3238,11 @@ function on.paint(gc)
   end
 end
 function on.resize(w, h) W, H = w, h end
+function on.timer()
+  local s = top()
+  if s and s.tick then s:tick() elseif timer then timer.stop() end
+  inval()
+end
 function on.arrowKey(k) dispatch("arrow", k) end
 function on.enterKey() dispatch("enter") end
 function on.returnKey() dispatch("enter") end
@@ -2966,5 +3302,5 @@ end
 if _TESTING then
   _TESTING.Eng = Eng; _TESTING.App = App; _TESTING.parseLin = parseLin; _TESTING.linStr = linStr
   _TESTING.newModel = newModel; _TESTING.Examples = Examples; _TESTING.stack = function() return stack end
-  _TESTING.Diagram = Diagram; _TESTING.StructView = StructView
+  _TESTING.Diagram = Diagram; _TESTING.StructView = StructView; _TESTING.Splash = Splash
 end

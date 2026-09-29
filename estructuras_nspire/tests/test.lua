@@ -7,6 +7,8 @@ platform = {window = {invalidate = function() invalidated = invalidated + 1 end,
 on = {}
 local registered
 toolpalette = {register = function(t) registered = t end}
+local timerOn = nil
+timer = {start = function(p) timerOn = p end, stop = function() timerOn = nil end}
 _TESTING = {}
 
 -- gc simulado: verifica tipos de argumentos
@@ -241,6 +243,15 @@ local function key(k, ...) on[k](...); paint() end
 local function reset() local st = T.stack(); while #st > 1 do st[#st] = nil end end
 paint()
 ok(registered ~= nil, "toolpalette registrado")
+-- portada animada
+ok(T.stack()[#T.stack()].tick ~= nil, "portada visible al iniciar")
+ok(timerOn == 0.05, "animacion iniciada")
+for _ = 1, 40 do on.timer(); paint() end
+ok(timerOn == 0.5, "parpadeo lento tras la animacion")
+key("enterKey")
+ok(#T.stack() == 1 and timerOn == nil, "enter sale de la portada y detiene el timer")
+key("charIn", "6"); ok(T.stack()[#T.stack()].tick ~= nil, "acerca de muestra la portada")
+key("escapeKey"); ok(#T.stack() == 1, "portada cerrada")
 key("charIn", "4")          -- ejemplos
 for i = 1, #T.Examples do
   key("escapeKey")

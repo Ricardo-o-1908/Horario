@@ -9,6 +9,18 @@ Las cargas pueden ser **números o letras** (`10`, `P`, `-w`, `2*P+5`, `w*3/2`..
 El resultado sale en forma literal, por ejemplo `M = 12.5 + 3.2P - 0.5w`, porque el
 programa resuelve un caso por cada letra y combina los resultados por superposición.
 
+## Capturas
+
+| Portada | Pantalla dividida |
+|---|---|
+| ![Portada](capturas/portada.png) | ![Pantalla dividida](capturas/pantalla_dividida.png) |
+| **Formulario con vista en vivo** | **Vista de momento en vivo** |
+| ![Formulario](capturas/formulario_en_vivo.png) | ![Momento](capturas/vista_momento.png) |
+
+Al abrir el programa aparece una portada animada: el pórtico de ejemplo se resuelve de
+verdad y su diagrama de momentos crece en pantalla. Cualquier tecla lleva al menú
+principal; la opción *Acerca de / portada* la muestra otra vez.
+
 ## Archivos
 
 | Archivo | Uso |
