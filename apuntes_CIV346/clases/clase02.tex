@@ -1,0 +1,448 @@
+% =====================================================================
+%  CLASE 02 -- Hidráulica de pozos en régimen permanente
+% =====================================================================
+\clase{02}{Aguas subterráneas: hidráulica de pozos en régimen permanente}
+
+\section{Recordando\ldots}
+\begin{itemize}
+  \item \textbf{Acuífero libre:} cercano a la superficie terrestre; el agua
+        subterránea tiene superficie abierta a la atmósfera.
+  \item \textbf{Acuífero artesiano o confinado:} confinado entre estratos
+        impermeables, por ende, bajo presión.
+  \item \textbf{Ley de Darcy (1856)}, válida para flujo laminar ($Re<4$):
+  \[
+  Q=-K\cdot A\cdot\left(\frac{\dd h}{\dd l}\right)=-K\cdot A\cdot i
+  \]
+\end{itemize}
+
+\section{Propiedades de los acuíferos}
+
+\subsection{Coeficiente de almacenamiento específico $S_s$ [1/L]}
+Es la cantidad de agua, por unidad de volumen, que es almacenada o liberada
+debido a la compresibilidad del esqueleto mineral y del agua en los poros,
+debido a un cambio unitario en el nivel de agua en el acuífero [1/L].
+\begin{formula}
+$S_s=g\rho(\alpha+\eta\beta)$
+\end{formula}
+donde $g$: aceleración de gravedad [m/s$^2$]; $\rho$: densidad del agua
+[kg/m$^3$]; $\eta$: porosidad del medio; $\alpha$: compresibilidad de la
+matriz sólida del acuífero [m$^2$/N]; $\beta$: compresibilidad del agua [m$^2$/N].
+
+\subsection{Coeficiente de almacenamiento $S$}
+Volumen de agua, por unidad de área y cambio de altura, que la unidad
+permeable absorbe o libera.
+
+\paragraph{Acuífero confinado de espesor $m$:}
+\begin{formula}
+$S=S_s\,m\qquad\qquad V_{\text{drenado}}=-S\cdot A\cdot\Delta h$\\[2pt]
+Acuífero confinado: $10^{-4}<S<0.005$
+\end{formula}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[gray!30] (0,0) rectangle (7,0.8);  \node at (1,0.4) {Acuitardo};
+  \fill[cyan!40] (0,0.8) rectangle (7,2.4); \node at (1,1.6) {Acuífero};
+  \fill[gray!30] (0,2.4) rectangle (7,3.3); \node at (1,2.85) {Acuitardo};
+  \draw[thick] (0,3.6) -- (7,3.4);
+  \draw[thick,dashed] (0,3.3) -- (7,3.1);
+  \draw[decorate,decoration={brace,amplitude=3pt}] (7.1,3.4) -- (7.1,3.1)
+    node[midway,right,align=left,font=\scriptsize]{Descenso unitario de la\\superficie piezométrica};
+  % prisma unitario
+  \draw[dashed] (4,0.8) rectangle (4.8,2.4);
+  \draw[dashed] (4,2.4) -- (4.3,2.65) -- (5.1,2.65) -- (4.8,2.4);
+  \draw[dashed] (5.1,2.65) -- (5.1,1.05) -- (4.8,0.8);
+  \node[font=\scriptsize] at (4.4,2.85) {1};\node[font=\scriptsize] at (4.95,2.85) {1};
+  \draw[cota] (5.6,0.8) -- (5.6,2.4) node[midway,right]{$m$};
+\end{tikzpicture}
+\caption{Coeficiente de almacenamiento en un acuífero confinado.}
+\end{figure}
+
+\paragraph{Acuífero libre:}
+\begin{itemize}
+  \item En acuíferos libres también se conoce como \textbf{rendimiento
+        específico} ($S=S_y$).
+  \item Coincide con la porosidad efectiva ($S_y=n_e$).
+\end{itemize}
+\begin{formula}
+$V_{\text{drenado}}=-S\cdot A\cdot\Delta h$\qquad Acuífero libre: $0.05<S<0.2$
+\end{formula}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lc}
+\toprule
+\textbf{Material} & $S_y$\\
+\midrule
+Arcilla & 0.00 -- 0.05\\
+Limo & 0.03 -- 0.19\\
+Arena fina & 0.10 -- 0.32\\
+Arena media & 0.15 -- 0.32\\
+Arena gruesa & 0.20 -- 0.35\\
+Grava & 0.14 -- 0.35\\
+\bottomrule
+\end{tabular}
+\caption{Valores típicos de rendimiento específico (Johnson, 1967).}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\scriptsize]
+  \foreach \X/\tit/\lab in {0/{Acuífero confinado}/S, 5.5/{Acuífero libre}/m_e}{
+  \begin{scope}[xshift=\X cm]
+    \draw (0,0) rectangle (1.6,5);
+    \draw (1.6,0) -- (2.1,0.4) -- (2.1,5.4) -- (0.5,5.4) -- (0,5);
+    \draw (1.6,5) -- (2.1,5.4);
+    \node[rotate=15] at (1.05,5.2) {1 m$^2$};
+    \fill[pattern=dots,pattern color=gray] (0,0) rectangle (1.6,2.6);
+    \draw[dashed] (0,3.6) -- (1.6,3.6) (0,2.6) -- (1.6,2.6);
+    \draw[cota] (1.8,2.6) -- (1.8,3.6) node[midway,right]{1 m};
+    \draw (-0.8,4.8) rectangle (-0.3,5.4); \node at (-0.55,5.1) {$\lab$};
+    \node[align=center] at (0.8,-0.5) {\tit};
+  \end{scope}}
+  \node[align=left] at (-0.3,6.2) {Extrayendo un volumen $S$ desciende\\la superficie piezométrica 1 metro};
+  \node[align=left] at (5.4,6.2) {Extrayendo un volumen $m_e$ desciende\\la superficie freática 1 metro};
+\end{tikzpicture}
+\caption{Interpretación física del coeficiente de almacenamiento en acuíferos
+confinado y libre.}
+\end{figure}
+
+\section{Ecuación de conservación de masa en un medio saturado}
+
+Para un acuífero confinado, el balance de masa sobre un elemento diferencial,
+asumiendo fluido incompresible y flujo sólo en la dirección $x$, queda:
+\[
+\rho\left(v_x-\left(v_x+\frac{\partial v_x}{\partial x}\,\dd x\right)\right)\dd y\,\dd z
+=\frac{\partial M}{\partial t}
+\quad\Longrightarrow\quad
+\boxed{-\rho\,\frac{\partial v_x}{\partial x}\,\dd x\,\dd y\,\dd z=\frac{\partial M}{\partial t}}
+\]
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[gray!25] (0,0) rectangle (2.5,2.5);
+  \fill[gray!45] (2.5,0) -- (3.3,0.6) -- (3.3,3.1) -- (2.5,2.5) -- cycle;
+  \fill[gray!15] (0,2.5) -- (0.8,3.1) -- (3.3,3.1) -- (2.5,2.5) -- cycle;
+  \draw[flecha,cyan] (-1.2,1.25) -- (-0.1,1.25) node[pos=0,above right]{$v_x$};
+  \draw[flecha,cyan] (2.9,1.6) -- (4,1.6) node[right,black]{$v_x+\dfrac{\partial v_x}{\partial x}\dd x$};
+  \node[below] at (0,0) {$x$}; \node[below] at (2.5,0) {$x+\Delta x$};
+  \node[below] at (1.25,0) {$\Delta x$};
+  \node[right] at (3.3,0.3) {$\Delta y$}; \node[right] at (3.3,2.9) {$\Delta z$};
+\end{tikzpicture}
+\caption{Elemento diferencial para el balance de masa.}
+\end{figure}
+
+Considerando que
+\[
+M=\rho V_{\text{drenado}}=-\rho S_s\,\dd z\,A\,\Delta h,\qquad A=\dd x\,\dd y
+\quad\Longrightarrow\quad
+\frac{\partial M}{\partial t}=-\rho S_s\frac{\partial h}{\partial t}\,\dd x\,\dd y\,\dd z
+\]
+Si se asume flujo en las tres direcciones:
+\begin{formula}
+$\displaystyle -\left(\frac{\partial v_x}{\partial x}+\frac{\partial v_y}{\partial y}+\frac{\partial v_z}{\partial z}\right)=-S_s\frac{\partial h}{\partial t}$
+\end{formula}
+\emph{¿Y de dónde obtenemos las velocidades?} Recordando que Darcy (1856)
+estableció que las velocidades de escurrimiento en medios porosos están
+dadas por:
+\[
+v_x=-K_x\frac{\partial h}{\partial x},\qquad
+v_y=-K_y\frac{\partial h}{\partial y},\qquad
+v_z=-K_z\frac{\partial h}{\partial z}
+\]
+De este modo se deduce la \textbf{ecuación general de escurrimiento en un
+medio saturado confinado}:
+\begin{formula}
+$\displaystyle
+\frac{\partial}{\partial x}\left(K_x\frac{\partial h}{\partial x}\right)+
+\frac{\partial}{\partial y}\left(K_y\frac{\partial h}{\partial y}\right)+
+\frac{\partial}{\partial z}\left(K_z\frac{\partial h}{\partial z}\right)=S_s\frac{\partial h}{\partial t}$\\[4pt]
+$S_s$: almacenamiento específico, $S/m$
+\end{formula}
+
+\section{Ecuaciones generales}
+\subsection{Casos particulares}
+\begin{itemize}
+  \item Flujo transiente en medio homogéneo e isotrópico:
+  \[\frac{\partial^2h}{\partial x^2}+\frac{\partial^2h}{\partial y^2}+\frac{\partial^2h}{\partial z^2}=\frac{S_s}{K}\frac{\partial h}{\partial t}\]
+  \item Flujo permanente, anisotrópico, homogéneo:
+  \[\frac{\partial}{\partial x}\left(K_x\frac{\partial h}{\partial x}\right)+\frac{\partial}{\partial y}\left(K_y\frac{\partial h}{\partial y}\right)+\frac{\partial}{\partial z}\left(K_z\frac{\partial h}{\partial z}\right)=0\]
+  \item Flujo permanente, isotrópico, homogéneo (\textbf{ecuación de Laplace}):
+\end{itemize}
+\begin{formula}
+$\displaystyle\frac{\partial^2h}{\partial x^2}+\frac{\partial^2h}{\partial y^2}+\frac{\partial^2h}{\partial z^2}=0$\qquad\textbf{Laplace}
+\end{formula}
+
+\subsection{Ecuación de Laplace en coordenadas cilíndricas}
+Flujo permanente, isotrópico y homogéneo:
+\begin{formula}
+$\displaystyle\frac{1}{r}\frac{\partial h}{\partial r}+\frac{\partial^2h}{\partial r^2}+\frac{1}{r^2}\frac{\partial^2h}{\partial\theta^2}+\frac{\partial^2h}{\partial z^2}=0$
+\end{formula}
+
+\subsection{Métodos de solución}
+\begin{enumerate}
+  \item Solución directa exacta.
+  \item Integración analítica simplificada.
+  \item Redes de flujo.
+  \item Modelos analógicos.
+  \item Modelos numéricos.
+\end{enumerate}
+
+\paragraph{¿Para qué hacemos esto?} ¿Por qué es importante saber la dinámica
+de la altura del nivel freático en el tiempo? Porque al bombear un pozo se
+genera un \emph{cono de depresión} que determina cuánto desciende la napa en
+los alrededores, y con ello el caudal que es posible extraer.
+
+\section{Hidráulica de pozos}
+\subsection{Supuestos básicos}
+\begin{itemize}
+  \item Los acuíferos se considerarán de propiedades homogéneas e isotrópicas,
+        de extensión infinita ($S$, $m$ constantes).
+  \item El tipo de acuífero se supone invariante en el espacio y el tiempo,
+        i.e., es libre, confinado o semiconfinado.
+  \item Se supone que la superficie piezométrica es horizontal antes del
+        inicio de operación del pozo.
+  \item El flujo será radial concéntrico hacia el pozo, y tendrá un radio de
+        influencia por sobre el cual se supondrá despreciable el descenso de la napa.
+  \item No existen pérdidas de energía por roce al escurrir agua hacia el pozo.
+  \item No se considera (por ahora) superposición de pozos.
+\end{itemize}
+
+% ---------------------------------------------------------------------
+%  Macro para dibujar un pozo en acuífero (confinado=1 / libre=0)
+% ---------------------------------------------------------------------
+\newcommand{\dibujopozo}[1]{%
+\begin{tikzpicture}[font=\small,scale=0.95]
+  % base impermeable
+  \draw[thick] (-4,0) -- (4,0);
+  \foreach \x in {-3.9,-3.6,...,3.9} \draw (\x,0) -- (\x-0.2,-0.25);
+  % pozo
+  \draw[thick] (-0.35,0.1) -- (-0.35,4.6) (0.35,0.1) -- (0.35,4.6);
+  \draw[thick] (-4,4.6) -- (-0.35,4.6) (0.35,4.6) -- (4,4.6);
+  \fill[azulusm] (-0.1,4.5) rectangle (0.1,5.1);
+  \fill[azulusm] (-0.25,5.1) -- (0.25,5.1) -- (0,5.45) -- cycle;
+  \node at (0.5,5.35) {$Q$};
+  % superficie original y cono
+  \draw[dashed,cyan!70!blue,thick] (-4,3.9) -- (4,3.9);
+  \node[azulusm,font=\scriptsize\bfseries,anchor=south west] at (-4.2,3.95) {Superficie piezométrica original};
+  \draw[cyan!70!blue,thick] (-4,3.85) .. controls (-2,3.7) and (-1,3.2) .. (-0.35,2.4) -- (0.35,2.4)
+      .. controls (1,3.2) and (2,3.7) .. (4,3.85);
+  \pic at (0,2.42) {nivelagua};
+  \ifnum#1=1
+    % techo impermeable del acuífero confinado
+    \draw[thick] (-4,2.0) -- (-0.35,2.0) (0.35,2.0) -- (4,2.0);
+    \foreach \x in {-3.9,-3.6,...,-0.5,0.6,0.9,...,3.9} \draw (\x,2.0) -- (\x+0.15,2.25);
+    \draw[cota] (-3.5,0) -- (-3.5,2.0) node[midway,left]{$m$};
+    \node[azulusm,font=\scriptsize\bfseries,align=center] at (-2.6,3.1) {Superficie\\piezométrica};
+    \def\ytop{1.9}
+  \else
+    \node[azulusm,font=\scriptsize,align=center] at (-2.9,2.9) {$\dfrac{\partial h}{\partial s}\approx\dfrac{\partial h}{\partial r}$\\Dupuit--Forchheimer};
+    \def\ytop{2.2}
+  \fi
+  % flechas de flujo
+  \foreach \y in {0.3,0.6,...,\ytop}{
+    \draw[->,azulusm] (-1.2,\y) -- (-0.5,\y);
+    \draw[->,azulusm] (1.2,\y) -- (0.5,\y);}
+  % cotas
+  \draw[cota] (-0.15,0) -- (-0.15,2.4) node[pos=0.8,left]{$h_0$};
+  \draw[->] (0,1.2) -- (0.35,1.2) node[right,font=\scriptsize]{$r_0$};
+  \draw[cota] (2.2,0) -- (2.2,3.62) node[midway,right]{$h$};
+  \draw[cota] (3.8,0) -- (3.8,3.9) node[midway,left]{$H$};
+  \draw[->] (0,-0.5) -- (2.2,-0.5) node[midway,below]{$r$};
+  \draw[->] (0,-1.1) -- (3.9,-1.1) node[midway,below,align=center]{$R$\\[-2pt]\scriptsize\color{azulusm}\bfseries Radio de influencia};
+\end{tikzpicture}}
+
+\subsection{Pozo de penetración total en acuífero confinado}
+\begin{itemize}
+  \item Extensión lateral infinita.
+  \item Pozo bombea caudal constante.
+  \item Líneas de flujo radiales y convergentes hacia el pozo.
+  \item Equipotenciales son círculos concéntricos.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\dibujopozo{1}
+\caption{Pozo de penetración total en acuífero confinado.}
+\end{figure}
+
+\begin{nota}[title={Deducción (ecuación de Thiem)}]
+Por continuidad, a través de un cilindro de radio $r$ y altura $m$:
+\[
+Q=2\pi r\,m\,K\frac{\dd h}{\dd r}\;\Rightarrow\;\int_h^H\dd h=\frac{Q}{2\pi Km}\int_r^R\frac{\dd r}{r}
+\]
+\end{nota}
+\begin{formula}
+$\displaystyle\Delta h=H-h=\frac{Q}{2\pi T}\ln\!\left(\frac{R}{r}\right)$\\[4pt]
+$R$: radio de influencia;\quad $T=Km$: transmisibilidad
+\end{formula}
+
+\subsection{Pozo de penetración total en acuífero libre}
+\begin{itemize}
+  \item Pozo bombea caudal constante.
+  \item Líneas de flujo radiales y convergentes hacia el pozo.
+  \item Equipotenciales son círculos concéntricos.
+  \item Flujo horizontal.
+  \item Gradiente hidráulico no varía con la profundidad.
+  \item Se cumple ley hidrostática.
+\end{itemize}
+Estas son las hipótesis de \textbf{Dupuit--Forchheimer}:
+$\dfrac{\partial h}{\partial s}\approx\dfrac{\partial h}{\partial r}$.
+
+\begin{figure}[H]
+\centering
+\dibujopozo{0}
+\caption{Pozo de penetración total en acuífero libre.}
+\end{figure}
+
+\begin{nota}[title={Deducción (Dupuit)}]
+Ahora el área de flujo es $2\pi r h$:
+\[
+Q=2\pi r\,h\,K\frac{\dd h}{\dd r}\;\Rightarrow\;\int_h^H2h\,\dd h=\frac{Q}{\pi K}\int_r^R\frac{\dd r}{r}
+\]
+\end{nota}
+\begin{formula}
+$\displaystyle H^2-h^2=\frac{Q}{\pi K}\ln\!\left(\frac{R}{r}\right)$\qquad $R$: radio de influencia
+\end{formula}
+
+\paragraph{Aproximaciones.} Si el espesor inicial de la napa saturada es muy
+grande en comparación con las depresiones cerca del pozo, la ecuación se
+simplifica y es similar a la de un acuífero confinado:
+\begin{itemize}
+  \item Si $\Delta h<0.1\,H$:
+  \[\Delta h=\frac{Q}{2\pi KH}\ln\frac{R}{r}\]
+  \item Si $\Delta h<0.5\,H$ (\textbf{corrección de Jacob}):
+  \[\Delta h'=\Delta h-\frac{(\Delta h)^2}{2H}=\frac{Q}{2\pi KH}\ln\frac{R}{r}\]
+\end{itemize}
+
+\section{Acuíferos libres de gran potencia}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.48\textwidth}\centering
+\begin{tikzpicture}[scale=0.8,font=\small]
+  \draw[thick] (-2.5,4) -- (-0.4,4) (0.4,4) -- (2.5,4);
+  \foreach \x in {-2.4,-2.0,...,-0.6,0.6,1.0,...,2.4} \draw (\x,4) -- (\x+0.25,4.25);
+  \draw[thick] (-0.4,4.6) -- (-0.4,1.3) (0.4,4.6) -- (0.4,1.3);
+  \draw[cyan,thick] (-2.5,3.2) -- (2.5,3.2); \pic at (-2.1,3.22) {nivelagua};
+  \shade[ball color=azulusm!70] (0,1) circle (0.8);
+  \foreach \a in {0,45,...,315} \draw[->,azulusm,thick] (\a:2.2) ++(0,1) -- ++(\a+180:1.1);
+  \node at (1.6,4.5) {$H>R$};
+\end{tikzpicture}
+\caption{Pozo en acuífero libre de gran potencia\\(escurrimiento esférico).}
+\end{subfigure}\hfill
+\begin{subfigure}{0.48\textwidth}\centering
+\begin{tikzpicture}[scale=0.8,font=\small]
+  \draw[thick] (-2.5,4) -- (-0.4,4) (0.4,4) -- (2.5,4);
+  \foreach \x in {-2.4,-2.0,...,-0.6,0.6,1.0,...,2.4} \draw (\x,4) -- (\x+0.25,4.25);
+  \draw[thick] (-0.4,4.6) -- (-0.4,2.6) (0.4,4.6) -- (0.4,2.6);
+  \draw[cyan,thick] (-2.5,2.8) -- (2.5,2.8); \pic at (-2.1,2.82) {nivelagua};
+  \fill[azulusm!70] (-0.7,2.8) arc (180:360:0.7) -- cycle;
+  \foreach \a in {0,-45,-90,-135,-180} \draw[->,azulusm,thick] (\a:2.0) ++(0,2.8) -- ++(\a+180:1.1);
+\end{tikzpicture}
+\caption{Pozo somero en acuífero libre de gran potencia (escurrimiento semi-esférico).}
+\end{subfigure}
+\end{figure}
+
+\begin{formula}
+Escurrimiento esférico: $\displaystyle\Delta h=H-h=\frac{Q}{4\pi K}\left(\frac1r-\frac1R\right)$\\[6pt]
+Escurrimiento semi-esférico: $\displaystyle\Delta h=H-h=\frac{Q}{2\pi K}\left(\frac1r-\frac1R\right)$,
+\quad $r_0\approx0.6\sim8$ [m]
+\end{formula}
+
+\section{Pozo de penetración parcial en acuífero confinado}
+Sea $b$ la longitud de penetración del pozo en un acuífero confinado de
+espesor $m$.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,scale=0.9]
+  \draw[thick] (-4,0) -- (4,0);
+  \foreach \x in {-3.9,-3.6,...,3.9} \draw (\x,0) -- (\x-0.2,-0.25);
+  \draw[thick] (-4,3) -- (-0.35,3) (0.35,3) -- (4,3);
+  \foreach \x in {-3.9,-3.6,...,-0.5,0.6,0.9,...,3.9} \draw (\x,3) -- (\x+0.15,3.25);
+  \draw[thick] (-0.35,1.2) -- (-0.35,4.6) (0.35,1.2) -- (0.35,4.6);
+  \draw[thick] (-4,4.6) -- (-0.35,4.6) (0.35,4.6) -- (4,4.6);
+  \fill[azulusm] (-0.1,4.5) rectangle (0.1,5.1);
+  \fill[azulusm] (-0.25,5.1) -- (0.25,5.1) -- (0,5.45) -- cycle; \node at (0.5,5.35) {$Q$};
+  \draw[dashed,cyan!70!blue,thick] (-4,4.2) .. controls (-2,4.0) and (-1,3.8) .. (-0.35,3.6) -- (0.35,3.6) .. controls (1,3.8) and (2,4.0) .. (4,4.2);
+  \foreach \y in {1.5,1.8,...,2.8}{\draw[->,azulusm] (-1.2,\y) -- (-0.5,\y);\draw[->,azulusm] (1.2,\y) -- (0.5,\y);}
+  \foreach \a in {-60,-90,-120}\draw[->,azulusm] (\a:0.9) ++(0,1.2) -- ++(\a+180:0.5);
+  \draw[cota] (-3.5,0) -- (-3.5,3) node[midway,left]{$m$};
+  \draw[cota] (1.6,1.2) -- (1.6,3) node[midway,right]{$b$};
+  \draw[->] (0,-0.5) -- (2.5,-0.5) node[midway,below]{$r$};
+\end{tikzpicture}
+\caption{Pozo de penetración parcial en acuífero confinado.}
+\end{figure}
+
+\paragraph{Solución de Nasberg} (válida para $b/m\geq0.3$):
+\[
+h_1-h_2=\frac{Q}{2\pi Km}\left(\ln\!\left(\frac{r_1}{r_2}\right)+\operatorname{senh}^{-1}\!\left(\frac{m}{r_1}\right)-\operatorname{senh}^{-1}\!\left(\frac{m}{r_2}\right)-\frac{m}{b}\left(\operatorname{senh}^{-1}\!\left(\frac{b}{r_1}\right)-\operatorname{senh}^{-1}\!\left(\frac{b}{r_2}\right)\right)\right)
+\]
+
+\paragraph{Solución de Girinsky} (válida para $b/m<0.3$):
+\[
+h_1-h_2=\frac{Q}{2\pi K}\left(\frac1b\ln\frac{1.6\,b}{r_2}-\operatorname{arcsenh}\frac{b}{r_1}\right)
+\]
+
+\section{Estimación del radio de influencia $R$}
+\paragraph{En terreno}
+\begin{itemize}
+  \item Mediciones de depresiones en función de la distancia al pozo.
+  \item Determinar $R$ cuando la depresión se hace cero (gráfico $\Delta h$ vs.\ $\ln r$).
+\end{itemize}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \draw[flecha] (0,0) -- (5,0) node[below]{$\ln r$};
+  \draw[flecha] (0,0) -- (0,3.2) node[left]{$\Delta h$};
+  \draw[dashed] (0,2.6) node[left]{$h_0$} -- (0.8,2.6) -- (0.8,0) node[below]{$r_0$};
+  \draw[rojo,thick] (0.8,2.6) -- (3.2,0) node[below,black]{$R$};
+  \draw[azulusm,thick] (0.8,2.6) .. controls (1.5,1.6) and (2.8,0.3) .. (3.3,0.05) -- (4.5,0.02);
+\end{tikzpicture}
+\caption{Estimación de $R$ a partir de mediciones de depresión.}
+\end{figure}
+
+\paragraph{Fórmula de Sichardt (1928):} depende de $K$ y, por ende, de la granulometría.
+\begin{formula}
+$R=3000\,\Delta h_0\sqrt{K}$ \ (m),\qquad $K$ en [m/s],\ $\Delta h_0$ en [m]
+\end{formula}
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Material} & $D$ (mm) & $R$ (m)\\
+\midrule
+Gravas & mayor a 10 & 1500\\
+Gravillas & 2 -- 10 & 500 -- 1500\\
+Gravilla-arcilla & 1 -- 2 & 400 -- 500\\
+Arena gruesa & 0.5 -- 1 & 200 -- 400\\
+Arena media & 0.25 -- 0.5 & 100 -- 200\\
+Arena fina & 0.1 -- 0.25 & 50 -- 100\\
+Arena muy fina & 0.05 -- 0.1 & 10 -- 50\\
+\bottomrule
+\end{tabular}
+\caption{Valores referenciales del radio de influencia según granulometría.}
+\end{table}
+
+\paragraph{Otros métodos empíricos} (ver Louwyck et al., 2022, \emph{The
+Radius of Influence Myth}, Water 14(2):149,
+\url{https://www.mdpi.com/2073-4441/14/2/149}):
+\begin{table}[H]
+\centering\small
+\begin{tabular}{llll}
+\toprule
+\textbf{Modelo} & \textbf{Régimen} & \textbf{Borde superior} & \textbf{Radio de influencia $R$}\\
+\midrule
+Dupuit & Permanente & Nivel freático & Borde exterior (dato)\\
+Thiem & Permanente & Impermeable & Borde exterior (dato)\\
+de Glee & Permanente & Filtrante & $R=4\sqrt{cKD}$\\
+Theis & Transiente & Impermeable & $R=1.5\sqrt{KDt/S}$\\
+Hantush--Jacob & Transiente & Filtrante & $R=1.5\sqrt{KDt/S}$ si $t<0.01Sc$;\ $R=4\sqrt{cKD}$ si $t>10Sc$\\
+Ernst & Permanente & Drenaje + recarga & $R=\sqrt{Q/(\pi N)}$ o $R=4\sqrt{cKD}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+con $KD$: transmisibilidad; $c$: resistencia; $S$: coeficiente de
+almacenamiento; $N$: flujo de infiltración; $Q$: caudal de bombeo; $t$: tiempo.

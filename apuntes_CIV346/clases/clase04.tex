@@ -1,0 +1,412 @@
+% =====================================================================
+%  CLASE 04 -- Otros métodos de solución a la ecuación de Laplace
+% =====================================================================
+\clase{04}{Otros métodos de solución a la ecuación de Laplace}
+
+\section{Ecuaciones generales}
+\begin{formula}
+$\displaystyle\frac{\partial^2h}{\partial x^2}+\frac{\partial^2h}{\partial y^2}+\frac{\partial^2h}{\partial z^2}=0$
+\qquad Flujo permanente, isotrópico, homogéneo (\textbf{Laplace})
+\end{formula}
+Ecuación de Laplace en coordenadas cilíndricas:
+\[
+\frac1r\frac{\partial h}{\partial r}+\frac{\partial^2h}{\partial r^2}+\frac{1}{r^2}\frac{\partial^2h}{\partial\theta^2}+\frac{\partial^2h}{\partial z^2}=0
+\]
+\paragraph{Métodos de solución}
+\begin{enumerate}
+  \item Solución directa exacta (clases previas).
+  \item Integración analítica simplificada (clases previas).
+  \item \textbf{Redes de flujo.}
+  \item \textbf{Modelos analógicos.}
+  \item \textbf{Modelos numéricos.}
+\end{enumerate}
+
+\section{Redes de flujo}
+
+Se desea resolver la ecuación (flujo permanente, medio anisotrópico y homogéneo):
+\[
+\frac{\partial}{\partial x}\left(K_x\frac{\partial h}{\partial x}\right)+\frac{\partial}{\partial y}\left(K_y\frac{\partial h}{\partial y}\right)+\frac{\partial}{\partial z}\left(K_z\frac{\partial h}{\partial z}\right)=0
+\]
+Si el medio es isotrópico, $K_x=K_y=K_z=K$:
+\[
+K\frac{\partial^2h}{\partial x^2}+K\frac{\partial^2h}{\partial y^2}+K\frac{\partial^2h}{\partial z^2}=K\nabla^2h=0
+\quad\Longrightarrow\quad\boxed{\nabla^2h=0}\ \ \text{(Laplace)}
+\]
+Luego, si consideramos la \textbf{función potencial} $\phi$:
+\begin{formula}
+$\phi=Kh\quad\Longrightarrow\quad\nabla^2\phi=0$
+\end{formula}
+Las superficies $\phi(x,y,z)=\text{cte}$ son \textbf{superficies equipotenciales}, y
+\[
+\phi_1-\phi_2=K(h_1-h_2)=\text{cte}\quad\Rightarrow\quad\Delta h=\text{cte}\ \ \text{(caída de potencial)}
+\]
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \draw[flecha] (0,0) -- (0,3) node[left]{$z$};
+  \draw[flecha] (0,0) -- (3,-0.8) node[right]{$y$};
+  \draw[flecha] (0,0) -- (-1.2,-1.5) node[left]{$x$};
+  \foreach \y/\n in {0.4/2,1.6/1}{
+    \fill[gray!40,draw=azulusm] (0.2,\y) .. controls (0.6,\y+0.7) and (1.4,\y+0.3) .. (2.2,\y+0.9)
+      .. controls (1.8,\y+0.2) and (1.2,\y-0.2) .. (0.2,\y) -- cycle;
+    \node at (1.1,\y+0.4) {$\phi_\n$};}
+  \draw[flecha,azulusm] (2.6,1.8) -- (3.3,1.8);
+  \node[right,align=center] at (3.3,1.8) {$\phi(x,y,z)=\text{cte}$\\\color{azulusm}Superficies equipotenciales};
+\end{tikzpicture}
+\caption{Superficies equipotenciales.}
+\end{figure}
+
+\subsection{Flujo bidimensional}
+En el caso de flujo bidimensional ($v_y=0$):
+\[
+\frac{\partial^2h}{\partial x^2}+\frac{\partial^2h}{\partial z^2}=0
+\]
+Esta ecuación representa dos familias ortogonales de curvas que satisfacen
+la ecuación de Laplace:
+\begin{formula}
+$\psi(x,z)$: líneas de flujo\qquad\qquad $\phi(x,z)$: líneas equipotenciales
+\end{formula}
+
+\paragraph{Líneas equipotenciales}
+\[
+\frac{\partial^2\phi}{\partial x^2}+\frac{\partial^2\phi}{\partial z^2}=0
+\]
+Como $\phi(x,z)=\text{cte}$:
+\[
+\dd\phi=\frac{\partial\phi}{\partial x}\dd x+\frac{\partial\phi}{\partial z}\dd z=0
+\]
+Por otro lado, $\phi=Kh$ (tomando la convención de signo $v=K\,\partial h/\partial x$):
+\[
+\frac{\partial\phi}{\partial x}=K\frac{\partial h}{\partial x}=v_x,\qquad
+\frac{\partial\phi}{\partial z}=K\frac{\partial h}{\partial z}=v_z
+\quad\Longrightarrow\quad
+\frac{\dd z}{\dd x}=-\frac{v_x}{v_z}=m_\phi
+\]
+
+\paragraph{Líneas de flujo} (línea a lo largo de la cual viaja una partícula de agua):
+\[
+\left(\frac{\dd z}{\dd x}\right)_{L.f.}=\frac{v_z}{v_x}\quad\Longrightarrow\quad v_z\,\dd x-v_x\,\dd z=0
+\]
+Se define la \textbf{función de flujo} $\psi(x,z)$:
+\[
+\frac{\partial\psi}{\partial x}=v_z,\qquad\frac{\partial\psi}{\partial z}=-v_x
+\]
+Así,
+\[
+\dd\psi=\frac{\partial\psi}{\partial x}\dd x+\frac{\partial\psi}{\partial z}\dd z=0\;\Rightarrow\;\psi=\text{cte},
+\qquad m_\psi=\frac{v_z}{v_x}\;\Rightarrow\;\boxed{m_\psi\cdot m_\phi=-1}
+\]
+¡Funciones ortogonales!
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.45\textwidth}\centering
+\begin{tikzpicture}[font=\small]
+  \draw[flecha] (0,0) -- (4,0) node[right]{$x$};
+  \draw[flecha] (0,0) -- (0,3) node[left]{$z$};
+  \draw[azulusm,thick] (0.2,0.8) .. controls (0.8,2.2) and (2,2.7) .. (3.6,2.9) node[pos=0.4,above left]{$\phi_1$};
+  \draw[orange!90!black,thick] (0.6,0.2) .. controls (1.1,1.5) and (2.2,2.0) .. (3.6,2.2) node[pos=0.45,above left]{$\phi_2$};
+  \node[align=center,font=\scriptsize] at (2.9,1.2) {$\phi(x,z)=\text{cte}$\\\color{azulusm}Líneas equipotenciales};
+\end{tikzpicture}
+\end{subfigure}
+\begin{subfigure}{0.45\textwidth}\centering
+\begin{tikzpicture}[font=\small]
+  \draw[flecha] (0,0) -- (4,0) node[right]{$x$};
+  \draw[flecha] (0,0) -- (0,3) node[left]{$z$};
+  \draw[orange!90!black,thick] (0.3,0.2) .. controls (0.8,1.6) and (1.6,2.3) .. (3.6,2.6) node[pos=0.1,left]{$\psi$};
+  \draw[flecha] (2.0,2.2) -- (3.3,2.9) node[above]{$\vec v$};
+  \draw[dashed] (2.0,2.2) -- (3.3,2.2) node[midway,below]{$v_x$} -- (3.3,2.9) node[midway,right]{$v_z$};
+\end{tikzpicture}
+\end{subfigure}
+\caption{Líneas equipotenciales y línea de flujo con su vector velocidad tangente.}
+\end{figure}
+
+\paragraph{Condiciones de Cauchy--Riemann.} Por lo tanto,
+\begin{formula}
+$\displaystyle v_x=\frac{\partial\phi}{\partial x}=-\frac{\partial\psi}{\partial z},\qquad
+v_z=\frac{\partial\phi}{\partial z}=\frac{\partial\psi}{\partial x}$
+\end{formula}
+De esta forma, $\psi$ también satisface la ecuación de Laplace:
+\[
+\frac{\partial^2\psi}{\partial x^2}+\frac{\partial^2\psi}{\partial z^2}=\nabla^2\psi=0
+\]
+Por otro lado, el que $\psi=\text{cte}$ permite definir los \textbf{tubos o
+canales de flujo}:
+\[
+\Delta q=\int_{\psi_1}^{\psi_2}v_x\,\dd z=\int_{\psi_1}^{\psi_2}-\frac{\partial\psi}{\partial z}\dd z
+=\int_{\psi_1}^{\psi_2}-\partial\psi=\psi_1-\psi_2=\text{cte}
+\]
+
+\subsection{Red de flujo}
+Como las familias son ortogonales, se pueden obtener \textbf{redes de flujo}:
+malla compuesta por líneas de flujo y líneas equipotenciales.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,scale=1.1]
+  \draw[flecha] (0,0) -- (7,0) node[below]{$x$};
+  \draw[flecha] (0,0) -- (0,4) node[left]{$z$};
+  % canal de flujo sombreado
+  \fill[orange!40] (0.8,3.0) .. controls (3,1.8) and (4.5,1.5) .. (6.3,1.4) -- (6.3,0.95) .. controls (4.5,1.05) and (3,1.3) .. (0.6,2.5) -- cycle;
+  \foreach \d in {0,0.45,0.9,1.35,1.8}
+    \draw[orange!90!black,thick] (0.8,3.0-\d) .. controls (3,1.8-\d*0.9) and (4.5,1.5-\d*0.8) .. (6.3,1.4-\d*0.7);
+  \foreach \x in {1.2,2.0,2.8,3.6,4.4,5.2}
+    \draw[azulusm,thick] (\x-0.6,1.0) -- (\x+0.4,3.6-\x*0.28);
+  \fill[cyan!30,opacity=0.5] (1.4,1.0) -- (2.4,3.0) -- (3.2,2.8) -- (2.2,1.0) -- cycle;
+  \node[right] at (6.3,1.4) {Línea de flujo ($\psi$)};
+  \node[right] at (6.3,0.95) {Canal de flujo};
+  \node[above] at (4.2,2.9) {Línea equipotencial ($\phi$)};
+  \node[align=center,font=\scriptsize] at (1.8,0.5) {Caída equipotencial\\($K\Delta h=\text{cte}$)};
+\end{tikzpicture}
+\caption{Red de flujo: líneas de flujo, líneas equipotenciales y canal de flujo.}
+\end{figure}
+
+\subsection{Caudal a través de una red de flujo}
+Para un canal de flujo se tiene, por continuidad:
+\[
+\Delta Q=\text{cte}\quad\Rightarrow\quad K\frac{\Delta h_1}{l_1}\cdot a_1\cdot b=K\frac{\Delta h_2}{l_2}\cdot a_2\cdot b
+\]
+Como $b=\text{cte}$ y $\Delta\phi_i=K\Delta h_i$:
+\[
+\frac{\Delta\phi_1}{l_1}\cdot a_1=\frac{\Delta\phi_2}{l_2}\cdot a_2
+\]
+Si $\Delta\phi_i=\text{cte}$:
+\[
+\frac{a_1}{l_1}=\frac{a_2}{l_2}=\text{cte}\quad\Longrightarrow\quad\Delta q=K\Delta h\cdot\frac{a}{l}\quad\text{(caudal por unidad de ancho)}
+\]
+Considerando $\Delta h=h/N_d$, con $N_d$ = número de caídas de potencial:
+\begin{formula}
+$\displaystyle\Delta q=K\frac{h}{N_d}\cdot\frac al$
+\end{formula}
+Para la red de flujo completa, con $N_t$ = número de canales de flujo:
+\begin{formula}
+$\displaystyle q=\sum\Delta q=N_t\,\Delta q=K\,h\,\frac{N_t}{N_d}\cdot\frac{a}{l}$
+\end{formula}
+\begin{itemize}
+  \item $a/l=1$ $\Rightarrow$ elementos cuadrados.
+  \item $a/l\neq1$ $\Rightarrow$ elementos rectangulares.
+\end{itemize}
+
+\subsection{Condiciones de borde}
+\begin{itemize}
+  \item \textbf{Barrera impermeable:} la velocidad es tangente a la barrera
+        en todo momento $\Rightarrow$ la barrera impermeable es una \emph{línea
+        de flujo} ($\psi$).
+  \item \textbf{Eje de simetría:} no hay caudal que atraviese el eje de
+        simetría $\Rightarrow$ el eje de simetría es una \emph{línea de flujo} ($\psi$).
+  \item \textbf{Superficie de agua libre en reposo:} es una \emph{línea
+        equipotencial} ($\phi$):
+  \[h=z+\frac{p}{\gamma}=\text{cte}\quad\Rightarrow\quad\phi=Kh=\text{cte}\]
+  \item \textbf{Superficie libre en movimiento:} es una \emph{línea de flujo}
+        ($\psi$) con $p/\gamma=0$:
+  \[\phi_1=Kz_1,\quad\phi_2=Kz_2\quad\Rightarrow\quad\Delta\phi=K\Delta z\]
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,scale=1.1]
+  % suelo
+  \fill[gray!15] (-4,-3.2) rectangle (4,0);
+  \fill[pattern=north east lines] (-4,-3.45) rectangle (4,-3.2);
+  % agua
+  \fill[agua!70] (-4,0) rectangle (0,1.2);
+  \fill[agua!70] (0,0) rectangle (4,0.6);
+  \draw[rojo,thick] (-4,0) -- (4,0);
+  \draw[cota,rojo] (-3.5,0) -- (-3.5,1.2) node[midway,right]{$h_1$};
+  \draw[cota,rojo] (0.5,0) -- (0.5,0.6) node[midway,right]{$h_2$};
+  \pic at (-2,1.22) {nivelagua}; \pic at (2,0.62) {nivelagua};
+  % tablestaca
+  \draw[line width=2.5pt] (0,1.6) -- (0,-1);
+  % líneas de flujo: semicircunferencias alrededor de la punta
+  \foreach \r in {0.5,1.1,1.8,2.6}
+    \draw[azulusm,thick] (-\r,0) arc (180:360:\r);
+  % equipotenciales: rayos desde la punta de la tablestaca
+  \begin{scope}
+    \clip (-4,-3.2) rectangle (4,0);
+    \foreach \a in {200,225,250,270,290,315,340}
+      \draw[rojo,dashed] (0,-1) -- ++(\a:5);
+  \end{scope}
+  \node[rojo,below] at (-3.6,0) {$\phi_1=Kh_1$};
+  \node[rojo,below] at (3.5,0) {$\phi_9=Kh_2$};
+  \draw[<-] (0.05,1.4) -- (1.2,1.9) node[right]{Eje de simetría / tablestaca};
+  \node[azulusm] at (-2.4,-2.9) {$\psi$}; \node[rojo] at (2.9,-2.9) {$\phi$};
+\end{tikzpicture}
+\caption{Red de flujo bajo una tablestaca: las superficies de agua en reposo
+son equipotenciales y la tablestaca es una línea de flujo.}
+\end{figure}
+
+\subsection{Trazado de una red de flujo: procedimiento}
+\begin{enumerate}
+  \item Dibujar las condiciones de borde (límites del dominio).
+  \item Dibujar tentativamente 3 o 4 líneas de corriente.
+  \item Trazar tentativamente equipotenciales, ortogonales a las líneas de corriente.
+  \item Ajustar (verificar que se generen ángulos rectos).
+  \item Validar la red de flujo: trazar las líneas diagonales a los
+        rectángulos o cuadrados que forman las líneas de flujo y
+        equipotenciales. Estas líneas se deben interceptar también en ángulos
+        rectos. Si esto no es así, volver al paso 4.
+\end{enumerate}
+
+\subsection{Medio heterogéneo}
+Al pasar de un medio con $K_1$ a otro con $K_2$, por continuidad en un canal de flujo:
+\[
+\Delta q=K_1\frac{\Delta h_1}{l_1}a_1=K_2\frac{\Delta h_2}{l_2}a_2
+\]
+Como $\Delta\phi=Kh=\text{cte}\Rightarrow\Delta h_1=\Delta h_2$. Además,
+\[
+\operatorname{tg}(\alpha)=\frac{l_1}{a_1},\qquad\operatorname{tg}(\beta)=\frac{l_2}{a_2}
+\]
+\begin{formula}
+$\displaystyle\frac{K_1}{K_2}=\frac{\operatorname{tg}(\alpha)}{\operatorname{tg}(\beta)}$\qquad Ley de refracción (análoga a la óptica)
+\end{formula}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \draw (0,-1.5) -- (0,3) node[above left]{$K_1$} node[above right]{$K_2$};
+  \draw[dashed] (-4,0) -- (4,0);
+  \draw[azulusm,thick] (-4,2.6) -- (0,0.7) -- (4,0.2);
+  \draw[azulusm,thick] (-4,1.6) -- (0,-0.3) -- (4,-0.8);
+  \foreach \t in {0.3,0.55,0.8}{
+    \draw[rojo,thick] ($(-4,2.6)!\t!(0,0.7)$) -- ($(-4,1.6)!\t!(0,-0.3)$);}
+  \foreach \t in {0.15,0.4,0.65}{
+    \draw[rojo,thick] ($(0,0.7)!\t!(4,0.2)$) -- ($(0,-0.3)!\t!(4,-0.8)$);}
+  \draw[flecha] (-3.3,2.8) -- (-2.6,2.45) node[pos=0,left]{$\Delta q$};
+  \draw[flecha] (2.8,0.8) -- (3.6,0.7) node[pos=0,above]{$\Delta q$};
+  \draw (-0.8,-0.3) arc (180:155:0.8); \node at (-1.1,-0.5) {$\alpha$};
+  \draw (0.8,-0.3) arc (0:-8:0.8); \node at (1.1,-0.55) {$\beta$};
+  \node at (-2,-1.2) {\color{rojo}$\phi$ \color{azulusm}$\psi$};
+\end{tikzpicture}
+\caption{Refracción de las líneas de flujo en la interfaz entre dos medios.}
+\end{figure}
+
+\subsection{Medio anisotrópico}
+\[
+K_x\frac{\partial^2h}{\partial x^2}+K_z\frac{\partial^2h}{\partial z^2}=0
+\quad\Longrightarrow\quad
+\frac{\partial^2h}{(K_z/K_x)\,\partial x^2}+\frac{\partial^2h}{\partial z^2}=0
+\]
+¡Las familias de curvas $\psi(x,z)$ y $\phi(x,z)$ \textbf{no son ortogonales}!
+Sea el cambio de variable
+\[
+x'=a\cdot x\ \Rightarrow\ \frac{\dd x'}{\dd x}=a,\qquad
+\frac{\partial h}{\partial x}=\frac{\partial h}{\partial x'}\frac{\dd x'}{\dd x}=a\frac{\partial h}{\partial x'},\qquad
+\frac{\partial^2h}{\partial x^2}=a^2\frac{\partial^2h}{\partial x'^2}
+\]
+\[
+\Longrightarrow\quad\frac{K_x}{K_z}a^2\frac{\partial^2h}{\partial x'^2}+\frac{\partial^2h}{\partial z^2}=0
+\]
+Si
+\begin{formula}
+$\displaystyle a=\sqrt{\frac{K_z}{K_x}}\quad\Longrightarrow\quad\frac{\partial^2h}{\partial x'^2}+\frac{\partial^2h}{\partial z^2}=0$\quad (ecuación de Laplace),
+\qquad $K_{eq}=\sqrt{K_x\cdot K_z}$
+\end{formula}
+Procedimiento: se transforma el dominio $(x,z)\to(x',z)=(a\,x,z)$, se traza
+la red de flujo ortogonal en el dominio transformado usando $K_{eq}$, y luego
+se vuelve al dominio real $(x,z)=\left(\frac{x'}{a},z\right)$.
+
+\paragraph{Ejemplo:} $K_x\neq K_z$ con $a=\sqrt{K_z/K_x}=10$: un terraplén que
+en el dominio real se extiende entre $x=2$ y $x=10$ se transforma en uno que
+se extiende entre $x'=20$ y $x'=100$.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,scale=0.9]
+  \begin{scope}
+    \draw[flecha] (0,0) -- (4,0) node[below]{$x$}; \draw[flecha] (0,0) -- (0,2.5) node[left]{$z$};
+    \fill[gray!30,draw] (1.0,0) -- (1.6,1.2) -- (2.6,1.2) -- (3.3,0) -- cycle;
+    \draw[dashed] (0,1.2) -- (1.6,1.2);
+    \node[below] at (1,0) {2}; \node[below] at (3.3,0) {10};
+    \fill (2.0,0.6) circle (1.5pt) node[above,font=\scriptsize]{$(x,z)$};
+  \end{scope}
+  \draw[flecha,azulusm,line width=2pt] (4.6,1) -- (5.6,1) node[midway,above,black]{$x'=a\cdot x$};
+  \begin{scope}[xshift=6.3cm]
+    \draw[flecha] (0,0) -- (6.5,0) node[below]{$x'$}; \draw[flecha] (0,0) -- (0,2.5) node[left]{$z$};
+    \fill[gray!30,draw] (0.8,0) -- (1.6,1.2) -- (5.2,1.2) -- (6.0,0) -- cycle;
+    \draw[dashed] (0,1.2) -- (1.6,1.2);
+    \node[below] at (0.8,0) {20}; \node[below] at (6.0,0) {100};
+    \fill (2.6,0.6) circle (1.5pt) node[above,font=\scriptsize]{$(x',z)$};
+    \node at (3.4,1.8) {$K_{eq}=\sqrt{K_x\cdot K_z}$};
+  \end{scope}
+\end{tikzpicture}
+\caption{Transformación de coordenadas para un medio anisotrópico.}
+\end{figure}
+
+\section{Modelos analógicos}
+
+\subsection{Analogía gradiente térmico}
+Flujo de calor a través de una barra:
+\[
+F=\alpha\frac{\dd T}{\dd x}\quad\Longleftrightarrow\quad v=K\frac{\dd h}{\dd x}
+\]
+Es más complicado, pues el calor se escapa por cualquier lado del modelo.
+
+\subsection{Analogía fluido viscoso (Hele--Shaw)}
+En fluido newtoniano, de régimen laminar, entre dos placas paralelas
+separadas una distancia $b$:
+\[
+\bar v=\frac{\gamma b^2}{12\mu}\frac{\dd h}{\dd x}\quad\Longleftrightarrow\quad v=K\frac{\dd h}{\dd x}
+\]
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[gray!40] (0,1.2) rectangle (6,1.4); \fill[gray!40] (0,-1.4) rectangle (6,-1.2);
+  \fill[left color=azulusm!80,right color=aguaclara] (0,-1.2) rectangle (6,1.2);
+  \draw[dashed] (0,0) -- (6,0);
+  \draw[cota] (1,-1.2) -- (1,1.2) node[midway,left]{$b$};
+  \draw[thick] (3,-1.2) -- (3,1.2);
+  \draw[thick,domain=-1.2:1.2,samples=30] plot ({3+0.8*(1-(\x/1.2)^2)},\x);
+  \foreach \y in {-1.0,-0.8,...,1.0} \draw[->] (3,\y) -- ({3+0.8*(1-(\y/1.2)^2)},\y);
+  \node at (4.2,0.9) {$v(y)$};
+  \draw[flecha] (3,0) -- (4.5,0) node[below]{$x$};
+  \draw[flecha] (3,0) -- (3,1.8) node[left]{$y$};
+\end{tikzpicture}
+\caption{Modelo de Hele--Shaw: flujo laminar entre placas paralelas.}
+\end{figure}
+
+\subsection{Analogía eléctrica}
+Ley de Ohm:
+\[
+V=Ri\ \Rightarrow\ i=\frac1R V\quad\Longleftrightarrow\quad v=K\frac{\Delta h}{L}
+\]
+Donde las analogías son:
+\begin{itemize}
+  \item $V$ = gradiente hidráulico $\left(\frac{\Delta h}{L}\right)$.
+  \item $i$ = velocidad del flujo ($v$).
+  \item $\frac1R$ = permeabilidad ($K$).
+\end{itemize}
+Por lo tanto, son válidas las reglas de los circuitos en serie y paralelo.
+Es más precisa que la analogía térmica.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \draw (0,0) rectangle (4,3.5);
+  \fill[white] (-0.3,1.4) rectangle (0.3,2.1);
+  \draw[thick] (-0.35,1.9) -- (0.35,1.9); \draw (-0.2,1.75) -- (0.2,1.75);
+  \draw[thick] (-0.35,1.6) -- (0.35,1.6); \draw (-0.2,1.45) -- (0.2,1.45);
+  \node[left] at (-0.4,1.7) {10};
+  \fill[white] (3.2,0.4) rectangle (4.8,3.1);
+  \draw (3.2,0.4) rectangle (4.8,3.1);
+  \fill[gray!60] (3.4,2.7) rectangle (4.6,2.9); \fill[gray!60] (3.4,0.6) rectangle (4.6,0.8);
+  \fill[aguaclara] (3.4,0.8) rectangle (4.6,2.7);
+  \foreach \y/\l in {2.35/2,1.95/4,1.55/6,1.15/8} {\draw[rojo] (3.4,\y) -- (4.6,\y); \node[right,font=\scriptsize] at (4.6,\y) {\l};}
+  \foreach \x in {3.7,4.0,4.3} \draw[azulusm] (\x,0.8) -- (\x,2.7);
+  \node[font=\scriptsize] at (3.6,2.55) {$K$};
+  \node[above right,font=\scriptsize] at (4,3.1) {$V=0$};
+  \node[below right,font=\scriptsize] at (4,0.4) {$V=10$};
+  \node[right] at (4.9,1.8) {$R$};
+\end{tikzpicture}
+\caption{Analogía eléctrica: papel conductor con equipotenciales medidas.}
+\end{figure}
+
+\section{Modelos numéricos}
+Resolución de la ecuación de Laplace mediante:
+\begin{itemize}
+  \item Elementos finitos.
+  \item Diferencias finitas.
+\end{itemize}
+Algunos programas: \textbf{MODFLOW} (USGS; software libre, diferencias
+finitas), \textbf{Visual MODFLOW} y \textbf{FEFLOW} (DHI; elementos finitos).

@@ -1,0 +1,357 @@
+% =====================================================================
+%  CLASE 03 -- Interferencia de pozos, método de las imágenes,
+%              pozos en acuíferos de varias capas
+% =====================================================================
+\clase{03}{Interferencia de pozos, método de las imágenes y pozos en acuíferos de varias capas}
+
+\section{Resumen de hidráulica de pozos}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{2.2}
+\begin{tabular}{l>{$\displaystyle}c<{$}}
+\toprule
+\textbf{Caso} & \textbf{Ecuación}\\
+\midrule
+Penetración total, acuífero confinado & \Delta h=H-h=\frac{Q}{2\pi T}\ln\left(\frac Rr\right)\\
+Penetración total, acuífero libre & H^2-h^2=\frac{Q}{\pi K}\ln\left(\frac Rr\right)\\
+Acuífero libre de gran potencia & \Delta h=H-h=\frac{Q}{4\pi K}\left(\frac1r-\frac1R\right)\\
+Pozo somero en acuífero libre de gran potencia & \Delta h=H-h=\frac{Q}{2\pi K}\left(\frac1r-\frac1R\right)\\
+Penetración parcial, acuífero confinado & h_1-h_2=\frac{Q}{2\pi K}\left(\frac1b\ln\frac{1.6b}{r_2}-\operatorname{arcsenh}\frac{b}{r_1}\right)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{center}
+\colorbox{azulusm}{\parbox{0.8\textwidth}{\centering\color{white}\large\bfseries
+¿Y si hay más de un pozo extrayendo agua del acuífero?}}
+\end{center}
+
+\section{Depresión producto de múltiples pozos}
+
+\textbf{Solución: superposición.} Como la ecuación de Laplace es lineal, la
+depresión total en un punto es la suma de las depresiones producidas por
+cada pozo.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \coordinate (p) at (0,0);
+  \foreach \pt/\lab/\pos in {(-2.3,1.3)/r_1/above, (-2.0,-1.3)/r_2/above, (2.3,1.6)/r_3/above, (2.2,-1.5)/r_4/above}{
+    \draw[dashed,azulusm,thick] (p) -- \pt node[midway,\pos]{$\lab$};
+    \fill[azulusm] \pt circle (0.18);}
+  \fill[orange] (p) circle (0.08) node[above=2pt]{$p$};
+\end{tikzpicture}
+\caption{Punto $p$ afectado por varios pozos de bombeo.}
+\end{figure}
+
+\paragraph{Pozos de penetración total en acuíferos confinados:}
+\begin{formula}
+$\displaystyle\Delta h_T=\frac{1}{2\pi T}\sum Q_i\ln\left(\frac{R_i}{r_i}\right)$
+\end{formula}
+\begin{itemize}
+  \item El punto $p$ sólo se ve afectado por los pozos ubicados a una distancia
+        menor al radio de influencia ($R_i$).
+  \item ¡Para acuíferos libres, linealizar primero!
+\end{itemize}
+
+\paragraph{Caso particular:} pozos que bombean el mismo caudal y tienen el
+mismo radio de influencia:
+\begin{formula}
+$\displaystyle\Delta h_T=\frac{Q}{2\pi T}\ln\left(\frac{R^n}{\prod_{i=1}^n r_i}\right)$
+\end{formula}
+
+\begin{center}
+\colorbox{azulusm}{\parbox{0.8\textwidth}{\centering\color{white}\large\bfseries
+¿Y si el acuífero no posee extensión lateral infinita?}}
+\end{center}
+Por ejemplo, un pozo cerca de un arroyo (zona ribereña) o cerca de un
+afloramiento de roca impermeable.
+
+\section{Método de las imágenes}
+
+Superposición de soluciones para obtener la respuesta a condiciones de borde
+específicas:
+\begin{itemize}
+  \item Recargas lineales (masas de agua con nivel constante).
+  \item Barreras impermeables.
+\end{itemize}
+
+\subsection{Recarga lineal}
+\begin{itemize}
+  \item Fuente que recarga al acuífero (río, lago, mar).
+  \item Se debe lograr \textbf{desnivel nulo en el borde}.
+  \item Se reemplaza la fuente por un \textbf{pozo imagen} ubicado
+        simétricamente respecto al pozo real, que \textbf{inyecta} caudal $Q$.
+\end{itemize}
+
+% Macro esquema pozo real + pozo imagen
+\newcommand{\esquemaimagen}[3]{% #1 signo imagen, #2 etiqueta borde, #3 textos lados
+\begin{tikzpicture}[font=\small]
+  \coordinate (R) at (0,0); \coordinate (I) at (6,0); \coordinate (P) at (2,2);
+  \draw[dashed,azulusm,thick] (3,-0.8) -- (3,2.6);
+  \draw[orange!90!black,{Stealth}-{Stealth},thick] (R) -- (3,0) node[midway,above]{$b$};
+  \draw[orange!90!black,{Stealth}-{Stealth},thick] (3,0) -- (I) node[midway,above]{$b$};
+  \draw[cyan!80!blue,thick,-{Stealth}] (P) -- (R) node[pos=0.4,left]{$r_r$};
+  \draw[cyan!80!blue,thick,-{Stealth}] (P) -- (I) node[pos=0.55,above]{$r_i$};
+  \fill[azulusm] (R) circle (0.18) (I) circle (0.18);
+  \fill[orange] (P) circle (0.08) node[above]{$p$};
+  \node[below=4pt,align=center] at (R) {Pozo\\real};
+  \node[below=4pt,align=center] at (I) {Pozo\\imaginario};
+  \node[left=6pt] at (R) {$+Q,\Delta h_r$};
+  \node[right=6pt] at (I) {$#1Q,\Delta h_i$};
+  \node[azulusm,align=center,below] at (3,-0.8) {#2};
+  #3
+\end{tikzpicture}}
+
+\begin{figure}[H]
+\centering
+\esquemaimagen{-}{Línea de conservación\\del nivel de carga $h$}{%
+  \node at (1.5,-0.4) {\textit{Tierra}}; \node at (4.5,-0.4) {\textit{Agua}};}
+\caption{Método de las imágenes para una recarga lineal: el pozo imagen inyecta caudal.}
+\end{figure}
+
+Depresiones producidas por los pozos:
+\[
+\Delta h_r=\frac{Q}{2\pi T}\ln\left(\frac{R}{r_r}\right),\qquad
+\Delta h_i=\frac{Q}{2\pi T}\ln\left(\frac{R}{r_i}\right)
+\]
+La depresión producida en el punto $p$ es $\Delta h=\Delta h_r-\Delta h_i$:
+\begin{formula}
+$\Delta h=\begin{cases}
+\dfrac{Q}{2\pi T}\ln\left(\dfrac{r_i}{r_r}\right) & r_r<R\ \wedge\ r_i<R\\[10pt]
+\dfrac{Q}{2\pi T}\ln\left(\dfrac{R}{r_r}\right) & r_r<R\ \wedge\ r_i\geq R\\[10pt]
+0 & r_r\geq R\ \wedge\ r_i\geq R
+\end{cases}$
+\end{formula}
+
+\subsection{Barrera impermeable}
+\begin{itemize}
+  \item Barrera que impide el flujo.
+  \item Se debe lograr \textbf{velocidad nula en el borde}.
+  \item Se reemplaza la barrera por un pozo imagen ubicado simétricamente
+        respecto al pozo real, que \textbf{extrae} caudal $Q$.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\esquemaimagen{+}{Borde impermeable}{}
+\caption{Método de las imágenes para una barrera impermeable: el pozo imagen extrae caudal.}
+\end{figure}
+
+La depresión producida en el punto $p$ es $\Delta h=\Delta h_r+\Delta h_i$:
+\begin{formula}
+$\Delta h=\begin{cases}
+\dfrac{Q}{2\pi T}\ln\left(\dfrac{R^2}{r_i\cdot r_r}\right) & r_r<R\ \wedge\ r_i<R\\[10pt]
+\dfrac{Q}{2\pi T}\ln\left(\dfrac{R}{r_r}\right) & r_r<R\ \wedge\ r_i\geq R\\[10pt]
+0 & r_r\geq R\ \wedge\ r_i\geq R
+\end{cases}$
+\end{formula}
+
+\section{Método de las imágenes: situaciones particulares}
+
+\subsection{Más de un pozo cerca de una fuente de recarga o barrera impermeable}
+Cada pozo real tiene su propio pozo imagen, simétrico respecto al borde:
+con signo opuesto ($-Q_j$) frente a una recarga y con igual signo ($+Q_j$)
+frente a una barrera.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,scale=0.75]
+  \foreach \X/\s/\lab in {0/-/{Línea de conservación\\del nivel de carga $h$}, 9/+/{Borde impermeable}}{
+  \begin{scope}[xshift=\X cm]
+    \draw[dashed,azulusm,thick] (2.5,-0.6) -- (2.5,3.2);
+    \foreach \y/\n/\b in {0/1/b_1, 2/2/b_2}{
+      \fill[azulusm] (0.5,\y) circle (0.15) (4.5,\y) circle (0.15);
+      \draw[orange!90!black,{Stealth}-{Stealth}] (0.5,\y) -- (2.5,\y) node[midway,above]{$\b$};
+      \draw[orange!90!black,{Stealth}-{Stealth}] (2.5,\y) -- (4.5,\y) node[midway,above]{$\b$};
+      \node[above left,font=\scriptsize] at (0.5,\y+0.1) {$+Q_\n,\Delta h_{r\n}$};
+      \node[above right,font=\scriptsize] at (4.5,\y+0.1) {$\s Q_\n,\Delta h_{i\n}$};}
+    \node[azulusm,align=center,below] at (2.5,-0.6) {\lab};
+  \end{scope}}
+\end{tikzpicture}
+\caption{Varios pozos cerca de una recarga (izquierda) y de una barrera impermeable (derecha).}
+\end{figure}
+
+\subsection{Borde curvo o esquina de una fuente de recarga}
+\begin{itemize}
+  \item Se crea el pozo imaginario 1 ($P_{i1}$) para anular la depresión en la línea 1.
+  \item Se crea el pozo imaginario 2 ($P_{i2}$) para anular la depresión en la línea 2.
+  \item Se crea un tercer pozo imaginario ($P_{i3}$) con un caudal $+Q$ que
+        anule la influencia de $P_{i1}$ sobre la línea 2 y de $P_{i2}$ sobre la línea 1.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[aguaclara] (-3,-2.5) rectangle (3,2.5);
+  \fill[suelo!80] (0,-2.5) rectangle (3,0) ;
+  \fill[suelo!80] (0.4,0) -- (3,0) -- (3,0) ;
+  \draw[dashed,azulusm,very thick] (0,-2.5) -- (0,0) -- (3,0);
+  \node[azulusm] at (2.3,0.3) {Línea 1}; \node[azulusm] at (0,-2.8) {Línea 2};
+  \node at (-1.5,-2.1) {Agua}; \node at (1.5,-2.1) {Tierra};
+  \coordinate (Pr) at (1.8,-1.2); \coordinate (Pi1) at (1.8,1.2);
+  \coordinate (Pi2) at (-1.8,-1.2); \coordinate (Pi3) at (-1.8,1.2);
+  \foreach \c in {Pr,Pi1,Pi2,Pi3} \fill[azulusm] (\c) circle (0.13);
+  \node[below right] at (Pr) {Pozo real};
+  \node[right] at (Pi1) {$P_{i1}$: $-Q,\Delta h_{i1}$};
+  \node[left] at (Pi2) {$P_{i2}$: $-Q,\Delta h_{i2}$};
+  \node[left] at (Pi3) {$P_{i3}$: $+Q,\Delta h_{i3}$};
+  \draw[yellow!70!orange,{Stealth}-{Stealth}] (Pi2) -- (0,-1.2) node[midway,below]{$b$};
+  \draw[yellow!70!orange,{Stealth}-{Stealth}] (0,-1.2) -- (Pr) node[midway,below]{$b$};
+  \draw[red,{Stealth}-{Stealth}] (1.8,0) -- (Pr) node[midway,right]{$a$};
+  \draw[red,{Stealth}-{Stealth}] (1.8,0) -- (Pi1) node[midway,right]{$a$};
+  \draw[yellow!70!orange,{Stealth}-{Stealth}] (Pi3) -- (Pi1) node[midway,above]{$2b$};
+  \draw[red,{Stealth}-{Stealth}] (Pi3) -- (Pi2) node[midway,left]{$2a$};
+\end{tikzpicture}
+\caption{Pozo cerca de la esquina de una fuente de recarga: tres pozos imagen.}
+\end{figure}
+
+\subsection{Presencia de una fuente de recarga y un borde impermeable}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[aguaclara] (-3,0) rectangle (0,2);
+  \fill[suelo!70] (0,0) rectangle (3.5,2);
+  \fill[roca!60] (3.5,0) rectangle (6.5,2);
+  \draw[dashed,azulusm,very thick] (0,-0.3) -- (0,2.3);
+  \draw[dashed,azulusm,very thick] (3.5,-0.3) -- (3.5,2.3);
+  \coordinate (Pr) at (1.2,1); \coordinate (Pi2) at (-1.2,1); \coordinate (Pi1) at (5.8,1);
+  \foreach \c in {Pr,Pi1,Pi2} \fill[azulusm] (\c) circle (0.15);
+  \draw[yellow!70!orange,{Stealth}-{Stealth}] (Pi2) -- (0,1) node[midway,below]{$a$};
+  \draw[yellow!70!orange,{Stealth}-{Stealth}] (0,1) -- (Pr) node[midway,below]{$a$};
+  \draw[orange!90!black,{Stealth}-{Stealth}] (Pr) -- (3.5,1) node[midway,below]{$b$};
+  \draw[orange!90!black,{Stealth}-{Stealth}] (3.5,1) -- (Pi1) node[midway,below]{$b$};
+  \node[above] at (Pr) {$+Q,\Delta h_{r1}$};
+  \node[above left] at (Pi2) {$P_{i2}$: $-Q,\Delta h_{r2}$};
+  \node[above right] at (Pi1) {$P_{i1}$: $Q,\Delta h_{i1}$};
+  \node at (-1.5,0.3) {Agua}; \node at (1.75,0.3) {Tierra}; \node at (5,0.3) {Roca};
+  \node[below,align=center] at (0,-0.3) {Línea de conservación\\del nivel de carga $h$};
+  \node[below] at (3.9,-0.3) {Borde impermeable};
+\end{tikzpicture}
+\caption{Pozo entre una fuente de recarga y un borde impermeable.}
+\end{figure}
+
+Puede ocurrir que:
+\[
+2b+a<R\quad\vee\quad 2a+b<R
+\]
+\textcolor{rojo}{¡Un pozo imaginario está afectando la otra condición de borde!}
+En ese caso deben agregarse nuevas imágenes (de las imágenes) hasta que
+todas las imágenes adicionales queden fuera del radio de influencia.
+
+\section{Acuíferos estratificados}
+
+\subsection{Pozo que capta de varias napas (napas artesianas)}
+\begin{itemize}
+  \item El caudal total proviene de ambas napas.
+  \item Cada napa aporta según la diferencia entre su nivel piezométrico y la
+        depresión en el pozo.
+\end{itemize}
+
+% Macro para dibujar el pozo en dos napas
+\newcommand{\pozodosnapas}{%
+  \fill[suelo!80] (0,3) rectangle (6,4.6);
+  \fill[pattern=north east lines,pattern color=brown] (0,2.7) rectangle (6,3);
+  \fill[aguaclara] (0,1.5) rectangle (6,2.7);
+  \fill[pattern=north east lines,pattern color=brown] (0,1.2) rectangle (6,1.5);
+  \fill[agua!70] (0,0) rectangle (6,1.2);
+  \fill[pattern=north east lines,pattern color=brown] (0,-0.3) rectangle (6,0);
+  \fill[white] (2.6,0) rectangle (3.4,4.6);
+  \fill[agua!50] (2.6,0) rectangle (3.4,3.3);
+  \draw[thick] (2.6,0) -- (2.6,4.6) (3.4,0) -- (3.4,4.6);
+  \draw[thick] (0,4.6) -- (2.6,4.6) (3.4,4.6) -- (6,4.6);
+  \node at (1,2.1) {$m_1,\,K_1$}; \node at (1,0.6) {$m_2,\,K_2$};
+  \node at (3.1,0.25) {$r_0$};
+  \fill[azulusm] (2.9,4.6) rectangle (3.1,5.1);
+  \fill[azulusm] (2.75,5.1) -- (3.25,5.1) -- (3,5.4) -- cycle; \node at (3.4,5.3) {$Q$};}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,scale=1.25]
+  \pozodosnapas
+  \draw[dashed,azulusm,thick] (0,4.3) -- (6,4.3) node[pos=0,above right,font=\scriptsize]{Nivel piezométrico 2};
+  \draw[dashed,azulusm,thick] (0,3.8) -- (6,3.8) node[pos=0,above right,font=\scriptsize]{Nivel piezométrico 1};
+  \draw[cota] (4.2,3.3) -- (4.2,3.8) node[midway,left]{$\Delta h_1$};
+  \draw[cota] (5.3,3.3) -- (5.3,4.3) node[midway,left]{$\Delta h_2$};
+  \draw[dashed,cyan] (3.4,3.3) -- (6,3.3);
+\end{tikzpicture}
+\caption{Pozo que capta de dos napas artesianas.}
+\end{figure}
+
+Si el valor de $R$ es constante para las distintas napas:
+\begin{formula}
+$\displaystyle Q=\frac{2\pi}{\ln\left(\frac{R}{r}\right)}\cdot\sum_{i=1}^n\Delta h_i\cdot K_i\cdot m_i$
+\end{formula}
+\begin{itemize}
+  \item Si $\Delta h_1$ llega al acuífero confinado 1, éste funciona como un acuífero libre.
+  \item En el caso de una sola napa estratificada, se tiene un único valor $\Delta h$.
+\end{itemize}
+
+\subsection{Considerando el instante inicial}
+\begin{itemize}
+  \item No existe extracción de caudal del pozo.
+  \item El nivel estático (N.E.) se encuentra entre los dos niveles piezométricos.
+\end{itemize}
+\begin{center}
+\colorbox{azulusm}{\parbox{0.5\textwidth}{\centering\color{white}\bfseries Una napa alimenta a la otra}}
+\end{center}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,scale=1.25]
+  \pozodosnapas
+  \draw[dashed,azulusm,thick] (0,4.3) -- (6,4.3) node[pos=0,above right,font=\scriptsize]{Nivel piezométrico 1} node[right]{$t=0$};
+  \draw[dashed,azulusm,thick] (0,3.6) -- (6,3.6) node[pos=0,below right,font=\scriptsize]{Nivel piezométrico 2};
+  \draw[dashed,cyan] (3.4,4.0) -- (6,4.0) node[right,black]{$t>0$};
+  \draw[cota] (4.2,4.0) -- (4.2,4.3) node[midway,right]{$\Delta h_1$};
+  \draw[cota] (5.3,3.6) -- (5.3,4.0) node[midway,right]{$\Delta h_2$};
+  \draw[cota] (1.3,3.6) -- (1.3,4.3) node[midway,right]{$\Delta h_T$};
+  \draw[flecha,azulusm] (1.8,2.4) -- (2.55,2.4); \draw[flecha,azulusm] (4.8,2.4) -- (3.45,2.4) node[pos=0,right]{$Q$};
+  \draw[flecha,azulusm] (2.55,0.8) -- (1.8,0.8); \draw[flecha,azulusm] (3.45,0.8) -- (4.8,0.8) node[right]{$Q$};
+\end{tikzpicture}
+\caption{Condición inicial: la napa 1 alimenta a la napa 2 a través del pozo.}
+\end{figure}
+
+\[
+\Delta h_1=\frac{Q}{2\pi T_1}\ln\left(\frac{R}{r_0}\right),\qquad
+\Delta h_2=\frac{-Q}{2\pi T_2}\ln\left(\frac{R}{r_0}\right)
+\quad\Longrightarrow\quad
+\frac{\Delta h_T}{\Delta h_1}=\frac{T_1}{T_2}+1
+\]
+\begin{formula}
+$\displaystyle\Delta h_T=\Delta h_1\left(\frac{T_1+T_2}{T_2}\right)$
+\end{formula}
+Por lo tanto, midiendo $\Delta h_1$ en la perforación se puede calcular
+$\Delta h_T$ y $\Delta h_2$.
+
+\subsection{Nivel estático en el estrato de arcilla o roca del segundo acuífero}
+Si el nivel estático (N.E.) se encuentra justo en el estrato de arcilla o
+roca del segundo acuífero:
+\begin{itemize}
+  \item El acuífero 1 se convierte en un acuífero libre, aportando un caudal
+        constante $Q_0$.
+\end{itemize}
+\begin{center}
+\colorbox{azulusm}{\parbox{0.7\textwidth}{\centering\color{white}\bfseries Cuando comienza el bombeo las napas están en equilibrio ($h_1=h_2$)}}
+\end{center}
+\begin{formula}
+$\displaystyle Q=Q_0+\frac{2\pi K_2\cdot m_2\,\Delta h_2}{\ln\left(\frac{R}{r_0}\right)}$
+\end{formula}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \draw[flecha] (0,0) -- (5,0) node[below]{$Q$};
+  \draw[flecha] (0,0) -- (0,4) node[left]{$\Delta h$};
+  \draw[orange!90!black,very thick] (0,0) -- (2.2,1.3) -- (3.1,3.8);
+  \draw[azulusm,very thick,dashed] (1.7,0) node[below,black]{$Q_0$} -- (2.2,1.3);
+  \node[above left] at (2.2,1.3) {$Q_1(t)+Q_2(t)$};
+  \node[right] at (2.7,2.8) {$Q_0+Q_2(t)$};
+\end{tikzpicture}
+\caption{Curva de agotamiento ($\Delta h$ vs.\ $Q$).}
+\end{figure}
+
+Si se posee una curva de agotamiento ($\Delta h$ vs.\ $Q$) se pueden calcular
+$K_1$ y $K_2$.

@@ -1,0 +1,107 @@
+% =====================================================================
+%  HIDRÁULICA APLICADA -- CIV-346
+%  Apuntes transcritos de las clases (Unidad I, II y Drenaje superficial)
+%  Compilar con: pdflatex main.tex  (dos veces, para el índice)
+% =====================================================================
+\documentclass[11pt,a4paper]{report}
+
+% ---------------------------------------------------------------------
+%  Paquetes
+% ---------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{mathtools}
+\usepackage{siunitx}
+\sisetup{output-decimal-marker={.}}
+\usepackage{graphicx}
+\usepackage{booktabs,array,multirow,tabularx}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage{caption,subcaption}
+\usepackage{float}
+\usepackage{cancel}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,patterns,decorations.pathmorphing,
+  decorations.markings,shapes.geometric,positioning,fadings,shadings,
+  intersections,backgrounds}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usepgfplotslibrary{fillbetween}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=azulusm,urlcolor=azulusm}
+
+% ---------------------------------------------------------------------
+%  Colores y estilos
+% ---------------------------------------------------------------------
+\definecolor{azulusm}{RGB}{0,69,137}
+\definecolor{amarillo}{RGB}{247,176,0}
+\definecolor{agua}{RGB}{110,165,215}
+\definecolor{aguaclara}{RGB}{190,215,240}
+\definecolor{suelo}{RGB}{200,160,70}
+\definecolor{sueloclaro}{RGB}{240,215,150}
+\definecolor{roca}{RGB}{190,190,195}
+\definecolor{rojo}{RGB}{210,20,30}
+
+% Caja amarilla para fórmulas importantes (como en las diapositivas)
+\newtcolorbox{formula}[1][]{colback=amarillo!35,colframe=amarillo,
+  arc=3mm,boxrule=0.8pt,left=4mm,right=4mm,top=1mm,bottom=1mm,
+  before upper={\centering},#1}
+% Caja celeste para desarrollos / notas
+\newtcolorbox{nota}[1][]{colback=aguaclara!40,colframe=agua,
+  arc=2mm,boxrule=0.6pt,fonttitle=\bfseries,#1}
+
+\setlist[itemize,1]{label=\textcolor{rojo}{$\odot$}}
+\setlist[itemize,2]{label=\textcolor{rojo}{$\square$}}
+
+% Estilos TikZ reutilizables
+\tikzset{
+  nivelagua/.pic={%  símbolo de nivel de agua ▽
+    \draw[fill=azulusm] (-0.12,0.18)--(0.12,0.18)--(0,0)--cycle;
+    \draw (-0.15,-0.05)--(0.15,-0.05) (-0.10,-0.10)--(0.10,-0.10)
+          (-0.05,-0.15)--(0.05,-0.15);},
+  impermeable/.style={pattern=north east lines,pattern color=black!60},
+  flecha/.style={-{Stealth[length=2.5mm]},thick},
+  cota/.style={{Stealth[length=2mm]}-{Stealth[length=2mm]}},
+}
+
+% \paragraph como título en línea propia (evita cajas desbordadas)
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {1.5ex \@plus 0.5ex \@minus 0.2ex}{0.5ex}{\normalfont\normalsize\bfseries}}
+\makeatother
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\clase}[2]{\chapter[Clase #1: #2]{#2}\noindent\textit{Clase #1}\par\medskip}
+
+\title{\textbf{Hidráulica Aplicada -- CIV-346}\\[4pt]
+  \large Apuntes de clases: Hidrología subterránea, Aguas subterráneas\\
+  y Drenaje superficial}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\part{Hidrología y aguas subterráneas}
+\input{clases/clase01}
+\input{clases/clase02}
+\input{clases/clase03}
+\input{clases/clase04}
+\input{clases/clase05}
+\input{clases/clase06}
+\input{clases/clase07}
+\input{clases/clase08}
+
+\part{Drenaje superficial}
+\input{clases/clase09}
+\input{clases/clase10}
+\input{clases/clase11}
+\input{clases/clase12}
+
+\end{document}
