@@ -1,0 +1,188 @@
+% =====================================================================
+%  CLASE 08 -- Drenaje subterráneo: régimen impermanente
+% =====================================================================
+\clase{08}{Drenaje subterráneo: régimen impermanente}
+
+\section{Régimen impermanente}
+\paragraph{Hipótesis}
+\begin{itemize}
+  \item Lluvia o sobrecarga esporádica.
+  \item Acuífero homogéneo e isotrópico.
+\end{itemize}
+\paragraph{Condición de diseño}
+\begin{itemize}
+  \item La saturación no debe llegar a las raíces del cultivo.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,scale=1.0]
+  \fill[pattern=crosshatch,pattern color=gray!60] (-0.5,-0.25) rectangle (8.5,0);
+  \draw (-0.5,0) -- (8.5,0);
+  \draw[thick] (-0.5,3.2) -- (0.8,3.2) -- (0.8,0) (1.3,0) -- (1.3,3.2) -- (6.7,3.2) -- (6.7,0) (7.2,0) -- (7.2,3.2) -- (8.5,3.2);
+  \draw[dashed] (0.8,1.0) -- (7.2,1.0);
+  \pic at (1.05,1.02) {nivelagua}; \pic at (6.95,1.02) {nivelagua};
+  \draw[azulusm,thick] (1.3,1.0) .. controls (1.8,3.1) and (6.2,3.1) .. (6.7,1.0);
+  \draw[azulusm,thick,dashed] (1.3,1.0) .. controls (1.8,2.3) and (6.2,2.3) .. (6.7,1.0);
+  \draw[cota] (0.2,0) -- (0.2,3.2) node[midway,left]{$H_0$};
+  \draw[cota] (7.6,0) -- (7.6,1.0) node[midway,right]{$h_0$};
+  \draw (2.6,0) -- (2.6,2.45) (3.0,0) -- (3.0,2.6);
+  \node at (2.4,2.7) {$h$}; \node at (3.4,2.9) {$h+\frac{\partial h}{\partial x}\partial x$};
+  \draw[flecha,azulusm] (2.5,0.6) -- (1.8,0.6) node[pos=0,above right]{$Q_2$};
+  \draw[flecha,azulusm] (3.6,0.6) -- (3.1,0.6) node[pos=0,above]{$Q_1$};
+  \node[below] at (2.4,0) {$x$}; \node[below] at (3.5,0) {$x+\partial x$};
+  \draw[cota] (1.3,-0.8) -- (4.0,-0.8) node[midway,below]{$D/2$};
+  \draw[dashed] (4,0) -- (4,3.2);
+  \draw[<-] (2.0,2.4) -- (1.2,4.0) node[above]{Nivel inicial};
+  \draw[<-] (5.4,2.0) -- (6.8,4.0) node[above]{Nivel instante $t$};
+  \node[above] at (4,3.4) {Parábola de 4° grado};
+\end{tikzpicture}
+\caption{Descenso de la napa entre drenes paralelos después de una recarga esporádica.}
+\end{figure}
+
+Usando la aproximación de Dupuit--Forchheimer ($\partial h/\partial s\approx\partial h/\partial r$),
+la ecuación de continuidad es:
+\begin{formula}
+$\displaystyle h\frac{\partial^2h}{\partial x^2}+\left(\frac{\partial h}{\partial x}\right)^2=\frac SK\frac{\partial h}{\partial t}$
+\qquad\textbf{Ecuación de continuidad}
+\end{formula}
+\paragraph{Condiciones de borde}
+\begin{itemize}
+  \item Suelo saturado: \quad $t=0\ \Rightarrow\ x=\frac D2;\ h=H_0$.
+  \item Napa vuelve a su estado natural: \quad $t=\infty\ \Rightarrow\ x=\frac D2;\ h=h_0$.
+\end{itemize}
+
+% Macro drenes cerrados con y, y0, H0, d
+\newcommand{\drenesimperm}{%
+\begin{tikzpicture}[font=\small,scale=0.85]
+  \fill[pattern=crosshatch,pattern color=gray!60] (-0.5,-0.25) rectangle (8.5,0);
+  \draw (-0.5,0) -- (8.5,0);
+  \draw[thick] (-0.5,3.8) -- (8.5,3.8);
+  \draw[dashed] (-0.5,1.8) -- (8.5,1.8);
+  \foreach \x in {0.4,4.0,7.6} \draw[thick,fill=white] (\x,1.8) circle (0.35);
+  \draw[azulusm,thick] (0.75,1.9) .. controls (1.2,3.0) and (3.2,3.0) .. (3.65,1.9);
+  \draw[azulusm,thick] (4.35,1.9) .. controls (4.8,3.0) and (6.8,3.0) .. (7.25,1.9);
+  \draw[cota] (-0.2,0) -- (-0.2,3.8) node[midway,left]{$H_0$};
+  \draw[cota] (0.2,1.8) -- (0.2,3.8) node[midway,right]{$y_0$};
+  \draw[cota] (2.2,0) -- (2.2,2.72) node[pos=0.4,right]{$h$};
+  \draw[cota] (5.8,2.72) -- (5.8,3.8) node[midway,right]{$y$};
+  \draw[cota] (3.65,2.4) -- (4.35,2.4) node[midway,above]{$2r_0$};
+  \draw[cota] (0.4,1.0) -- (4.0,1.0) node[midway,below]{$D$};
+  \draw[cota] (4.0,1.0) -- (7.6,1.0) node[midway,below]{$D$};
+  \draw[cota] (8.2,0) -- (8.2,1.8) node[midway,right]{$d$};
+\end{tikzpicture}}
+
+\section{Solución gráfica de Moody (1964)}
+Resolvió la ecuación anterior mediante diferencias finitas y con los
+resultados construyó gráficos adimensionales de $y/y_0$ y de
+$\dfrac{qD}{K\pi y_0}$ en función de $\alpha$, para distintos valores de $m$.
+
+\begin{figure}[H]
+\centering
+\drenesimperm
+\caption{Notación para drenes cerrados en régimen impermanente.}
+\end{figure}
+
+Cambio de variable:
+\[
+y=h-d,\qquad y_0=H_0-d,\qquad m=\frac{y_0}{H_0},\qquad\alpha=\frac{KH_0t}{SD^2}
+\]
+Gráficas válidas para $d\neq0$.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.45\textwidth}\centering
+\begin{tikzpicture}[font=\small]
+  \draw[flecha] (0,0) -- (4.5,0) node[right]{$\alpha$};
+  \draw[flecha] (0,0) -- (0,3.3) node[left]{$y/y_0$};
+  \foreach \s in {0,0.35,0.7}
+    \draw[azulusm,thick] (0,3) .. controls (1.2+\s,3) and (1.3+\s,0.2) .. (4.2,0.05);
+  \draw[<-] (2.1,1.5) -- (2.7,2.2) node[above right]{$m$};
+\end{tikzpicture}
+\end{subfigure}
+\begin{subfigure}{0.45\textwidth}\centering
+\begin{tikzpicture}[font=\small]
+  \draw[flecha] (0,0) -- (4.5,0) node[right]{$\alpha$};
+  \draw[flecha] (0,0) -- (0,3.3) node[left]{$\dfrac{qD}{K\pi y_0}$};
+  \foreach \a/\b in {2.8/0.9,2.1/0.6,1.5/0.4}
+    \draw[azulusm,thick] (0.3,\a) .. controls (2,\a-0.5) and (3,\b+0.3) .. (4.2,\b);
+  \draw[<-] (2.8,1.6) -- (3.3,2.2) node[above right]{$m$};
+\end{tikzpicture}
+\end{subfigure}
+\caption{Esquema de las curvas de Moody.}
+\end{figure}
+
+\section{Solución de Glover--Dumm (1954)}
+\begin{itemize}
+  \item El suelo parte totalmente saturado (condición inicial).
+  \item Entrega la separación entre drenes para que el nivel baje de $y_0$ a
+        $y$ en un tiempo $t$.
+\end{itemize}
+Con el cambio de variable $y=h-d$, $y_0=H_0-d$:
+\begin{formula}
+$\displaystyle y(x,t)=\frac{4y_0}{\pi}\sum_{n=1}^\infty\frac{1}{2n-1}\sin\left(\frac{(2n-1)\pi x}{D}\right)\exp\left(-(2n-1)^2\alpha t\right),
+\qquad\alpha=\frac{\pi^2Kd}{SD^2}$
+\end{formula}
+Para $x=D/2$ y $\alpha t\geq0.2$ basta el primer término:
+\begin{formula}
+$y=1.16\,y_0\,e^{-\alpha t}\quad\Longrightarrow\quad
+\displaystyle D=\pi\sqrt{\frac{K\cdot d\cdot t}{S\cdot\ln\left(\frac{1.16\cdot y_0}{y}\right)}}$
+\qquad válida para $d\neq0$
+\end{formula}
+
+\section{Corrección de Hooghoudt}
+Al incluir simplificaciones, las soluciones anteriores producen algunos
+errores en la estimación de $D$. Se reemplaza $d$ por una profundidad
+equivalente $d'$:
+\begin{formula}
+Si $\dfrac dD<0.25$:\quad $\displaystyle\frac{d'}{d}=\frac{1}{1+\frac8\pi\frac dD\ln\left(\frac d\chi\right)}$\\[10pt]
+Si $\dfrac dD\geq0.25$:\quad $\displaystyle\frac{d'}{d}=\frac{\pi}{2\left(\ln\left(\frac D\chi\right)+0.18\right)}$\\[8pt]
+$\chi=\pi r_0$: perímetro mojado del dren
+\end{formula}
+Procedimiento iterativo:
+\begin{enumerate}
+  \item Partir con $d$ y obtener $D$.
+  \item Con $D$ se corrige $d$ (se obtiene $d'$).
+  \item Se calcula nuevamente $D$.
+  \item Iterar hasta que $D$ converja.
+\end{enumerate}
+
+\section{Diseño en equilibrio dinámico}
+Si se conoce el ciclo anual de recargas (infiltración), por ejemplo un
+histograma mensual de recarga $R$ [mm], el sistema se encuentra en su
+\textbf{equilibrio dinámico} si se cumple:
+\begin{formula}
+$y_f\leq y_0$
+\end{formula}
+con $y_f$: altura de agua en el último mes de medición; $y_0$: altura de agua
+en el primer mes de medición. Además se exige un \textbf{índice de saturación}:
+\begin{formula}
+$\displaystyle I_s=\int(y>y_a)\,\dd t\leq200\ [\text{mm}\cdot\text{día}]$
+\end{formula}
+donde $Z_a$ es la profundidad de raíces ($y_a$ la altura correspondiente).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \draw[flecha] (0,0) -- (9,0) node[right]{$t$};
+  \draw[flecha] (0,0) -- (0,3.2) node[left]{$y$};
+  \draw[rojo,dashed,thick] (0,2.0) node[left,black]{$y_a$} -- (8.8,2.0);
+  \draw[azulusm,thick] (0,1.6)
+    \foreach \i in {0,...,9}{ -- ({0.3+0.85*\i},{2.8-0.08*\i}) .. controls ({0.5+0.85*\i},{1.6-0.05*\i}) .. ({0.85*(\i+1)},{1.4-0.05*\i}) };
+  \node[right] at (8.6,0.9) {$y_f$};
+  \node[above] at (1.5,2.9) {$I_s$: área sobre $y_a$};
+\end{tikzpicture}
+\caption{Evolución de la napa con recargas sucesivas; el área sobre $y_a$ define el índice de saturación.}
+\end{figure}
+
+Para cada mes se debe calcular la altura de agua al inicio y final del mes:
+\begin{itemize}
+  \item Al inicio del mes $i$ se tendrá una altura de agua:
+  \[
+  y_{0,i}=y_{f,i-1}+\Delta y_i,\qquad\Delta y_i=\frac{R_i}{S}\quad(S:\ \text{coeficiente de almacenamiento})
+  \]
+  \item Al final del mes $i$ se tendrá una altura de agua:
+  \[
+  y_{f,i}=1.16\,y_{0,i}\,e^{-\alpha t_i},\qquad\alpha=\frac{\pi^2Kd}{SD^2}
+  \]
+\end{itemize}

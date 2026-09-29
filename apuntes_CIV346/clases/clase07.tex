@@ -1,0 +1,359 @@
+% =====================================================================
+%  CLASE 07 -- Drenaje subterráneo: régimen permanente
+% =====================================================================
+\clase{07}{Drenaje subterráneo: régimen permanente}
+
+\section{Motivación}
+Suelos agrícolas anegados, excavaciones inundadas por la napa o canchas
+deportivas saturadas: ¿cómo podemos solucionar este problema?
+
+\section{Drenaje subterráneo}
+Los drenes son utilizados con distintos fines:
+\begin{itemize}
+  \item Disminuir los niveles de agua para evitar la saturación de las raíces
+        de una plantación.
+  \item Evitar la saturación superficial del suelo de complejos deportivos.
+  \item Captación de aguas subterráneas con fines de almacenamiento de agua
+        potable y/o superficial.
+\end{itemize}
+Tipos de obras:
+\begin{itemize}
+  \item Pozos.
+  \item Drenes:
+  \begin{itemize}
+    \item Drenes verticales o punteras.
+    \item Drenes horizontales: naturales, interceptores y paralelos.
+  \end{itemize}
+\end{itemize}
+
+\section{Drenes horizontales}
+\begin{itemize}
+  \item Conocidos como drenes o galerías de infiltración.
+  \item No son tan populares y usados como los pozos.
+  \item Usados en napas superficiales de poco espesor.
+  \item Permiten eliminar el consumo energético de bombas.
+\end{itemize}
+
+\subsection{Drenes interceptores}
+\begin{itemize}
+  \item Evacúan sólo una parte del flujo.
+  \item $h_0$ es la altura en el canal de evacuación.
+  \item Dimensionar $h_0$ tal que el problema se solucione.
+  \item $h_0$ puede tomarse como la altura normal en el canal (dren interceptor).
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[pattern=crosshatch,pattern color=gray!60] (0,-0.25) rectangle (9,0);
+  \draw (0,0) -- (9,0);
+  % canal
+  \draw[thick] (3,2.4) -- (3,0) -- (4.6,0) -- (4.6,2.4);
+  \fill[agua!50] (3,0) rectangle (4.6,0.9);
+  \pic at (4.2,0.92) {nivelagua};
+  % napa aguas arriba
+  \draw[azulusm,thick] (4.6,0.9) .. controls (5.3,1.0) and (5.6,2.0) .. (6.5,2.1) -- (9,2.15);
+  \draw[azulusm,thick] (0,0.8) -- (3,0.9);
+  \draw[cota] (3.3,0) -- (3.3,0.9) node[midway,right]{$h_0$};
+  \draw[cota] (5.6,0) -- (5.6,1.75) node[midway,right]{$h$};
+  \draw[cota] (8.2,0) -- (8.2,2.15) node[midway,right]{$H$};
+  \draw[cota] (3,2.6) -- (4.6,2.6) node[midway,above]{$b$};
+  \draw[->] (4.6,-0.5) -- (5.6,-0.5) node[midway,below]{$x$};
+  \draw[->] (4.6,-1.1) -- (8.2,-1.1) node[midway,below]{$x_1$};
+  \draw[flecha,azulusm] (7.6,1.2) -- (6.8,1.2) node[pos=0,above]{$q$};
+  \draw[flecha,azulusm] (2.2,0.4) -- (1.2,0.4) node[pos=0,above]{$q'$};
+\end{tikzpicture}
+\caption{Dren interceptor (corte transversal): el canal capta el caudal $q$
+y deja pasar $q'$.}
+\end{figure}
+
+Aplicando Dupuit al flujo hacia el dren:
+\begin{formula}
+$\displaystyle h^2-h_0^2=\frac{2\cdot q}{K}\cdot(x-x_0)$\\[4pt]
+Si para $x=x_1$, $h=H$ y $x_0=0$:\qquad $\displaystyle H^2-h_0^2=\frac{2\cdot q}{K}\cdot x_1$
+\end{formula}
+Lo que se lleva el canal, con $L$ el largo del dren:
+\begin{formula}
+$Q_z=(q-q')\cdot L$
+\end{formula}
+
+\subsection{Drenes paralelos}
+\paragraph{Clasificación según ubicación en el acuífero}
+\begin{itemize}
+  \item \textbf{Zanjas abiertas:}
+  \begin{itemize}
+    \item Líneas de flujo casi horizontales, excepto cerca de la captación.
+    \item Equipotenciales planas cercanas a la vertical.
+  \end{itemize}
+  \item \textbf{Tuberías:}
+  \begin{itemize}
+    \item Líneas de flujo radiales dirigidas a la captación.
+    \item Equipotenciales son superficies semicilíndricas concéntricas con la captación.
+  \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.48\textwidth}\centering
+\begin{tikzpicture}[font=\small,scale=0.8]
+  \fill[aguaclara] (0,0) rectangle (6,3);
+  \draw[thick] (0,3.3) -- (6,3.3);
+  \draw[thick] (2.9,0) -- (2.9,3.3) (3.1,0) -- (3.1,3.3);
+  \draw[azulusm,thick] (0,2.9) .. controls (2,2.8) and (2.7,2.5) .. (2.9,2.2);
+  \draw[azulusm,thick] (6,2.9) .. controls (4,2.8) and (3.3,2.5) .. (3.1,2.2);
+  \foreach \y in {0.5,1.2,1.9} {\draw[->,azulusm] (0.3,\y) -- (2.8,\y); \draw[->,azulusm] (5.7,\y) -- (3.2,\y);}
+  \foreach \x in {0.8,1.6,2.3,3.7,4.4,5.2} \draw[dashed] (\x,0) -- (\x,2.8);
+  \fill[pattern=north east lines] (0,-0.2) rectangle (6,0);
+\end{tikzpicture}
+\caption{Zanjas abiertas.}
+\end{subfigure}\hfill
+\begin{subfigure}{0.48\textwidth}\centering
+\begin{tikzpicture}[font=\small,scale=0.8]
+  \fill[aguaclara] (0,0) rectangle (6,3);
+  \draw[thick] (0,3.3) -- (6,3.3);
+  \draw[azulusm,thick] (0,2.9) .. controls (2,2.8) and (2.6,2.5) .. (3,2.3) .. controls (3.4,2.5) and (4,2.8) .. (6,2.9);
+  \fill[azulusm] (3,2.3) circle (0.18);
+  \foreach \a in {0,20,...,180} \draw[->,azulusm] (3,2.3) ++(-\a:2.0) -- ++(180-\a:1.7);
+  \foreach \r in {0.8,1.4,2.0} \draw[dashed] (3,2.3) ++(0:\r) arc (0:-180:\r);
+  \fill[pattern=north east lines] (0,-0.2) rectangle (6,0);
+\end{tikzpicture}
+\caption{Tuberías.}
+\end{subfigure}
+\caption{Redes de flujo hacia drenes paralelos.}
+\end{figure}
+
+\paragraph{Régimen de escurrimiento}
+\begin{itemize}
+  \item Condición de equilibrio (régimen permanente).
+  \item Condición de desequilibrio (régimen impermanente).
+\end{itemize}
+
+% Macro: drenes paralelos abiertos (#1 = separación al fondo impermeable d)
+\newcommand{\drenesabiertos}[1]{%
+\begin{tikzpicture}[font=\small,scale=0.9]
+  \def\d{#1}
+  \fill[pattern=crosshatch,pattern color=gray!60] (-0.5,-\d-0.25) rectangle (8.5,-\d);
+  \draw (-0.5,-\d) -- (8.5,-\d);
+  % zanjas
+  \draw[thick] (-0.5,3) -- (0.6,3) -- (0.6,0) -- (1.0,0) -- (1.0,3) -- (7.0,3) -- (7.0,0) -- (7.4,0) -- (7.4,3) -- (8.5,3);
+  \fill[agua!60] (0.6,0) rectangle (1.0,1.0); \fill[agua!60] (7.0,0) rectangle (7.4,1.0);
+  % volumen de control
+  \fill[rojo,opacity=0.15,draw=rojo] (1.0,0) rectangle (3.3,3);
+  \node[rojo] at (1.6,2.6) {\large$V_c$};
+  % napa
+  \draw[azulusm,thick] (1.0,1.0) .. controls (1.3,2.0) and (2.5,2.3) .. (4.0,2.3) .. controls (5.5,2.3) and (6.7,2.0) .. (7.0,1.0);
+  \pic at (0.8,1.02) {nivelagua}; \pic at (7.2,1.02) {nivelagua};
+  % lluvia
+  \foreach \x in {-0.3,0.1,1.6,2.1,2.6,3.1,3.6,4.1,4.6,5.1,5.6,6.1,7.8,8.2}
+    \draw[->,azulusm,thick] (\x,4.0) -- (\x,3.1);
+  \node at (0.0,4.3) {$f$}; \node at (3.8,4.3) {$f$}; \node at (8.0,4.3) {$f$};
+  \draw[cota] (0.2,0) -- (0.2,1.0) node[midway,left]{$h_0$};
+  \draw[cota] (7.8,0) -- (7.8,1.0) node[midway,right]{$h_0$};
+  \draw[cota] (4.0,0) -- (4.0,2.3) node[midway,right]{$H$};
+  \draw[cota] (1.3,0) -- (1.3,1.45) node[midway,right]{$h$};
+  \draw[->] (1.0,0.15) -- (2.0,0.15) node[midway,above]{$x$};
+  \draw[flecha,azulusm] (2.4,1.1) -- (1.7,1.1) node[pos=0,right]{$q$};
+  \draw[flecha,azulusm] (5.8,1.1) -- (6.5,1.1) node[pos=0,left]{$q$};
+  \draw[cota] (0.8,-\d-0.6) -- (7.2,-\d-0.6) node[midway,below]{$D$};
+  \ifdim\d pt>0pt \draw[cota] (7.6,-\d) -- (7.6,0) node[midway,right]{$d$};\fi
+\end{tikzpicture}}
+
+\section{Drenes abiertos: drenes paralelos en condición de equilibrio}
+
+\subsection{Drenes que abarcan toda la napa: ecuación de Donnan}
+\begin{itemize}
+  \item Acuífero homogéneo e isotrópico.
+  \item Drenes abarcan toda la napa (llegan al fondo impermeable).
+  \item Espaciados equidistantemente.
+  \item Alimentación constante por unidad de superficie ($f$).
+  \item Se desprecia la curvatura del flujo cerca de la zanja.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\drenesabiertos{0}
+\caption{Drenes paralelos abiertos que abarcan toda la napa.}
+\end{figure}
+
+\begin{nota}[title={Deducción}]
+Balance en el volumen de control $V_c$ entre el dren ($x=0$) y la sección
+$x$, y Dupuit: el caudal que sale por $x=0$ es $q=f\left(\frac D2-x\right)$ y
+\[
+q=K\,h\frac{\dd h}{\dd x}\ \Rightarrow\ f\left(\frac D2-x\right)\dd x=K\,h\,\dd h
+\ \Rightarrow\ \int_0^{D/2}f\left(\frac D2-x\right)\dd x=\int_{h_0}^{H}K\,h\,\dd h
+\]
+\end{nota}
+\begin{formula}
+$\displaystyle H^2-h_0^2=\frac{f\cdot D^2}{4\cdot K}$\qquad\textbf{Ecuación de Donnan}
+\end{formula}
+
+\subsection{Drenes que no abarcan toda la napa: ecuación de Hooghoudt}
+\begin{itemize}
+  \item Acuífero homogéneo e isotrópico.
+  \item Drenes \textbf{no} abarcan toda la napa.
+  \item Espaciados equidistantemente.
+  \item Alimentación constante por unidad de superficie.
+  \item La distancia al fondo impermeable no debe ser muy grande ($d<0.6$ m).
+  \item Se desprecia la curvatura del flujo cerca de la zanja.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\drenesabiertos{0.8}
+\caption{Drenes paralelos abiertos a una distancia $d$ del estrato impermeable.}
+\end{figure}
+
+\begin{formula}
+$\displaystyle(H-h_0)(H+h_0+2d)=\frac{f\cdot D^2}{4\cdot K}$\qquad\textbf{Ecuación de Hooghoudt}
+\end{formula}
+
+\paragraph{Corrección de Hooghoudt.} Para $d>0.6$ m (flujo radial hacia el
+dren) se utiliza una profundidad equivalente $d'$, que se obtiene de un
+ábaco en función de la profundidad del estrato $d$ y del espaciamiento $D$
+($d'<d$, y $d'$ tiende a un valor límite al crecer $d$):
+\begin{formula}
+$\displaystyle(H-h_0)(H+h_0+2d')=\frac{f\cdot D^2}{4\cdot K}$
+\end{formula}
+
+\section{Drenes cerrados: drenes paralelos en condición de equilibrio}
+
+% Macro: drenes cerrados (tuberías)
+\newcommand{\drenescerrados}[1]{% #1: 1 = fondo a distancia d, 0 = infinito
+\begin{tikzpicture}[font=\small,scale=0.9]
+  \foreach \x in {0,0.4,...,8} \draw[->,azulusm,thick] (\x,3.4) -- (\x,2.6);
+  \node at (0.6,3.7) {$f$}; \node at (4,3.7) {$f$}; \node at (7.4,3.7) {$f$};
+  \draw[thick] (-0.2,2.5) -- (8.2,2.5);
+  \draw[dashed] (-0.5,1.0) -- (8.5,1.0);
+  \foreach \x in {0.4,4.0,7.6} \draw[thick,fill=white] (\x,1.0) circle (0.35);
+  \draw[azulusm,thick] (0.75,1.1) .. controls (1.2,2.1) and (3.2,2.1) .. (3.65,1.1);
+  \draw[azulusm,thick] (4.35,1.1) .. controls (4.8,2.1) and (6.8,2.1) .. (7.25,1.1);
+  \draw[cota] (2.2,1.0) -- (2.2,1.85) node[midway,right]{$H$};
+  \draw[cota] (0.05,1.6) -- (0.75,1.6) node[midway,above]{$2r_0$};
+  \draw[cota] (0.4,0.3) -- (4.0,0.3) node[midway,below]{$D$};
+  \draw[cota] (4.0,0.3) -- (7.6,0.3) node[midway,below]{$D$};
+  \ifnum#1=1
+    \fill[pattern=crosshatch,pattern color=gray!60] (-0.5,-0.9) rectangle (8.5,-0.65);
+    \draw (-0.5,-0.65) -- (8.5,-0.65);
+    \draw[cota] (8.2,-0.65) -- (8.2,1.0) node[midway,right]{$d$};
+    \fill[rojo,opacity=0.15,draw=rojo] (4.0,-0.65) rectangle (5.8,2.5);
+    \node[rojo] at (4.9,2.2) {$V_c$};
+  \else
+    \fill[rojo,opacity=0.15,draw=rojo] (2.2,2.5) -- (2.2,1.0) arc (180:360:1.8) -- (5.8,2.5) -- cycle;
+    \node[rojo] at (4.0,2.2) {$V_c$};
+    \foreach \a in {200,230,...,340} \draw[->,azulusm] (4,1.0) ++(\a:1.7) -- ++(\a+180:1.2);
+    \node at (7.5,-0.7) {$d\approx\infty$};
+  \fi
+\end{tikzpicture}}
+
+\subsection{Corrección de Dagan (1964)}
+\begin{itemize}
+  \item Para distancias ($d$) al estrato impermeable pequeñas.
+  \item Incorpora la curvatura cerca del dren.
+  \item Se aplica un factor de corrección a la fórmula de Donnan.
+  \item También corrige la fórmula de Donnan ($d=h_0$).
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\drenescerrados{1}
+\caption{Drenes paralelos cerrados (tuberías) a una distancia $d$ del estrato impermeable.}
+\end{figure}
+
+\begin{formula}
+$\displaystyle(H+d)^2-d^2=\frac{f\cdot D^2}{4\cdot K}\left(1+\alpha\frac{4\cdot d}{D}\right)$\\[8pt]
+$\displaystyle\alpha=-\frac1\pi\ln\left[2\left(\cosh\left(\frac{\pi\cdot r_0}{d}\right)-1\right)\right]$
+\end{formula}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{cc}
+\toprule
+$r_0/d$ & $\alpha$\\
+\midrule
+0.01 & 2.16\\
+0.02 & 1.75\\
+0.04 & 1.31\\
+0.06 & 1.05\\
+0.08 & 0.86\\
+0.10 & 0.75\\
+0.20 & 0.29\\
+0.30 & 0.01\\
+\bottomrule
+\end{tabular}
+\caption{Factor $\alpha$ de Dagan. Para $r_0/d\geq0.3\Rightarrow\alpha\to0$.}
+\end{table}
+
+\subsection{Drenes superficiales (acuífero de espesor infinito)}
+\begin{itemize}
+  \item Acuífero homogéneo e isotrópico.
+  \item Acuífero de espesor muy grande o indefinido (infinito).
+  \item Espaciados equidistantemente.
+  \item Alimentación constante por unidad de superficie.
+  \item Escurrimiento semi-cilíndrico.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\drenescerrados{0}
+\caption{Drenes superficiales en acuífero de espesor infinito: escurrimiento semicilíndrico.}
+\end{figure}
+
+\begin{formula}
+$\displaystyle H=\frac{D\cdot f}{K\cdot\pi}\ln\left(\frac{D}{5.44\cdot r_0}\right)$
+\end{formula}
+
+\subsection{Acuíferos de espesor finito: fórmula de Kirkham (1958)}
+Incorpora la curvatura cerca del dren:
+\begin{formula}
+$\displaystyle H=\frac{D\cdot f}{K}\cdot F\left(\frac{2r_0}{D},\frac dD\right)$\\[8pt]
+$\displaystyle F(x,y)=\frac1\pi\left[\ln\left(\frac{2}{\pi x}\right)+\sum_{m=1}^\infty\frac1m\big(\cos(m\pi x)-\cos(m\pi)\big)\big(\coth(2m\pi y)-1\big)\right]$
+\end{formula}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|ccccc}
+\toprule
+& \multicolumn{5}{c}{$2r_0/D$}\\
+$d/D$ & 0.0025 & 0.005 & 0.01 & 0.02 & 0.04\\
+\midrule
+0.01 & 12.79 & 12.57 & 12.33 & 12.03 & 11.52\\
+0.02 & 6.761 & 6.541 & 6.318 & 6.077 & 5.771\\
+0.04 & 3.864 & 3.643 & 3.421 & 3.195 & 2.954\\
+0.08 & 2.522 & 2.301 & 2.080 & 1.858 & 1.633\\
+0.16 & 1.961 & 1.741 & 1.520 & 1.299 & 1.077\\
+0.32 & 1.787 & 1.566 & 1.345 & 1.125 & 0.904\\
+0.64 & 1.764 & 1.543 & 1.323 & 1.102 & 0.811\\
+1.00 & 1.763 & 1.543 & 1.322 & 1.101 & 0.811\\
+$\infty$ & 1.763 & 1.543 & 1.322 & 1.101 & 0.811\\
+\bottomrule
+\end{tabular}
+\caption{Valores de $F(2r_0/D,\,d/D)$ de Kirkham.}
+\end{table}
+
+\section{Régimen permanente: consideraciones de diseño}
+La infiltración siempre dependerá de:
+\begin{itemize}
+  \item Nivel de saturación del suelo.
+  \item Intensidad de precipitación.
+  \item Propiedades del suelo.
+  \item Recordar métodos de infiltración de hidrología para valores precisos.
+\end{itemize}
+\begin{table}[H]
+\centering
+\begin{tabular}{lc}
+\toprule
+\textbf{Tipo de suelo} & $f$ [mm/h]\\
+\midrule
+Arena & $>30$\\
+Arena limosa & 20 -- 30\\
+Limo & 10 -- 20\\
+Arcilla limosa & 5 -- 10\\
+Arcilla & 1 -- 5\\
+\bottomrule
+\end{tabular}
+\caption{Ejemplos de valores de infiltración.}
+\end{table}
+El diseño en régimen de equilibrio o permanente se utiliza cuando no es
+permisible tener un nivel de saturación prolongado en el tiempo. Ejemplo:
+plantas con raíces que no permiten estar saturadas por un tiempo prolongado,
+campos deportivos, etc.
