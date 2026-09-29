@@ -285,6 +285,46 @@ for _, grp in ipairs(registered) do
   for q = 2, #grp do reset(); grp[q][2](); paint(); on.escapeKey(); paint() end
 end
 
+
+-- 17 guardar cada tipo de formulario desde la interfaz (campos opcionales vacios)
+do
+  reset()
+  App.model = T.newModel("frame")
+  App.modelMenu()
+  local function submit(menuKey, vals)
+    reset(); App.modelMenu(); paint()
+    key("charIn", menuKey); key("charIn", "+")
+    local f = T.stack()[#T.stack()]
+    ok(f.ok ~= nil, "formulario abierto " .. menuKey)
+    for k, v in pairs(vals) do f.vals[k] = v end
+    f.sel = #f:visible() + 1
+    key("enterKey")
+    ok(T.stack()[#T.stack()] ~= f, "formulario " .. menuKey .. " guardado: " .. tostring(f.err))
+  end
+  submit("1", {x = "0", y = "0"})
+  submit("1", {x = "5", y = "0"})
+  submit("2", {E = "2", A = "1e5", I = "3", al = "", h = ""})
+  submit("3", {i = "1", j = "2", sec = "2"})
+  submit("4", {node = "1", tipo = 1, rx = true, ry = true, rz = true})
+  submit("4", {node = "2", tipo = 3, rx = false, ry = true, rz = false})
+  submit("5", {node = "2", fx = "", fy = "-P", m = ""})
+  submit("6", {mem = "1", t = 3, dir = 5, v1 = "w"})
+  submit("7", {name = "w", val = "2", keep = true})
+  local m = App.model
+  ok(#m.nodes == 2 and #m.secs == 2 and #m.mems == 1 and #m.sups == 2 and #m.nl == 1 and
+     #m.ml == 1 and #m.vars == 1, "modelo completo por formularios")
+  local res = Eng.solve(m)
+  local _, _, MA = Eng.internalLin(res, 1, 0, true)
+  near(MA.w, -25 / 8, 1e-6, "empotrada-apoyada w: -wL^2/8")
+  near(Eng.reacLin(res, 2, 2).P, 1, 1e-9, "P sobre el apoyo va a la reaccion")
+  -- vista previa: cambiar el apoyo mientras se edita no altera el modelo real
+  reset(); App.modelMenu(); key("charIn", "4"); key("enterKey")
+  local f = T.stack()[#T.stack()]
+  f.vals.rz = false; f.vals.rx = false
+  paint()
+  ok(App.model.sups[1].rz == true, "edicion pendiente no modifica el modelo")
+  for q = 1, 5 do key("escapeKey"); key("charIn", "p") end
+end
 -- ninguna pantalla de error interno durante la navegacion
 print(("%d pruebas, %d fallas"):format(count, fails))
 if fails > 0 then os.exit(1) end

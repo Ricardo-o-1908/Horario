@@ -1254,6 +1254,10 @@ end
 
 local function modelChanged() App.res = nil end
 
+-- pantalla dividida: panel izquierdo de datos y vista previa a la derecha
+local SPLIT = 150
+local drawPreviewPane, cyclePreview
+
 local function msgBox(title, lines) end  -- se define mas abajo
 
 ------------------------- Menu ------------------------------------------------
@@ -1266,13 +1270,15 @@ function Menu:getItems() return type(self.items) == "function" and self.items() 
 function Menu:paint(gc)
   local items = self:getItems()
   drawHeader(gc, type(self.title) == "function" and self.title() or self.title)
+  if self.split then drawPreviewPane(gc, self, H - 15) end
+  local W = self.split and SPLIT or W
   local rh, y0 = 15, 20
   local vis = floor((H - 16 - y0) / rh)
   if self.sel > #items then self.sel = #items end
   if self.sel < 1 then self.sel = 1 end
   if self.sel > self.off + vis then self.off = self.sel - vis end
   if self.sel <= self.off then self.off = self.sel - 1 end
-  font(gc, 10)
+  font(gc, self.split and 9 or 10)
   for r = 1, vis do
     local i = self.off + r
     local it = items[i]
@@ -1296,6 +1302,7 @@ function Menu:enter()
   if it and it.action then it.action() end
 end
 function Menu:char(ch)
+  if self.split and (ch == "p" or ch == "P") then cyclePreview(); return end
   local n = tonumber(ch)
   local items = self:getItems()
   if n then
@@ -1320,6 +1327,8 @@ end
 function List:paint(gc)
   local items = self.items()
   drawHeader(gc, self.title, #items .. " elem.")
+  drawPreviewPane(gc, self, H - 15)
+  local W = SPLIT
   local rh, y0 = 14, 20
   local n = #items + 1
   local vis = floor((H - 16 - y0) / rh)
@@ -1340,7 +1349,7 @@ function List:paint(gc)
       gc:drawString("[+] Agregar nuevo...", 5, y, "top")
     end
   end
-  drawFooter(gc, self.msg or "enter editar  + nuevo  del borrar  esc volver", self.msg ~= nil)
+  drawFooter(gc, self.msg or "enter editar  + nuevo  del borrar  p vista  esc volver", self.msg ~= nil)
   self.msg = nil
 end
 function List:arrow(k)
@@ -1351,7 +1360,9 @@ end
 function List:enter()
   if self.sel > #self.items() then self.add() else self.edit(self.sel) end
 end
-function List:char(ch) if ch == "+" then self.add() end end
+function List:char(ch)
+  if ch == "+" then self.add() elseif ch == "p" or ch == "P" then cyclePreview() end
+end
 function List:back()
   if self.sel <= #self.items() then
     local e = self.del(self.sel)
@@ -1378,7 +1389,7 @@ local Form = {}; Form.__index = Form
 -- fields: {k=, label= (str|fn), t="txt"|"opt"|"chk", opts=, help=, show=fn(vals), change=fn(vals)}
 function Form.new(title, fields, vals, ok)
   local f = setmetatable({title = title, fields = fields, vals = vals, ok = ok,
-                          sel = 1, off = 0, cur = nil}, Form)
+                          sel = 1, off = 0, cur = nil, fresh = true, split = App.model ~= nil}, Form)
   return f
 end
 function Form:visible()
@@ -1403,11 +1414,17 @@ function Form:paint(gc)
   if self.sel > n then self.sel = n end
   if not self.cur then self:resetCursor() end
   drawHeader(gc, self.title)
-  local rh, y0 = 16, 20
+  local realW = W
+  local split = self.split
+  if split then drawPreviewPane(gc, self, H - 30) end
+  local W = split and SPLIT or W
+  local rh, y0 = split and 26 or 16, 20
+  self.rh = rh
   local nv = floor((H - 30 - y0) / rh)
   if self.sel > self.off + nv then self.off = self.sel - nv end
   if self.sel <= self.off then self.off = self.sel - 1 end
-  local lx, vx = 5, 124
+  local lx, vx, vy, bh = 5, 124, 0, 14
+  if split then vx, vy = 4, 11 end
   for r = 1, nv do
     local i = self.off + r
     if i > n then break end
@@ -1416,12 +1433,13 @@ function Form:paint(gc)
     if i <= #vis then
       local fd = vis[i]
       local lab = type(fd.label) == "function" and fd.label(self.vals) or fd.label
-      font(gc, 9); col(gc, C.tx)
-      gc:drawString(fitText(gc, lab, vx - lx - 4), lx, y + 1, "top")
+      font(gc, split and 7 or 9); col(gc, C.tx)
+      gc:drawString(fitText(gc, lab, split and (W - 8) or (vx - lx - 4)), lx, y + (split and -1 or 1), "top")
       local v = self.vals[fd.k]
+      y = y + vy
       if fd.t == "txt" then
-        col(gc, {255, 255, 255}); gc:fillRect(vx, y, W - vx - 5, rh - 2)
-        col(gc, C.dim); gc:drawRect(vx, y, W - vx - 5, rh - 2)
+        col(gc, {255, 255, 255}); gc:fillRect(vx, y, W - vx - 5, bh)
+        col(gc, C.dim); gc:drawRect(vx, y, W - vx - 5, bh)
         col(gc, C.tx); font(gc, 10)
         local chars = utf8chars(v)
         local wmax = W - vx - 12
@@ -1433,7 +1451,7 @@ function Form:paint(gc)
         gc:drawString(fitText(gc, shown, wmax + 6), vx + 3, y, "top")
         if i == self.sel then
           local cx = vx + 3 + gc:getStringWidth(seg(first, cur))
-          col(gc, C.err); gc:fillRect(cx, y + 2, 1, rh - 6)
+          col(gc, C.err); gc:fillRect(cx, y + 2, 1, bh - 4)
         end
       elseif fd.t == "opt" then
         col(gc, C.title); font(gc, 9, "b")
@@ -1446,7 +1464,7 @@ function Form:paint(gc)
       end
     else
       col(gc, C.title); font(gc, 10, "b")
-      gc:drawString("[ ACEPTAR ]", W / 2 - 35, y, "top")
+      gc:drawString("[ ACEPTAR ]", W / 2 - 35, y + (split and 4 or 0), "top")
     end
   end
   -- ayuda
@@ -1456,9 +1474,9 @@ function Form:paint(gc)
     if fd.t == "opt" then help = (fd.help and fd.help .. "  " or "") .. "<- -> cambia"
     elseif fd.t == "chk" then help = "<- -> o espacio cambia" end
   end
-  col(gc, {245, 245, 225}); gc:fillRect(0, H - 29, W, 15)
+  col(gc, {245, 245, 225}); gc:fillRect(0, H - 29, realW, 15)
   col(gc, self.err and C.err or C.tx); font(gc, 7)
-  gc:drawString(fitText(gc, help, W - 6), 3, H - 27, "top")
+  gc:drawString(fitText(gc, help, realW - 6), 3, H - 27, "top")
   drawFooter(gc, "teclear reemplaza, <- -> edita  enter sig.  esc cancela")
 end
 function Form:move(d)
@@ -1534,7 +1552,8 @@ end
 function Form:tab() self:move(1) end
 function Form:esc() pop() end
 function Form:click(x, y)
-  local i = self.off + floor((y - 20) / 16) + 1
+  if self.split and x > SPLIT then return end
+  local i = self.off + floor((y - 20) / (self.rh or 16)) + 1
   if i >= 1 and i <= #self:visible() + 1 then
     if i == self.sel and i > #self:visible() then self:enter() else self.sel = i; self:resetCursor() end
   end
@@ -1738,6 +1757,80 @@ local function drawFrame(gc, G, tr, sup, opts)
 end
 
 ------------------------- Ver estructura -------------------------------------
+local function drawLoads(gc, model, G, tr)
+  local vt = G.vt
+  local lres = function(n)
+    local r = vt[n]
+    if r and r.value then return lin_const(r.value) end
+    return lin_const(1)
+  end
+  local function num(s) local ok, v = pcall(evalConst, s or "", lres); return ok and v or 0 end
+  col(gc, C.load); font(gc, 7)
+  for _, l in ipairs(model.nl) do
+    local nd = G.nodes[l.node]
+    if nd then
+      local x, y = tr(nd.x, nd.y)
+      local fx, fy = num(l.fx), num(l.fy)
+      if fx ~= 0 then
+        local sg = fx > 0 and 1 or -1
+        drawArrow(gc, x - sg * 22, y, x - sg * 3, y)
+        gc:drawString(l.fx, x - sg * 22 - (sg > 0 and 12 or -2), y - 10, "top")
+      end
+      if fy ~= 0 then
+        local sg = fy > 0 and 1 or -1
+        drawArrow(gc, x, y + sg * 22, x, y + sg * 3)
+        gc:drawString(l.fy, x + 3, y + sg * 18 - 5, "top")
+      end
+      if model.kind ~= "truss" and num(l.m) ~= 0 then
+        gc:drawArc(x - 9, y - 9, 18, 18, 30, 240)
+        gc:drawString(l.m, x + 8, y + 3, "top")
+      end
+    end
+  end
+  for _, l in ipairs(model.ml) do
+    local mb = G.mems[l.mem]
+    if mb then
+      local ni = G.nodes[mb.i]
+      local pres = function(n) if n == "L" then return lin_const(mb.L) end return lres(n) end
+      local function pos(s, d) if isBlank(s) then return d end local ok, v = pcall(evalConst, s, pres); return ok and v or d end
+      if l.t == 1 or l.t == 3 then
+        local ux, uy = dirLocal(l.dir or 1, mb.c, mb.s, false)
+        local gx, gy = mb.c * ux - mb.s * uy, mb.s * ux + mb.c * uy
+        local v1 = num(l.v1)
+        local v2 = (l.t == 3 and not isBlank(l.v2)) and num(l.v2) or v1
+        local a = pos(l.a, l.t == 1 and mb.L / 2 or 0)
+        local b = l.t == 3 and pos(l.b, mb.L) or a
+        local nar = l.t == 1 and 1 or 6
+        local vm = max(abs(v1), abs(v2), 1e-12)
+        for q = 0, nar - 1 do
+          local t = nar == 1 and 0 or q / (nar - 1)
+          local sx = a + (b - a) * t
+          local val = v1 + (v2 - v1) * t
+          local len = (l.t == 1 and 22 or 16) * abs(val) / vm
+          if len > 2 then
+            local sg = val > 0 and 1 or -1
+            local x, y = tr(ni.x + sx * mb.c, ni.y + sx * mb.s)
+            drawArrow(gc, x - sg * gx * len, y + sg * gy * len, x, y)
+          end
+        end
+        local sx = (a + b) / 2
+        local x, y = tr(ni.x + sx * mb.c, ni.y + sx * mb.s)
+        local txt = l.v1 .. ((l.t == 3 and not isBlank(l.v2)) and (".." .. l.v2) or "")
+        local sg = v1 >= 0 and 1 or -1
+        gc:drawString(txt, x - sg * gx * 26 + 2, y + sg * gy * 26 - 6, "top")
+      elseif l.t == 2 then
+        local a = pos(l.a, mb.L / 2)
+        local x, y = tr(ni.x + a * mb.c, ni.y + a * mb.s)
+        gc:drawArc(x - 8, y - 8, 16, 16, 30, 240)
+        gc:drawString(l.v1, x + 7, y + 2, "top")
+      else
+        local x, y = tr(ni.x + mb.L / 2 * mb.c, ni.y + mb.L / 2 * mb.s)
+        gc:drawString(l.t == 4 and "T" or "e", x + 3, y + 1, "top")
+      end
+    end
+  end
+end
+
 local StructView = {}; StructView.__index = StructView
 function StructView.new()
   local s = setmetatable({labels = true, loads = true}, StructView)
@@ -1754,79 +1847,7 @@ function StructView:paint(gc)
   if #G.nodes == 0 then drawFooter(gc, "Sin nudos"); return end
   local tr, sc = makeView(G.nodes, 0, 18, W, H - 32, 32)
   drawFrame(gc, G, tr, self.sup, {labels = self.labels})
-  if self.loads then
-    local vt = G.vt
-    local lres = function(n)
-      local r = vt[n]
-      if r and r.value then return lin_const(r.value) end
-      return lin_const(1)
-    end
-    local function num(s) local ok, v = pcall(evalConst, s or "", lres); return ok and v or 0 end
-    col(gc, C.load); font(gc, 7)
-    for _, l in ipairs(App.model.nl) do
-      local nd = G.nodes[l.node]
-      if nd then
-        local x, y = tr(nd.x, nd.y)
-        local fx, fy = num(l.fx), num(l.fy)
-        if fx ~= 0 then
-          local sg = fx > 0 and 1 or -1
-          drawArrow(gc, x - sg * 22, y, x - sg * 3, y)
-          gc:drawString(l.fx, x - sg * 22 - (sg > 0 and 12 or -2), y - 10, "top")
-        end
-        if fy ~= 0 then
-          local sg = fy > 0 and 1 or -1
-          drawArrow(gc, x, y + sg * 22, x, y + sg * 3)
-          gc:drawString(l.fy, x + 3, y + sg * 18 - 5, "top")
-        end
-        if App.model.kind ~= "truss" and num(l.m) ~= 0 then
-          gc:drawArc(x - 9, y - 9, 18, 18, 30, 240)
-          gc:drawString(l.m, x + 8, y + 3, "top")
-        end
-      end
-    end
-    for _, l in ipairs(App.model.ml) do
-      local mb = G.mems[l.mem]
-      if mb then
-        local ni = G.nodes[mb.i]
-        local pres = function(n) if n == "L" then return lin_const(mb.L) end return lres(n) end
-        local function pos(s, d) if isBlank(s) then return d end local ok, v = pcall(evalConst, s, pres); return ok and v or d end
-        if l.t == 1 or l.t == 3 then
-          local ux, uy = dirLocal(l.dir or 1, mb.c, mb.s, false)
-          local gx, gy = mb.c * ux - mb.s * uy, mb.s * ux + mb.c * uy
-          local v1 = num(l.v1)
-          local v2 = (l.t == 3 and not isBlank(l.v2)) and num(l.v2) or v1
-          local a = pos(l.a, l.t == 1 and mb.L / 2 or 0)
-          local b = l.t == 3 and pos(l.b, mb.L) or a
-          local nar = l.t == 1 and 1 or 6
-          local vm = max(abs(v1), abs(v2), 1e-12)
-          for q = 0, nar - 1 do
-            local t = nar == 1 and 0 or q / (nar - 1)
-            local sx = a + (b - a) * t
-            local val = v1 + (v2 - v1) * t
-            local len = (l.t == 1 and 22 or 16) * abs(val) / vm
-            if len > 2 then
-              local sg = val > 0 and 1 or -1
-              local x, y = tr(ni.x + sx * mb.c, ni.y + sx * mb.s)
-              drawArrow(gc, x - sg * gx * len, y + sg * gy * len, x, y)
-            end
-          end
-          local sx = (a + b) / 2
-          local x, y = tr(ni.x + sx * mb.c, ni.y + sx * mb.s)
-          local txt = l.v1 .. ((l.t == 3 and not isBlank(l.v2)) and (".." .. l.v2) or "")
-          local sg = v1 >= 0 and 1 or -1
-          gc:drawString(txt, x - sg * gx * 26 + 2, y + sg * gy * 26 - 6, "top")
-        elseif l.t == 2 then
-          local a = pos(l.a, mb.L / 2)
-          local x, y = tr(ni.x + a * mb.c, ni.y + a * mb.s)
-          gc:drawArc(x - 8, y - 8, 16, 16, 30, 240)
-          gc:drawString(l.v1, x + 7, y + 2, "top")
-        else
-          local x, y = tr(ni.x + mb.L / 2 * mb.c, ni.y + mb.L / 2 * mb.s)
-          gc:drawString(l.t == 4 and "T" or "e", x + 3, y + 1, "top")
-        end
-      end
-    end
-  end
+  if self.loads then drawLoads(gc, App.model, G, tr) end
   drawFooter(gc, "tab numeros  c cargas  esc volver")
 end
 function StructView:tab() self.labels = not self.labels end
@@ -1838,9 +1859,9 @@ function StructView:enter() pop() end
 local QN = {"N", "V", "M", "D"}
 local QNAME = {N = "Axial N", V = "Corte V", M = "Momento M", D = "Deformada"}
 local Diagram = {}; Diagram.__index = Diagram
-function Diagram.new(q)
-  local res = App.res
-  local d = setmetatable({q = q or (res.kind == "truss" and "N" or "M"), sel = 1,
+function Diagram.new(q, res)
+  res = res or App.res
+  local d = setmetatable({q = q or (res.kind == "truss" and "N" or "M"), sel = 1, res = res,
                           zoom = 1, labels = res.kind == "truss"}, Diagram)
   d.G = {nodes = res.nodes, mems = res.mems, kind = res.kind}
   d.sup = {}
@@ -1858,12 +1879,37 @@ function Diagram.new(q)
   return d
 end
 function Diagram:paint(gc)
-  local res = App.res
+  local res = self.res
   local q = self.q
   local qi = ({N = 2, V = 3, M = 4})[q]
   local mb = res.mems[self.sel]
   drawHeader(gc, "Diagrama " .. QNAME[q], "barra " .. self.sel .. "/" .. #res.mems)
-  local tr, sc = makeView(res.nodes, 0, 18, W, H - 46, 30)
+  self:drawBody(gc, 0, 18, W, H - 46, 30)
+  -- informacion
+  col(gc, {245, 245, 225}); gc:fillRect(0, H - 29, W, 15)
+  font(gc, 7); col(gc, C.tx)
+  local info
+  if q == "D" then
+    local D = {0, 0, 0, 0, 0, 0}
+    for kk = 0, res.ns do
+      for a = 1, 6 do D[a] = D[a] + res.w[kk] * res.cases[kk].D[self.sel][a] end
+    end
+    info = string.format("b%d (%d-%d)  giro i=%s  giro j=%s", self.sel, mb.i, mb.j, fmtShort(D[3]), fmtShort(D[6]))
+  else
+    local e = self.data[self.sel].ext[qi - 1]
+    info = string.format("b%d (%d-%d) L=%s  max=%s @%s  min=%s @%s", self.sel, mb.i, mb.j, fmt(mb.L, 3),
+                         fmtShort(e.mx), fmt(e.xmx, 2), fmtShort(e.mn), fmt(e.xmn, 2))
+  end
+  gc:drawString(fitText(gc, info, W - 6), 3, H - 27, "top")
+  drawFooter(gc, "<-> barra  m v n d tipo  ^v escala  tab etiq.  enter tabla")
+end
+
+-- dibuja el diagrama dentro del rectangulo (x0, y0, w, h)
+function Diagram:drawBody(gc, x0, y0, w, h, pad)
+  local res = self.res
+  local q = self.q
+  local qi = ({N = 2, V = 3, M = 4})[q]
+  local tr, sc = makeView(res.nodes, x0, y0, w, h, pad)
   gc:setPen("thin", "smooth")
   drawFrame(gc, self.G, tr, self.sup, {memColor = C.light, labels = false})
   -- escala
@@ -1876,9 +1922,9 @@ function Diagram:paint(gc)
     end
   end
   local colr = C[q]
-  local maxpix = 0.16 * min(W, H - 46) * self.zoom
+  local maxpix = 0.16 * min(w, h) * self.zoom
   local k = mx > 1e-12 and maxpix / mx or 0
-  if q == "D" then k = mx > 1e-12 and (0.12 * min(W, H - 46) * self.zoom) / mx or 0 end
+  if q == "D" then k = mx > 1e-12 and (0.12 * min(w, h) * self.zoom) / mx or 0 end
   local trussStyle = res.kind == "truss" and q == "N" and not self.offsetMode
   for m, mbm in ipairs(res.mems) do
     local ni = res.nodes[mbm.i]
@@ -1972,29 +2018,13 @@ function Diagram:paint(gc)
       col(gc, {255, 255, 255}); gc:fillArc(x - 2, y - 2, 5, 5, 0, 360)
       col(gc, C.tx); gc:drawArc(x - 2, y - 2, 5, 5, 0, 360)
     end
-    font(gc, 7); col(gc, C.N); gc:drawString("traccion", 4, 20, "top")
-    col(gc, C.M); gc:drawString("compresion", 48, 20, "top")
+    font(gc, 7); col(gc, C.N); gc:drawString("traccion", x0 + 4, y0 + 2, "top")
+    col(gc, C.M); gc:drawString("compresion", x0 + 48, y0 + 2, "top")
   end
-  -- informacion
-  col(gc, {245, 245, 225}); gc:fillRect(0, H - 29, W, 15)
-  font(gc, 7); col(gc, C.tx)
-  local info
-  if q == "D" then
-    local D = {0, 0, 0, 0, 0, 0}
-    for kk = 0, res.ns do
-      for a = 1, 6 do D[a] = D[a] + res.w[kk] * res.cases[kk].D[self.sel][a] end
-    end
-    info = string.format("b%d (%d-%d)  giro i=%s  giro j=%s", self.sel, mb.i, mb.j, fmtShort(D[3]), fmtShort(D[6]))
-  else
-    local e = self.data[self.sel].ext[qi - 1]
-    info = string.format("b%d (%d-%d) L=%s  max=%s @%s  min=%s @%s", self.sel, mb.i, mb.j, fmt(mb.L, 3),
-                         fmtShort(e.mx), fmt(e.xmx, 2), fmtShort(e.mn), fmt(e.xmn, 2))
-  end
-  gc:drawString(fitText(gc, info, W - 6), 3, H - 27, "top")
-  drawFooter(gc, "<-> barra  m v n d tipo  ^v escala  tab etiq.  enter tabla")
+  return mx
 end
 function Diagram:arrow(k)
-  local n = #App.res.mems
+  local n = #self.res.mems
   if k == "left" then self.sel = self.sel > 1 and self.sel - 1 or n
   elseif k == "right" then self.sel = self.sel < n and self.sel + 1 or 1
   elseif k == "up" then self.zoom = self.zoom * 1.3
@@ -2011,6 +2041,202 @@ end
 function Diagram:tab() self.labels = not self.labels end
 function Diagram:enter() App.memberTable(self.sel) end
 function Diagram:esc() pop() end
+
+------------------------- Vista previa en vivo -------------------------------
+local PV = {mode = 1}
+local PV_MODES = {"E", "M", "V", "N", "D"}
+local PV_NAMES = {E = "Estructura y cargas", M = "Momento M", V = "Corte V", N = "Axial N", D = "Deformada"}
+
+local function serialize(v, out)
+  if type(v) == "table" then
+    local keys = {}
+    for k in pairs(v) do keys[#keys + 1] = k end
+    table.sort(keys, function(a, b) return tostring(a) < tostring(b) end)
+    out[#out + 1] = "{"
+    for _, k in ipairs(keys) do
+      out[#out + 1] = tostring(k) .. "="
+      serialize(v[k], out)
+      out[#out + 1] = ";"
+    end
+    out[#out + 1] = "}"
+  else
+    out[#out + 1] = tostring(v)
+  end
+end
+
+local function deepcopy(v)
+  if type(v) ~= "table" then return v end
+  local r = {}
+  for k, x in pairs(v) do r[k] = deepcopy(x) end
+  return r
+end
+
+cyclePreview = function() PV.mode = PV.mode % #PV_MODES + 1 end
+
+-- modelo a mostrar: incluye lo que se esta escribiendo en el formulario
+local function previewModel(scr)
+  local model = App.model
+  if scr.ok and scr.vals then
+    local copy = deepcopy(model)
+    App.model = copy
+    local ok, e = pcall(scr.ok, deepcopy(scr.vals))
+    App.model = model
+    if ok and e == nil then return copy end
+  end
+  return model
+end
+
+-- grado de hiperestaticidad
+local function ghText(model, G)
+  local n, m = #G.nodes, #G.mems
+  local truss = model.kind == "truss"
+  local sup = {}
+  for _, s in ipairs(model.sups) do
+    local S = sup[s.node] or {}
+    S.rx = S.rx or s.rx or not isBlank(s.kx)
+    S.ry = S.ry or s.ry or not isBlank(s.ky)
+    S.rz = (S.rz or s.rz or not isBlank(s.kr)) and not truss
+    sup[s.node] = S
+  end
+  local r = 0
+  for _, S in pairs(sup) do r = r + (S.rx and 1 or 0) + (S.ry and 1 or 0) + (S.rz and 1 or 0) end
+  local gh
+  if truss then
+    gh = m + r - 2 * n
+  else
+    local rel, ends, relEnds = 0, {}, {}
+    for _, mb in ipairs(G.mems) do
+      for _, e in ipairs({{mb.i, mb.ri}, {mb.j, mb.rj}}) do
+        ends[e[1]] = (ends[e[1]] or 0) + 1
+        if e[2] then rel = rel + 1; relEnds[e[1]] = (relEnds[e[1]] or 0) + 1 end
+      end
+    end
+    local auto = 0
+    for nd, c in pairs(ends) do
+      if relEnds[nd] == c and not (sup[nd] and sup[nd].rz) then auto = auto + 1 end
+    end
+    gh = 3 * m + r - 3 * n - rel + auto
+  end
+  if gh == 0 then return "Estable: ISOSTATICA" end
+  return "Estable: HIPERESTATICA grado " .. gh
+end
+
+local function previewState(model)
+  local o = {}
+  serialize(model, o)
+  local sig = table.concat(o)
+  if PV.sig == sig then return PV.st end
+  local st = {}
+  local ok, G = pcall(Eng.geometry, model)
+  if not ok then
+    st.err = tostring(G)
+  else
+    G.kind = model.kind
+    st.G = G
+    st.sup = supFlags(model, G)
+    if #G.nodes == 0 then st.msg = "Agregue nudos"
+    elseif #G.mems == 0 then st.msg = "Agregue barras"
+    elseif #model.sups == 0 then st.msg = "Agregue apoyos"
+    else
+      local ok2, res = pcall(Eng.solve, model)
+      if ok2 then
+        st.res = res
+        st.msg = ghText(model, G)
+        st.good = true
+      else
+        st.err = tostring(res)
+      end
+    end
+  end
+  PV.sig, PV.st = sig, st
+  return st
+end
+
+local function wrapLines(gc, text, wmax, maxl)
+  local lines, cur = {}, ""
+  for word in text:gmatch("%S+") do
+    local t = cur == "" and word or (cur .. " " .. word)
+    if gc:getStringWidth(t) > wmax and cur ~= "" then
+      lines[#lines + 1] = cur; cur = word
+    else
+      cur = t
+    end
+  end
+  if cur ~= "" then lines[#lines + 1] = cur end
+  while #lines > maxl do table.remove(lines) end
+  return lines
+end
+
+drawPreviewPane = function(gc, scr, ybot)
+  local x0 = SPLIT + 1
+  local w = W - x0
+  local y0 = 18
+  col(gc, {250, 250, 253}); gc:fillRect(x0, y0 - 1, w, ybot - y0 + 1)
+  col(gc, C.title); gc:fillRect(SPLIT, y0 - 1, 1, ybot - y0 + 1)
+  if not App.model then return end
+  local model = previewModel(scr)
+  local st = previewState(model)
+  local mode = PV_MODES[PV.mode]
+  font(gc, 7); col(gc, C.title)
+  gc:drawString("p: " .. PV_NAMES[mode], x0 + 3, y0, "top")
+  -- elemento resaltado
+  local hlNode, hlMem
+  local hl = scr.hl
+  if scr.key and scr.sel then hl = {scr.key, scr.sel} end
+  if hl then
+    local key, idx = hl[1], hl[2]
+    local it = model[key] and model[key][idx]
+    if it then
+      if key == "nodes" then hlNode = idx
+      elseif key == "mems" then hlMem = idx
+      elseif key == "sups" or key == "nl" then hlNode = it.node
+      elseif key == "ml" then hlMem = it.mem end
+    end
+  end
+  local top, bot = y0 + 10, ybot - 12
+  if st.G and #st.G.nodes > 0 then
+    local tr
+    if mode ~= "E" and st.res then
+      if not st.dg then st.dg = Diagram.new(nil, st.res) end
+      st.dg.q = mode
+      st.dg.sel = hlMem or 0
+      st.dg.labels = false
+      st.dg:drawBody(gc, x0, top, w, bot - top, 18)
+      tr = makeView(st.G.nodes, x0, top, w, bot - top, 18)
+      if mode ~= "D" then
+        -- valores extremos globales
+        local qi = ({N = 1, V = 2, M = 3})[mode]
+        local mx, mn = -1e300, 1e300
+        for m in ipairs(st.res.mems) do
+          local e = st.dg.data[m].ext[qi]
+          mx = max(mx, e.mx); mn = min(mn, e.mn)
+        end
+        font(gc, 7); col(gc, C[mode])
+        gc:drawString(fitText(gc, "max " .. fmtShort(mx) .. "  min " .. fmtShort(mn), w - 6), x0 + 3, bot - 11, "top")
+      end
+    else
+      tr = makeView(st.G.nodes, x0, top, w, bot - top, 20)
+      drawFrame(gc, st.G, tr, st.sup, {labels = true, sel = hlMem})
+      drawLoads(gc, model, st.G, tr)
+    end
+    if hlNode and st.G.nodes[hlNode] then
+      local x, y = tr(st.G.nodes[hlNode].x, st.G.nodes[hlNode].y)
+      col(gc, C.load); gc:setPen("medium", "smooth")
+      gc:drawArc(x - 6, y - 6, 12, 12, 0, 360)
+      gc:setPen("thin", "smooth")
+    end
+  end
+  -- estado
+  font(gc, 7)
+  if st.err then
+    col(gc, C.err)
+    local ls = wrapLines(gc, st.err, w - 6, 3)
+    for i, l in ipairs(ls) do gc:drawString(l, x0 + 3, bot - 11 * (#ls - i), "top") end
+  else
+    col(gc, st.good and C.V or C.dim)
+    gc:drawString(fitText(gc, st.msg or "", w - 6), x0 + 3, bot, "top")
+  end
+end
 
 ------------------------- Resultados en texto --------------------------------
 local function valsLine(res)
@@ -2184,7 +2410,10 @@ local function gresNow()
   return makeGres(vt)
 end
 local function checkNum(s, label, allowEmpty)
-  if isBlank(s) then return allowEmpty and nil or (label .. ": falta valor") end
+  if isBlank(s) then
+    if allowEmpty then return nil end
+    return label .. ": falta valor"
+  end
   local g, e = gresNow()
   if not g then return e end
   local ok, err = pcall(evalConst, s, g)
@@ -2489,14 +2718,18 @@ end
 local function delVar(k) table.remove(M().vars, k) end
 
 local function listScreen(title, key, strf, editf, delf)
-  return List.new{title = title,
+  local function mark(i)
+    local t = top()
+    if t and t.ok then t.hl = {key, i or (#M()[key] + 1)} end
+  end
+  return List.new{title = title, key = key,
     items = function()
       local t = {}
       for i = 1, #M()[key] do t[i] = strf(i) end
       return t
     end,
-    add = function() editf(nil) end,
-    edit = function(i) editf(i) end,
+    add = function() editf(nil); mark(nil) end,
+    edit = function(i) editf(i); mark(i) end,
     del = delf or function(i) table.remove(M()[key], i) end}
 end
 
@@ -2565,7 +2798,10 @@ function App.modelMenu()
       local s = StructView.new(); if s then push(s) end end},
     {label = "RESOLVER y ver resultados", action = function() App.results() end},
   }
-  push(Menu.new(function() return fr() and "Marco / Portico / Viga" or "Enrejado / Armadura" end, items))
+  local mm = Menu.new(function() return fr() and "Marco / Portico / Viga" or "Enrejado / Armadura" end, items,
+                      "flechas/numero + enter   p cambia vista   esc volver")
+  mm.split = true
+  push(mm)
 end
 
 local function help()
@@ -2588,6 +2824,9 @@ local function help()
     "Error de fabricacion: dL + si la barra es mas larga.",
     "Rotula en i/j: libera el momento en ese extremo (articulacion interna).",
     "Apoyo inclinado: el angulo gira los ejes 1-2 del apoyo. Rodillo inclinado = restringe solo el eje 2.",
+    {"PANTALLA DIVIDIDA", "h"},
+    "Al editar datos, la mitad derecha muestra la estructura en vivo (incluso mientras escribe), resalta el elemento seleccionado e indica si es isostatica, hiperestatica (grado) o inestable.",
+    "Tecla p (en menus y listas): cambia la vista entre Estructura, M, V, N y Deformada, que se recalculan solos.",
     {"TECLAS", "h"},
     "Menus: flechas, enter, numeros. Listas: + nuevo, del borrar. Formularios: flechas, enter siguiente campo, ACEPTAR guarda.",
     "Diagramas: <- -> barra, m/v/n/d tipo, flechas arriba/abajo escala, tab etiquetas, enter tabla de la barra.",

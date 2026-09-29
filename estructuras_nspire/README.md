@@ -29,6 +29,19 @@ elija *Establecer script* (Ctrl+S) y guarde el documento `.tns`.
 El modelo se guarda dentro del documento: al guardar el `.tns` en la calculadora, sus
 datos quedan guardados para la próxima vez que lo abra.
 
+## Pantalla dividida (vista en vivo)
+
+Al editar el modelo, la pantalla se divide en dos: a la izquierda se ingresan los datos
+(menú, listas y formularios) y a la derecha se ve la estructura, que se actualiza sola,
+incluso mientras escribe, antes de aceptar. Ahí se ve lo siguiente:
+
+* El nudo, la barra, el apoyo o la carga seleccionados, resaltados en naranja.
+* Las cargas dibujadas con su valor o su letra.
+* El estado: **ISOSTÁTICA**, **HIPERESTÁTICA grado n** o el motivo por el que
+  no se puede resolver (inestable, falta un apoyo, etc.).
+* Con la tecla `p` (en menús y listas) se cambia la vista entre *Estructura*, *Momento M*,
+  *Corte V*, *Axial N* y *Deformada*. Los diagramas se recalculan con cada cambio.
+
 ## Uso rápido
 
 1. **Nuevo marco** o **Nuevo enrejado** (o cargue un **Ejemplo**).
@@ -57,7 +70,7 @@ datos quedan guardados para la próxima vez que lo abra.
 ### Teclas
 
 * Menús: flechas + `enter`, o el número de la opción; `esc` vuelve.
-* Listas: `+` agrega, `enter` edita, `del` borra.
+* Listas: `+` agrega, `enter` edita, `del` borra, `p` cambia la vista de la derecha.
 * Formularios: al teclear se reemplaza el valor del campo; con ← → se mueve el cursor
   para editarlo. En opciones, ← → cambia la opción. Guarde con **[ACEPTAR]**.
 * Diagramas: ← → cambia de barra, `m` `v` `n` `d` cambia el diagrama, ↑ ↓ cambia la
