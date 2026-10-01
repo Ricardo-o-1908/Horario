@@ -1,0 +1,460 @@
+% =====================================================================
+%  CIV-346 Hidraulica Aplicada -- Certamen de practica (con pauta)
+%  Compilar: pdflatex certamen_practica.tex
+% =====================================================================
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,array,multirow,tabularx}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,patterns,decorations.pathmorphing,positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\definecolor{azulusm}{RGB}{0,69,137}
+\definecolor{amarillo}{RGB}{247,176,0}
+\definecolor{agua}{RGB}{110,165,215}
+\definecolor{aguaclara}{RGB}{190,215,240}
+\definecolor{suelo}{RGB}{200,160,70}
+\definecolor{sueloclaro}{RGB}{240,215,150}
+\definecolor{rojo}{RGB}{210,20,30}
+
+\tikzset{
+  nivelagua/.pic={\draw[fill=azulusm] (-0.12,0.18)--(0.12,0.18)--(0,0)--cycle;
+    \draw (-0.15,-0.05)--(0.15,-0.05) (-0.10,-0.10)--(0.10,-0.10);},
+  flecha/.style={-{Stealth[length=2.5mm]},thick},
+  cota/.style={{Stealth[length=2mm]}-{Stealth[length=2mm]}},
+}
+\newtcolorbox{resp}[1][]{colback=amarillo!25,colframe=amarillo,arc=2mm,boxrule=0.6pt,left=3mm,right=3mm,#1}
+\newtcolorbox{dato}[1][]{colback=aguaclara!35,colframe=agua,arc=2mm,boxrule=0.6pt,fonttitle=\bfseries,#1}
+\newcommand{\pts}[1]{\hfill\textbf{[#1 pts]}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small CIV-346 Hidráulica Aplicada}
+\rhead{\small Certamen de práctica}
+\cfoot{\small \thepage\ / \pageref{LastPage}}
+
+\begin{document}
+
+% ------------------------------------------------------------------ PORTADA
+\begin{center}
+{\large\bfseries UNIVERSIDAD TÉCNICA FEDERICO SANTA MARÍA}\\[2pt]
+Departamento de Obras Civiles\\[8pt]
+{\Large\bfseries\color{azulusm} CIV-346 Hidráulica Aplicada}\\[4pt]
+{\large Certamen de práctica --- Unidades II y III}\\[2pt]
+{\small (material de estudio, no oficial)}
+\end{center}
+
+\noindent
+\begin{tabularx}{\textwidth}{@{}lX lX@{}}
+Nombre: & \hrulefill & Rol: & \hrulefill\\
+Duración: & 120 minutos & Puntaje: & 100 puntos (P1: 35, P2: 35, P3: 30)\\
+\end{tabularx}
+
+\begin{dato}[title=Instrucciones]
+\begin{itemize}[leftmargin=*,noitemsep]
+\item Se permite calculadora y formulario de una hoja (por ambos lados).
+\item Justifique cada fórmula indicando la hipótesis que la hace válida. Respuestas sin desarrollo no tienen puntaje.
+\item Trabaje con $g=9.81$ m/s$^2$ y con 3 cifras significativas. Indique siempre las unidades.
+\item Si un resultado previo no le resultó, suponga un valor razonable, indíquelo y continúe.
+\end{itemize}
+\end{dato}
+
+% ================================================================= P1
+\section*{Problema 1: Atravieso de un camino (35 puntos)}
+
+Un camino de tierra mejorado (categoría \emph{camino} según el Manual de Carreteras) cruza una
+quebrada mediante un terraplén. Se proyecta un atravieso de \textbf{cajón de hormigón armado}
+de sección rectangular, con muros guía en la entrada y salida (entrada a ras de muro).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,scale=0.95]
+  \fill[sueloclaro] (0,0) -- (0,1.3) -- (2.2,1.1) -- (2.2,0.65) -- (9,0) -- cycle;
+  \draw[thick] (0,1.3) -- (2.2,1.1);
+  % terraplen
+  \fill[suelo] (2.2,1.1) -- (3.4,4.3) -- (6.4,4.0) -- (7.4,0.75) -- (7.4,1.45) -- (2.2,1.95) -- cycle;
+  \fill[gray!20] (2.2,0.65) -- (7.4,0.15) -- (7.4,1.45) -- (2.2,1.95) -- cycle;
+  \draw[thick] (2.2,0.65) -- (7.4,0.15) (2.2,1.95) -- (7.4,1.45);
+  \draw[thick] (2.2,0.65) -- (2.2,2.2) (7.4,0.15) -- (7.4,1.7);
+  \fill[gray!60] (3.4,4.3) rectangle (6.4,4.45);
+  \node[above] at (4.9,4.45) {rasante};
+  \draw[thick] (7.4,0.15) -- (9.5,-0.05);
+  \draw[cota] (1.6,0.95) -- (1.6,4.3) node[pos=0.65,left]{3.6 m};
+  \draw[dashed] (1.6,4.3) -- (3.4,4.3);
+  \draw[cota] (2.2,-0.6) -- (7.4,-1.1) node[midway,below]{$L=24$ m};
+  \node at (4.8,1.0) {$b=2.0$ m};
+  \node[rotate=-5] at (8.3,0.35) {$S_D=1.2\%$};
+  \draw[flecha,azulusm] (-0.2,1.6) -- (0.8,1.55) node[pos=0,above right,black]{flujo};
+\end{tikzpicture}
+\caption{Perfil longitudinal del atravieso (esquemático).}
+\end{figure}
+
+\begin{dato}[title=Datos]
+\begin{itemize}[leftmargin=*,noitemsep]
+\item Cuenca aportante: $A=0.90$ km$^2$; longitud del cauce $L=1.6$ km; desnivel total entre cotas extremas $H=120$ m.
+\item Coeficiente de escorrentía para $T=10$ años (Tabla 3.702.503.B): relieve \emph{alto} $0.24$;
+      infiltración \emph{normal} $0.07$; cobertura vegetal \emph{normal} $0.07$; almacenamiento superficial \emph{normal} $0.07$.
+      Factores de amplificación: $T=25$: $\times1.10$; $T=50$: $\times1.20$; $T=100$: $\times1.25$.
+\item Lluvia de 1 hora y 10 años de periodo de retorno: $P_1^{10}=28$ mm.
+\item Cajón: ancho $b=2.0$ m, $n=0.015$, largo $L=24$ m, pendiente de diseño $S_D=1.2\%$, $k_e=0.5$.
+\item La rasante está a 3.6 m sobre el fondo de la entrada; la carga en la entrada debe quedar al menos 0.30 m bajo la rasante.
+\end{itemize}
+\end{dato}
+
+\begin{enumerate}[label=\alph*)]
+\item Calcule el tiempo de concentración con la fórmula de California Culverts Practice y verifique que sea admisible para la fórmula racional. \pts{4}
+\item Determine los periodos de retorno de diseño y de verificación que corresponden a esta obra (justifique con el área útil del cajón obtenida en d) y el tipo de ruta). Calcule el riesgo de falla de diseño para una vida útil de 30 años. \pts{4}
+\item Determine la intensidad de diseño (fórmula de Bell) y los caudales $Q_{T_1}$ y $Q_{T_2}$ con la fórmula racional. \pts{8}
+\item \textbf{Criterio 1 (control de entrada):} determine la altura $D$ del cajón (redondee a 0.1 m hacia arriba), verifique la velocidad máxima y que el escurrimiento dentro del cajón sea torrencial. \pts{9}
+\item \textbf{Criterio 2 (verificación a sección completa):} con $Q_{T_2}$ calcule $S_n$, identifique el caso de funcionamiento, calcule $H'$ y verifique la seguridad del terraplén. \pts{7}
+\item Explique brevemente dos recomendaciones constructivas o de trazado para el atravieso y qué falla de diseño ocurrió en la tragedia del estero Minte (1995). \pts{3}
+\end{enumerate}
+
+% ================================================================= P2
+\section*{Problema 2: Interpretación de pruebas de bombeo (35 puntos)}
+
+Para solicitar un derecho de aprovechamiento se construyó un pozo de penetración total en un
+\textbf{acuífero confinado} de espesor $m=18$ m. Unos 1.5 km al este se observa un afloramiento
+rocoso cuya extensión en profundidad se desconoce. Se realizaron las siguientes pruebas.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small]
+  \fill[gray!35] (0,0) rectangle (10,0.4);
+  \fill[aguaclara] (0,0.4) rectangle (10,1.8);
+  \fill[sueloclaro] (0,1.8) rectangle (10,2.4);
+  \fill[pattern=north east lines] (0,1.8) rectangle (10,2.0);
+  \draw (0,2.4) -- (10,2.4);
+  \fill[white,draw] (2.9,0.4) rectangle (3.1,3.3);
+  \fill[white,draw] (3.95,0.4) rectangle (4.05,3.1);
+  \draw[flecha,azulusm] (3,3.3) -- (3,3.8) node[above,black]{$Q$};
+  \node[above] at (4,3.1) {obs.};
+  \draw[cota] (3,-0.25) -- (4,-0.25) node[midway,below]{$r=25$ m};
+  \draw[cota] (9.6,0.4) -- (9.6,1.8) node[midway,left]{$m=18$ m};
+  \fill[gray!70] (8.2,0.4) -- (8.6,0.4) -- (8.9,2.4) -- (8.5,2.4) -- cycle;
+  \node[align=center,font=\scriptsize] at (7.9,3.0) {afloramiento\\rocoso (?)};
+  \node at (1.4,1.1) {acuífero confinado};
+\end{tikzpicture}
+\caption{Esquema de la prueba (sin escala).}
+\end{figure}
+
+\paragraph{Prueba de gasto variable.} Escalones de 2 horas, descensos estabilizados en el pozo de bombeo:
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+$Q$ [L/s] & 8 & 16 & 24 & 32\\
+$s_w$ [m] & 1.91 & 4.04 & 6.41 & 9.01\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Prueba de gasto constante} con $Q=25$ L/s durante 24 h; descensos en un pozo de observación a $r=25$ m:
+\begin{center}\small
+\begin{tabular}{lcccccccccc}
+\toprule
+$t$ [min] & 1 & 2 & 3 & 5 & 8 & 10 & 15 & 20 & 30 & 45\\
+$s$ [m] & 0.65 & 0.86 & 0.99 & 1.16 & 1.31 & 1.39 & 1.52 & 1.61 & 1.75 & 1.89\\
+\midrule
+$t$ [min] & 60 & 90 & 120 & 180 & 240 & 360 & 480 & 720 & 1080 & 1440\\
+$s$ [m] & 1.99 & 2.14 & 2.26 & 2.45 & 2.59 & 2.81 & 2.98 & 3.22 & 3.46 & 3.65\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Prueba de recuperación} (mismo pozo de observación, $t'$ medido desde que se detuvo el bombeo, $t_f=1440$ min):
+\begin{center}\small
+\begin{tabular}{lcccccccccc}
+\toprule
+$t'$ [min] & 1 & 2 & 5 & 10 & 20 & 30 & 60 & 120 & 240 & 480\\
+$s'$ [m] & 3.00 & 2.78 & 2.49 & 2.26 & 2.04 & 1.91 & 1.68 & 1.43 & 1.15 & 0.85\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{enumerate}[label=\alph*)]
+\item Con la prueba de gasto variable determine los coeficientes de pérdidas $B$ (acuífero) y $C$ (pozo) en $s_w=BQ+CQ^2$, la eficiencia del pozo para $Q=25$ L/s y justifique si el caudal elegido para la prueba de gasto constante es adecuado según lo visto en clases. \pts{7}
+\item Grafique (en forma esquemática) $s$ vs.\ $\log t$. Indique qué datos son válidos para aplicar Cooper--Jacob y obtenga $T$, $K$ y $S$. Verifique la hipótesis de $u$. \pts{12}
+\item Interprete el cambio de pendiente observado al final de la prueba. ¿Qué condición de borde existe? Estime la distancia del pozo de bombeo a dicho borde. \pts{8}
+\item Con la prueba de recuperación estime $T$ y compárelo con b). Explique por qué la recuperación es una prueba confiable aunque el pozo de bombeo sea el de observación. \pts{5}
+\item Calcule el radio de influencia al término de las 24 h y comente si es coherente con c). \pts{3}
+\end{enumerate}
+
+% ================================================================= P3
+\section*{Problema 3: Drenaje urbano a colectores (30 puntos)}
+
+Una calle residencial de calzada $e=8$ m con \textbf{doble bombeo} $i=3\%$ y pendiente longitudinal
+$S=2.5\%$ recibe además el escurrimiento de los terrenos laterales (ancho aportante $w_c=15$ m).
+El agua se capta mediante sumideros horizontales de fondo y se conduce a un colector que descarga
+a un estero.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,scale=0.95]
+  \foreach \x/\a/\n in {0/A_1/1,4.2/A_2/2,8.4/A_3/3}{
+    \draw[green!50!black,thick,fill=green!10] (\x+0.3,0.6) rectangle (\x+3.3,2.6);
+    \node at (\x+1.8,1.9) {$\a$};
+    \fill[white,draw] (\x+3.3,0.3) circle (0.12);}
+  \draw[flecha,azulusm] (3.6,0.3) -- (7.35,0.3) node[midway,below]{colector 1: $L_1$};
+  \draw[flecha,azulusm] (7.8,0.3) -- (11.55,0.3) node[midway,below]{colector 2: $L_2$};
+  \draw[flecha,azulusm] (11.8,0.3) -- (12.8,0.3) node[right]{estero};
+  \node[below] at (11.7,-0.3) {colector 3};
+\end{tikzpicture}
+\caption{Esquema en planta de las subcuencas y la red de colectores.}
+\end{figure}
+
+\begin{dato}[title=Datos]
+\begin{itemize}[leftmargin=*,noitemsep]
+\item Cuneta simple de asfalto $n=0.016$; ancho máximo de inundación $b_{max}=1.5$ m; $C=0.75$.
+\item Intensidad de diseño para sumideros ($T_r=2$ años, $D=30$ min): $i=42$ mm/h.
+\item Sumidero S3: $w=0.60$ m, $L=1.00$ m, barras de $e=20$ mm, $n_L=7$ barras longitudinales y $n_T=3$ transversales.
+      Eficiencia hidráulica $\eta=0.75$; la mantención y limpieza del sector es \emph{mala}.
+\item Subcuencas (fórmula racional) con curva IDF $i=\dfrac{900}{(t+10)^{0.75}}$ [mm/h], $t$ en minutos:
+\end{itemize}
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+Subcuenca & $C$ & $A$ [km$^2$] & $t_c$ [min] & colector aguas abajo\\
+\midrule
+1 & 0.70 & 0.04 & 10 & $L_1=250$ m, $v_1=1.2$ m/s\\
+2 & 0.60 & 0.06 & 14 & $L_2=300$ m, $v_2=1.5$ m/s\\
+3 & 0.80 & 0.05 & 12 & descarga\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{itemize}[leftmargin=*,noitemsep]
+\item Colectores de hormigón $n=0.013$, pendiente $S=0.5\%$. Diámetros comerciales: 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.4 m.
+\end{itemize}
+\end{dato}
+
+\begin{enumerate}[label=\alph*)]
+\item Calcule la capacidad de la cuneta para el ancho máximo de inundación y verifique la altura de agua junto a la solera. \pts{5}
+\item Determine la capacidad máxima del sumidero y su modo de funcionamiento (vertedero u orificio). \pts{5}
+\item Determine la separación máxima entre sumideros, considerando el factor de seguridad adecuado. \pts{5}
+\item Determine los caudales de diseño $Q_{D1}$, $Q_{D2}$ y $Q_{D3}$ de los tres colectores. \pts{9}
+\item Dimensione los colectores (criterio $h\le0.8D$), verifique las velocidades mínima (autolavado) y máxima, e indique qué organismo es responsable de cada colector. \pts{6}
+\end{enumerate}
+
+% ================================================================= PAUTA
+\newpage
+\begin{center}
+{\Large\bfseries\color{azulusm} PAUTA DE CORRECCIÓN}
+\end{center}
+
+% ------------------------------------------------------------- P1 pauta
+\section*{Problema 1}
+
+\paragraph{a) Tiempo de concentración.}
+\[
+T_c=57\left(\frac{L^3}{H}\right)^{0.385}=57\left(\frac{1.6^3}{120}\right)^{0.385}=57\,(0.03413)^{0.385}=15.5\ \text{min}
+\]
+\begin{resp}$t_c=15.5$ min $\ge 10$ min $\Rightarrow$ válido. Además $A=0.9$ km$^2<25$ km$^2$ y la cuenca es
+pequeña ($t_d>t_c$), por lo que aplica la fórmula racional.\end{resp}
+
+\paragraph{b) Periodos de retorno.} El área útil del cajón (de d)) es $S=b\,D=2.0\times2.3=4.6$ m$^2>1.75$ m$^2$
+en ruta de categoría \emph{camino} $\Rightarrow$ (MC V3): $T_1=50$ años (diseño), $T_2=100$ años (verificación),
+vida útil $n=30$ años.
+\[
+R=1-\left(1-\frac{1}{T}\right)^n=1-\left(1-\frac1{50}\right)^{30}=0.455
+\]
+\begin{resp}$T_1=50$ años, $T_2=100$ años; riesgo de falla de diseño $R\approx45\%$ (coincide con la tabla).\end{resp}
+
+\paragraph{c) Intensidad y caudales.}
+$C_{10}=0.24+0.07+0.07+0.07=0.45$; $C_{50}=1.20\cdot0.45=0.54$; $C_{100}=1.25\cdot0.45=0.5625$.\\
+Bell ($t<1$ h, $t$ en minutos):
+\[
+P_t^T=\left(0.54\,t^{0.25}-0.50\right)\left(0.21\ln T+0.52\right)P_1^{10},\qquad 0.54\,(15.5)^{0.25}-0.50=0.572
+\]
+\begin{center}
+\begin{tabular}{cccccc}
+\toprule
+$T$ & $0.21\ln T+0.52$ & $P_t^T$ [mm] & $i=60P/t_c$ [mm/h] & $C$ & $Q=\dfrac{CiA}{3.6}$ [m$^3$/s]\\
+\midrule
+50 & 1.342 & 21.5 & 83.0 & 0.540 & \textbf{11.2}\\
+100 & 1.487 & 23.8 & 92.0 & 0.5625 & \textbf{12.9}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{d) Control de entrada ($Q_{50}=11.2$ m$^3$/s).} Escurrimiento de río aguas arriba y
+torrente dentro del cajón; despreciando pérdidas $H=H_c=\tfrac32h_c$ y se impone $D=H$:
+\[
+h_c=\sqrt[3]{\frac{Q^2}{g\,b^2}}=\sqrt[3]{\frac{11.2^2}{9.81\cdot2.0^2}}=1.47\ \text{m},\qquad
+D=\frac32h_c=\frac{3}{2}\frac{1}{\sqrt[3]{g}}\left(\frac Qb\right)^{2/3}=2.21\ \text{m}\ \Rightarrow\ D=2.3\ \text{m}
+\]
+Velocidad: $v=\dfrac{Q}{b\,h_c}=\dfrac{11.2}{2.0\cdot1.47}=3.80$ m/s $<5$ m/s \checkmark.\\
+Pendiente crítica:
+\[
+S_c=\frac23\,g\,H\,n^2\left(\frac{b+\frac43H}{\frac23Hb}\right)^{4/3}
+=\frac23(9.81)(2.21)(0.015)^2\left(\frac{2.0+2.95}{2.95}\right)^{4/3}=0.0065
+\]
+\begin{resp}$D=2.3$ m (cajón $2.0\times2.3$ m). $v=3.8$ m/s $<5$ m/s. $S_D=0.012\ge S_c=0.0065\Rightarrow$ torrente:
+se cumple el control de entrada.\end{resp}
+
+\paragraph{e) Verificación a sección llena ($Q_{100}=12.9$ m$^3$/s).}
+$A=bD=4.6$ m$^2$, $R_h=\dfrac{bD}{2b+2D}=\dfrac{4.6}{8.6}=0.535$ m.
+\[
+S_n=\left(\frac{Q\,n}{A\,R_h^{2/3}}\right)^2=\left(\frac{12.9\cdot0.015}{4.6\cdot0.535^{2/3}}\right)^2=0.0041
+\]
+$S_D=0.012>S_n=0.0041\Rightarrow$ \textbf{caso 1}: la alcantarilla funciona como compuerta ($c_c=0.611$):
+\[
+H'=c_cD+\frac{1}{2g}\left(\frac{Q}{b\,c_c\,D}\right)^2=0.611(2.3)+\frac{1}{19.62}\left(\frac{12.9}{2.0\cdot0.611\cdot2.3}\right)^2
+=1.41+1.08=2.49\ \text{m}
+\]
+\begin{resp}$H'=2.49$ m $<3.6-0.30=3.30$ m \checkmark; además $H'<H+0.6=2.9$ m (Tabla 3.703.301.A,
+verificación de cajones). El terraplén no se inunda.\end{resp}
+
+\paragraph{f) Recomendaciones.} El cajón debe seguir la línea de flujo del cauce (alineación en planta) y la
+pendiente natural del terreno (no instalarlo muy profundo ni muy alto); usar muros guía en la entrada y
+salida; preferir varias celdas si el cauce es ancho. En el estero Minte la sección era estrecha para la
+crecida (192 mm en 48 h) y la entrada se obstruyó con árboles y barro, lo que provocó la falla del terraplén:
+falta de capacidad y de previsión de obstrucción en el diseño.
+
+% ------------------------------------------------------------- P2 pauta
+\section*{Problema 2}
+
+\paragraph{a) Prueba de gasto variable.} Se ajusta $s_w/Q=B+C\,Q$:
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+$Q$ [m$^3$/s] & 0.008 & 0.016 & 0.024 & 0.032\\
+$s_w/Q$ [s/m$^2$] & 238.8 & 252.5 & 267.1 & 281.6\\
+\bottomrule
+\end{tabular}
+\end{center}
+Regresión lineal: $C=1788$ s$^2$/m$^5$, $B=224$ s/m$^2$. Para $Q=0.025$ m$^3$/s:
+$BQ=5.61$ m, $CQ^2=1.12$ m, eficiencia $=\dfrac{BQ}{BQ+CQ^2}=83\%$.
+\begin{resp}$B=224$ s/m$^2$, $C\approx1.79\times10^3$ s$^2$/m$^5$. La prueba de gasto constante se realiza con el
+80\% del caudal máximo de la prueba variable: $0.8\times32=25.6$ L/s $\approx25$ L/s \checkmark.\end{resp}
+
+\paragraph{b) Cooper--Jacob.}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{semilogxaxis}[width=12cm,height=6.5cm,xmin=0.8,xmax=2000,ymin=0,ymax=4,y dir=reverse,
+  xlabel={$t$ [min]},ylabel={$s$ [m]},grid=both,minor grid style={gray!15},major grid style={gray!40},
+  legend style={at={(0.98,0.98)},anchor=north east,font=\small}]
+\addplot[only marks,mark=*,azulusm,mark size=1.6pt] coordinates {(1,0.65)(2,0.86)(3,0.99)(5,1.16)(8,1.31)(10,1.39)(15,1.52)(20,1.61)(30,1.75)(45,1.89)(60,1.99)(90,2.14)(120,2.26)(180,2.45)(240,2.59)(360,2.81)(480,2.98)(720,3.22)(1080,3.46)(1440,3.65)};
+\addlegendentry{datos}
+\addplot[thick,rojo,domain=0.19:2000,samples=2] {0.3482*ln(x)+0.5737};
+\addlegendentry{recta 10--120 min ($\Delta s=0.80$ m/ciclo)}
+\addplot[thick,dashed,green!50!black,domain=300:2000,samples=2] {0.6024*ln(x)-0.735};
+\addlegendentry{tramo final (pendiente $\approx$ doble)}
+\end{semilogxaxis}
+\end{tikzpicture}
+\caption{Descenso en el pozo de observación vs.\ $\log t$.}
+\end{figure}
+
+Validez de Jacob: $u=\dfrac{r^2S}{4Tt}<0.01$. Con los valores obtenidos, $u<0.01$ para $t>\dfrac{r^2S}{0.04\,T}\approx11$ min,
+por lo que se descartan los datos iniciales (curvatura de Theis) y también los finales (influencia del borde).
+Se usa el tramo recto 10--120 min:
+\[
+\Delta s_{\text{ciclo}}=0.80\ \text{m}\ \Rightarrow\ T=\frac{2.303\,Q}{4\pi\,\Delta s}=\frac{2.303(0.025)}{4\pi(0.80)}=5.7\times10^{-3}\ \text{m}^2/\text{s}
+\]
+La recta corta $s=0$ en $t_0=0.19$ min $=11.5$ s:
+\[
+S=\frac{2.24\,T\,t_0}{r^2}=\frac{2.24(5.7\times10^{-3})(11.5)}{25^2}=2.4\times10^{-4},\qquad
+K=\frac{T}{m}=\frac{5.7\times10^{-3}}{18}=3.2\times10^{-4}\ \text{m/s}
+\]
+\begin{resp}$T\approx5.7\times10^{-3}$ m$^2$/s, $S\approx2.4\times10^{-4}$ (rango de acuífero confinado
+$10^{-4}<S<0.005$ \checkmark), $K\approx3.2\times10^{-4}$ m/s. $u(15\ \text{min})\approx0.007<0.01$ \checkmark{} (el punto de 10 min queda en el límite, $u\approx0.011$).\end{resp}
+
+\paragraph{c) Condición de borde.} Después de unas 4--6 h la pendiente aumenta a $\approx1.7$--$2$ veces la inicial
+(se tiende a duplicar): el pozo imagen \emph{extrae} caudal $\Rightarrow$ \textbf{barrera impermeable}
+(el afloramiento rocoso). Método de la clase: para $t_2=1440$ min la desviación respecto de la recta original es
+$\Delta s=3.65-3.11=0.54$ m; la recta original alcanza $s=0.54$ m en $t_1\approx0.92$ min. Entonces
+\[
+r_2=r_1\sqrt{\frac{t_2}{t_1}}=25\sqrt{\frac{1440}{0.92}}\approx990\ \text{m},\qquad
+d\approx\frac{r_1+r_2}{2}\approx510\ \text{m}
+\]
+\begin{resp}Barrera impermeable a $d\approx500$ m del pozo (más cerca que el afloramiento visible: la roca
+se extiende en profundidad hacia el pozo).\end{resp}
+
+\paragraph{d) Recuperación.} Se grafica $s'$ vs.\ $\log(t/t')$ con $t=t_f+t'$ y se usa el tramo de $t/t'$ grande
+(recuperación temprana), donde la recta es más limpia:
+\[
+\Delta s'_{\text{ciclo}}=0.74\ \text{m}\ \Rightarrow\ T=\frac{2.303\,Q}{4\pi\,\Delta s'}=6.2\times10^{-3}\ \text{m}^2/\text{s}
+\]
+\begin{resp}$T_{rec}\approx6.2\times10^{-3}$ m$^2$/s, del mismo orden que b) (diferencia $\sim8\%$, atribuible
+a la barrera y a la elección del tramo). La recuperación no depende de variaciones del caudal ni de las
+pérdidas del pozo (no se bombea), por eso es confiable; su pendiente sólo depende de $T$.\end{resp}
+
+\paragraph{e) Radio de influencia.}
+\[
+R(t)=\sqrt{\frac{2.24\,T\,t}{S}}=\sqrt{\frac{2.24(5.7\times10^{-3})(86400)}{2.4\times10^{-4}}}\approx2.2\ \text{km}
+\]
+\begin{resp}$R(24\ \text{h})\approx2.2$ km $>2d\approx1$ km: el cono alcanzó la barrera y el pozo imagen influye en
+el pozo de observación, coherente con el quiebre de pendiente de c).\end{resp}
+
+% ------------------------------------------------------------- P3 pauta
+\section*{Problema 3}
+
+\paragraph{a) Capacidad de la cuneta.} Cuneta simple con $b=1.5$ m e $i=0.03$:
+\[
+Q=\frac{\sqrt S}{n}\frac{b^2 i}{2}\left(\frac{b\,i}{2(i+1)}\right)^{2/3}
+=\frac{\sqrt{0.025}}{0.016}\cdot\frac{1.5^2(0.03)}{2}\left(\frac{1.5(0.03)}{2(1.03)}\right)^{2/3}=0.0261\ \text{m}^3/\text{s}
+\]
+\begin{resp}$Q_{max}=26.1$ L/s; $y=b\,i=4.5$ cm $\le15$ cm \checkmark.\end{resp}
+
+\paragraph{b) Sumidero de fondo.}
+$w_e=w-e\,n_L=0.60-0.02(7)=0.46$ m; $L_e=L-e\,n_T=1.00-0.02(3)=0.94$ m; $A_e=0.432$ m$^2$.
+Límite: $1.6\dfrac{A_e}{L_e+2w_e}=1.6\dfrac{0.432}{1.86}=0.372$ m $>h=0.045$ m $\Rightarrow$ \textbf{vertedero}:
+\[
+Q_m=1.66\,(L_e+2w_e)\,h^{1.5}=1.66(1.86)(0.045)^{1.5}=0.0295\ \text{m}^3/\text{s}
+\]
+\begin{resp}$Q_m=29.5$ L/s, funcionando como vertedero.\end{resp}
+
+\paragraph{c) Separación entre sumideros.} Caudal aportante inferior a 30 L/s y mantención mala
+$\Rightarrow F=0.8$ (Tabla 6.5.13 MDU); $\eta_d=F\eta=0.8(0.75)=0.60$. Calzada de doble bombeo:
+$b_c=0.5e+w_c=0.5(8)+15=19$ m.
+\[
+L=\frac{3600\,\eta_d\,Q_{max}}{C\,i\,b_c}=\frac{3600(0.60)(0.0261)}{0.75(0.042)(19)}=94\ \text{m}
+\]
+\begin{resp}Separación máxima $L\approx94$ m (adoptar 90 m). Caudal captado $\eta_dQ_{max}=15.6$ L/s $<Q_m$ \checkmark.\end{resp}
+
+\paragraph{d) Caudales de diseño.} $Q_D=\max(Q_{D,\,anterior},\ Q_i,\ Q_{iI})$ con $\bar C$ promedio, área acumulada y
+$t_{cI}=\max(t_{c,\,anterior}+L/v,\ t_{ci})$:
+\begin{center}
+\begin{tabular}{ccccccccc}
+\toprule
+Col. & $i(t_{ci})$ & $Q_i$ & $t_{cI}$ [min] & $i(t_{cI})$ & $\bar C$ & $\sum A$ & $Q_{iI}$ & $Q_D$ [m$^3$/s]\\
+\midrule
+1 & 95.2 & 0.740 & 10.0 & 95.2 & 0.70 & 0.04 & 0.740 & \textbf{0.74}\\
+2 & 83.0 & 0.830 & $\max(10+3.5,\,14)=14.0$ & 83.0 & 0.65 & 0.10 & 1.499 & \textbf{1.50}\\
+3 & 88.6 & 0.984 & $\max(14+3.3,\,12)=17.3$ & 75.3 & 0.70 & 0.15 & 2.196 & \textbf{2.20}\\
+\bottomrule
+\end{tabular}
+\end{center}
+(tiempos de traslado $L_1/v_1=250/1.2=208$ s $=3.5$ min; $L_2/v_2=300/1.5=200$ s $=3.3$ min).
+
+\paragraph{e) Dimensionamiento de colectores} ($n=0.013$, $S=0.005$). Capacidad con $h=0.8D$:
+$A=0.674D^2$, $R_h=0.304D$, $Q=\dfrac{\sqrt S}{n}AR_h^{2/3}$.
+\begin{center}
+\begin{tabular}{cccccccc}
+\toprule
+Col. & $Q_D$ & $D$ [m] & $Q_{0.8D}$ & $y_n/D$ & $v$ [m/s] & $V_c$ [m/s] & Responsable\\
+\midrule
+1 & 0.74 & 0.8 & 0.91 & 0.67 & 2.06 & 1.86 & SERVIU ($D\le0.8$)\\
+2 & 1.50 & 1.0 & 1.66 & 0.73 & 2.44 & 2.16 & DOH ($D>0.8$)\\
+3 & 2.20 & 1.2 & 2.70 & 0.67 & 2.71 & 2.44 & DOH ($D>0.8$)\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{resp}Colectores de 0.8, 1.0 y 1.2 m. Autolavado $V_c=0.397\dfrac{D^{2/3}\sqrt S}{n}\ge0.6$ m/s \checkmark;
+velocidades $\le3.5$ m/s (hormigón armado $D\ge0.61$ m) \checkmark; todos dentro de 0.3--2 m. El colector 1 es
+secundario (SERVIU) y los colectores 2 y 3 son primarios (DOH). Profundidad de instalación $\approx1.8$ m,
+bajo la red de agua potable.\end{resp}
+
+\end{document}
