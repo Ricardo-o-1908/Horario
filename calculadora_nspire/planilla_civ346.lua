@@ -6,6 +6,7 @@
 --  funciones hidraulicas del curso (THIEM, THEIS, JACOB, W, YN, ...).
 --  [menu]: plantillas, copiar/pegar, rellenar abajo, serie, buscar
 --  objetivo, graficar con regresion, exportar a lista, ayuda.
+--  Plantillas "CERT ..." resuelven el certamen de practica completo.
 --  (si la tecla menu no responde, escriba ? sobre una celda)
 -- =====================================================================
 platform.apiLevel = "2.2"
@@ -388,6 +389,11 @@ local function dprime(d, D, r0)
   return d*pi/(2*(ln(D/chi) + 0.18))
 end
 
+-- tuberia circular parcialmente llena (r = y/D)
+local function qparc(D, n, S, r) local A, P_ = seccion(4, 0, 0, D, r*D); return sqrt(S)/n*A*(A/P_)^(2/3) end
+local DCOMS = {0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.4, 1.5, 1.6, 1.8, 2.0, 2.2, 2.5, 3.0}
+local function truthy(c) return c and c ~= 0 end
+
 local FUNC = {
   -- generales
   PI = pi, GRAV = G, E = exp(1),
@@ -409,7 +415,12 @@ local FUNC = {
   ASINH = function(x) return ln(x + sqrt(x*x + 1)) end,
   DEG = function(x) return x*180/pi end, RAD = function(x) return x*pi/180 end,
   ROUND = function(x, n) local m = 10^(n or 0); return math.floor(x*m + 0.5)/m end,
-  IF = function(c, a, b) if c and c ~= 0 then return a else return b end end,
+  IF = function(c, a, b) if truthy(c) then return a else return b end end,
+  AND = function(...) for _, c in ipairs({...}) do if not truthy(c) then return false end end; return true end,
+  OR = function(...) for _, c in ipairs({...}) do if truthy(c) then return true end end; return false end,
+  NOT = function(c) return not truthy(c) end,
+  CEIL = function(x, p) p = p or 1; return math.ceil(x/p - 1e-9)*p end,
+  FLOOR = function(x, p) p = p or 1; return math.floor(x/p + 1e-9)*p end,
   -- clase 01
   DARCY = function(K, A, i) return K*A*i end,
   HAZEN = function(C, d10) return C*d10^2 end,
@@ -448,6 +459,15 @@ local FUNC = {
   GRUNSKY = function(i24, t) return i24*sqrt(24/t) end,
   BELL = function(t, T, P1) return (0.54*t^0.25 - 0.5)*(0.21*ln(T) + 0.52)*P1 end,
   RIESGO = function(T, n) return 1 - (1 - 1/T)^n end,
+  TRIESGO = function(R, n) return 1/(1 - (1 - R)^(1/n)) end,
+  BELLI = function(t, T, P1) return 60*(0.54*t^0.25 - 0.5)*(0.21*ln(T) + 0.52)*P1/t end,
+  IDF = function(a, b, c, t) return a/(t + b)^c end,
+  HCRECT = function(Q, b) return (Q*Q/(G*b*b))^(1/3) end,
+  -- pruebas de bombeo
+  CJT = function(Q, a) return Q/(4*pi*a) end,
+  CJS = function(T, t0, r) return CJ*T*t0/(r*r) end,
+  RIMAGEN = function(r1, t1, t2) return r1*sqrt(t2/t1) end,
+  EFIC = function(B, C, Q) return B*Q/(B*Q + C*Q*Q) end,
   TCCALIF = function(L, H) return 57*(L^3/H)^0.385 end,
   TCGIAND = function(A, L, Hm) return 60*(4*sqrt(A) + 1.5*L)/(0.8*sqrt(Hm)) end,
   TCSCS = function(L, CN, S) return 3.42*L^0.8*(1000/CN - 9)^0.7/S^0.5 end,
@@ -474,6 +494,14 @@ local FUNC = {
   QORIF = function(Ae, h) return 2.66*Ae*h^0.5 end,
   QLAT = function(L, a, h) if h < a then return 1.27*L*h^1.5 end return 2.66*L*a*h^0.5 end,
   VAUTOL = function(D, S, n) return 0.397*D^(2/3)*sqrt(S)/n end,
+  QPARC = qparc,
+  INDEXY = function(xs, ys, x) local r = 0/0; for i = 1, math.min(#xs, #ys) do if xs[i] == x then r = ys[i] end end; return r end,
+  DCOM = function(Q, n, S, r) r = r or 0.8; for _, D in ipairs(DCOMS) do if qparc(D, n, S, r) >= Q then return D end end; return 0/0 end,
+  YND = function(Q, n, S, D) return yn(4, Q, n, S, 0, 0, D)/D end,
+  VCIRC = function(Q, n, S, D) local y = yn(4, Q, n, S, 0, 0, D); local A = seccion(4, 0, 0, D, y); return Q/A end,
+  HLIMSUM = function(Ae, Le, we) return 1.6*Ae/(Le + 2*we) end,
+  QSUMF = function(Le, we, h) local Ae = Le*we; if h < 1.6*Ae/(Le + 2*we) then return 1.66*(Le + 2*we)*h^1.5 end return 2.66*Ae*h^0.5 end,
+  SEPSUM = function(eta, Q, C, i, bc) return 3600*eta*Q/(C*i/1000*bc) end,
 }
 local FHELP = {
   {"SUM(rango)", "suma"}, {"AVG(rango)", "promedio"}, {"MIN/MAX(rango)", ""}, {"COUNT(rango)", "n datos"},
@@ -497,6 +525,12 @@ local FHELP = {
   {"SNCIRC(Q,n,D)", ""}, {"SNRECT(Q,n,b,D)", ""}, {"HCASO1(D,Q,b,cc)", "H'"}, {"HCASO2(D,ke,Q,b)", "H'"},
   {"YARNELL(K,Q,b,h1,n,D)", "dh"}, {"CUNETA(S,n,b,i)", "Q"}, {"CUNETAC(S,n,b,i1,i2,w)", "Q"},
   {"QVERT(Le,we,h) QORIF(Ae,h)", "sumidero fondo"}, {"QLAT(L,a,h)", "sumidero lateral"}, {"VAUTOL(D,S,n)", "Vc"},
+  {"AND/OR/NOT(c..)", "logicos"}, {"CEIL/FLOOR(x,paso)", "redondeo"}, {"TRIESGO(R,n)", "T para riesgo R"},
+  {"BELLI(t,T,P1)", "i mm/h (t min)"}, {"IDF(a,b,c,t)", "a/(t+b)^c"}, {"HCRECT(Q,b)", "hc rect"},
+  {"CJT(Q,a)", "T con pend. ln"}, {"CJS(T,t0,r)", "S"}, {"RIMAGEN(r1,t1,t2)", "r pozo imagen"}, {"EFIC(B,C,Q)", "eficiencia"},
+  {"QPARC(D,n,S,y/D)", "Q tubo parcial"}, {"DCOM(Q,n,S,y/D)", "D comercial"}, {"YND(Q,n,S,D)", "yn/D"},
+  {"VCIRC(Q,n,S,D)", "v normal tubo"}, {"HLIMSUM(Ae,Le,we)", "h vert/orif"}, {"QSUMF(Le,we,h)", "Q sumidero fondo"},
+  {"SEPSUM(eta,Q,C,i,bc)", "separacion (i mm/h)"}, {"INDEXY(X,Y,x)", "y donde X=x"},
 }
 
 -- -------------------- Evaluacion de celdas --------------------------
@@ -526,6 +560,7 @@ local FENV = setmetatable({CELL = cellv, RNG = rng}, {__index = FUNC})
 local function compile(raw)
   if compiled[raw] then return compiled[raw] end
   local e = raw:sub(2):upper():gsub(";", ","):gsub("<>", "~="):gsub("%%", "/100")
+  e = e:gsub("([^<>~=])=([^=])", "%1==%2")
   e = e:gsub(RANGE, function(a, b, c, d) return "RNG(" .. colIdx(a) .. "," .. b .. "," .. colIdx(c) .. "," .. d .. ")" end)
   e = e:gsub(REF, function(_, c, _, r) return "CELL(" .. colIdx(c) .. "," .. r .. ")" end)
   local f, err
@@ -615,6 +650,146 @@ local function fillCol(list, col, r1, r2, raw)
   for r = r1, r2 do list[#list+1] = {col .. r, shiftRefs(raw, r - r1, 0)} end
 end
 
+-- ---- Plantillas del certamen (datos precargados; cambie la columna de datos) ----
+local function put(L, col, r1, vals) for i, v in ipairs(vals) do L[#L+1] = {col .. (r1 + i - 1), tostring(v)} end end
+do -- P1 atravieso completo
+  local L = {{"A1","'DATOS"},{"C1","'unid."},
+    {"A2","'A cuenca"},{"B2","0.9"},{"C2","'km2"},{"A3","'L cauce"},{"B3","1.6"},{"C3","'km"},{"A4","'H desniv"},{"B4","120"},{"C4","'m"},
+    {"A5","'C10"},{"B5","=0.24+0.07+0.07+0.07"},{"C5","'suma tabla"},{"A6","'T1 diseno"},{"B6","50"},{"C6","'anos"},
+    {"A7","'fC T1"},{"B7","1.2"},{"A8","'T2 verif"},{"B8","100"},{"C8","'anos"},{"A9","'fC T2"},{"B9","1.25"},
+    {"A10","'P1^10"},{"B10","28"},{"C10","'mm"},{"A11","'vida util"},{"B11","30"},{"C11","'anos"},
+    {"A12","'b cajon"},{"B12","2"},{"C12","'m"},{"A13","'n"},{"B13","0.015"},{"A14","'L cajon"},{"B14","24"},{"C14","'m"},
+    {"A15","'SD"},{"B15","0.012"},{"C15","'m/m"},{"A16","'ke"},{"B16","0.5"},{"A17","'rasante"},{"B17","3.6"},{"C17","'m"},
+    {"A18","'revancha"},{"B18","0.3"},{"C18","'m"},{"A19","'paso D"},{"B19","0.1"},{"C19","'m"},
+    {"D1","'RESULTADO"},{"F1","'unid."},
+    {"D2","'a) tc Calif"},{"E2","=TCCALIF(B3,B4)"},{"F2","'min"},{"D3","'tc>=10?"},{"E3","=IF(E2>=10,1,0)"},{"F3","'1=si"},
+    {"D4","'b) riesgo"},{"E4","=RIESGO(B6,B11)"},{"F4","'T1 en n"},{"D5","'S util"},{"E5","=B12*E15"},{"F5","'m2 (>1.75?)"},
+    {"D6","'c) C T1"},{"E6","=B5*B7"},{"D7","'P T1"},{"E7","=BELL(E2,B6,B10)"},{"F7","'mm"},
+    {"D8","'i T1"},{"E8","=60*E7/E2"},{"F8","'mm/h"},{"D9","'Q T1"},{"E9","=RACIONAL(E6,E8,B2)"},{"F9","'m3/s"},
+    {"D10","'C T2"},{"E10","=B5*B9"},{"D11","'i T2"},{"E11","=BELLI(E2,B8,B10)"},{"F11","'mm/h"},
+    {"D12","'Q T2"},{"E12","=RACIONAL(E10,E11,B2)"},{"F12","'m3/s"},
+    {"D13","'d) hc"},{"E13","=HCRECT(E9,B12)"},{"F13","'m"},{"D14","'D=1.5hc"},{"E14","=1.5*E13"},{"F14","'m"},
+    {"D15","'D adopt"},{"E15","=CEIL(E14,B19)"},{"F15","'m"},{"D16","'v=Q/bhc"},{"E16","=E9/(B12*E13)"},{"F16","'m/s"},
+    {"D17","'v<5 ?"},{"E17","=IF(E16<5,1,0)"},{"D18","'Sc"},{"E18","=SCRECT(E14,B13,B12)"},
+    {"D19","'SD>=Sc?"},{"E19","=IF(B15>=E18,1,0)"},{"F19","'torrente"},
+    {"D20","'e) Sn Q2"},{"E20","=SNRECT(E12,B13,B12,E15)"},{"D21","'caso"},{"E21","=IF(B15>E20,1,IF(B15<E20,3,2))"},
+    {"D22","'H' caso1"},{"E22","=HCASO1(E15,E12,B12)"},{"F22","'m"},{"D23","'H' caso2"},{"E23","=HCASO2(E15,B16,E12,B12)"},{"F23","'m"},
+    {"D24","'v llena"},{"E24","=E12/(B12*E15)"},{"D25","'J"},{"E25","=E24^2*B13^2/(B12*E15/(2*B12+2*E15))^(4/3)"},
+    {"D26","'H' caso3"},{"E26","=E15+(1+B16)*E24^2/(2*GRAV)+E25*B14-B15*B14"},{"F26","'m"},
+    {"D27","'H' usar"},{"E27","=IF(E21=1,E22,IF(E21=2,E23,E26))"},{"F27","'m"},
+    {"D28","'H max"},{"E28","=B17-B18"},{"F28","'rasante-rev"},{"D29","'H'<=Hmax?"},{"E29","=IF(E27<=E28,1,0)"},
+    {"D30","'D+0.6"},{"E30","=E15+0.6"},{"D31","'H'<=D+0.6?"},{"E31","=IF(E27<=E30,1,0)"}}
+  T("CERT P1 Atravieso (cajon)", "a)-e) completo; datos en B", L)
+end
+do -- P2a prueba de gasto variable
+  local L = {{"A1","'Q L/s"},{"B1","'sw m"},{"C1","'Q m3/s"},{"D1","'sw/Q"},
+    {"F1","'C pozo"},{"G1","=SLOPE(D2:D20,C2:C20)"},{"H1","'s2/m5"},{"F2","'B acuif"},{"G2","=INTERCEPT(D2:D20,C2:C20)"},{"H2","'s/m2"},
+    {"F3","'R^2"},{"G3","=RSQ(D2:D20,C2:C20)"},{"F5","'Q prueba"},{"G5","25"},{"H5","'L/s"},
+    {"F6","'BQ"},{"G6","=G2*G5/1000"},{"H6","'m"},{"F7","'CQ^2"},{"G7","=G1*(G5/1000)^2"},{"H7","'m"},
+    {"F8","'sw"},{"G8","=G6+G7"},{"H8","'m"},{"F9","'eficiencia"},{"G9","=EFIC(G2,G1,G5/1000)"},
+    {"F10","'0.8Qmax"},{"G10","=0.8*MAX(A2:A20)"},{"H10","'L/s"},{"F11","'Qp<=0.8Qm"},{"G11","=IF(G5<=G10*1.03,1,0)"}}
+  put(L, "A", 2, {8, 16, 24, 32}); put(L, "B", 2, {1.91, 4.04, 6.41, 9.01})
+  fillCol(L, "C", 2, 20, "=IF(A2>0,A2/1000,\"\")")
+  fillCol(L, "D", 2, 20, "=IF(A2>0,B2/C2,\"\")")
+  T("CERT P2a Gasto variable", "sw=BQ+CQ^2, eficiencia", L)
+end
+do -- P2b-c-e Cooper-Jacob con tramo elegido + borde
+  local L = {{"A1","'t min"},{"B1","'s m"},{"C1","'ln t tramo"},{"D1","'s recta"},{"E1","'desvio"},{"F1","'ln t final"},
+    {"H1","'Q m3/s"},{"I1","0.025"},{"H2","'r m"},{"I2","25"},{"H3","'m espesor"},{"I3","18"},{"H4","'t->s"},{"I4","60"},
+    {"H5","'tramo ini"},{"I5","10"},{"H6","'tramo fin"},{"I6","120"},{"H7","'final desde"},{"I7","360"},
+    {"H9","'a=ds/ln"},{"I9","=SLOPE(B2:B40,C2:C40)"},{"H10","'ds/ciclo"},{"I10","=2.303*I9"},{"J10","'m"},
+    {"H11","'T"},{"I11","=CJT(I1,I9)"},{"J11","'m2/s"},{"H12","'K=T/m"},{"I12","=I11/I3"},{"J12","'m/s"},
+    {"H13","'t0"},{"I13","=EXP(-INTERCEPT(B2:B40,C2:C40)/I9)"},{"J13","'min"},
+    {"H14","'S"},{"I14","=CJS(I11,I13*I4,I2)"},{"H15","'u(t ini)"},{"I15","=U(I2,I14,I11,I5*I4)"},
+    {"H16","'t(u=.01)"},{"I16","=I2^2*I14/(0.04*I11)/I4"},{"J16","'min"},{"H17","'R^2"},{"I17","=RSQ(B2:B40,C2:C40)"},
+    {"H19","'a final"},{"I19","=SLOPE(B2:B40,F2:F40)"},{"H20","'a fin/a"},{"I20","=I19/I9"},
+    {"H21","'borde"},{"I21","=IF(I20>1.2,\"IMPERM\",IF(I20<0.8,\"RECARGA\",\"NINGUNO\"))"},
+    {"H22","'t2 ultimo"},{"I22","=MAX(A2:A40)"},{"J22","'min"},{"H23","'ds en t2"},{"I23","=ABS(INDEXY(A2:A40,B2:B40,I22)-(I9*LN(I22)+INTERCEPT(B2:B40,C2:C40)))"},
+    {"H24","'t1 (s=ds)"},{"I24","=EXP((I23-INTERCEPT(B2:B40,C2:C40))/I9)"},{"J24","'min"},
+    {"H25","'r imagen"},{"I25","=RIMAGEN(I2,I24,I22)"},{"J25","'m"},{"H26","'d borde"},{"I26","=(I2+I25)/2"},{"J26","'m"},
+    {"H28","'R(t2)"},{"I28","=RT(I11,I22*I4,I14)"},{"J28","'m"},{"H29","'R>2d ?"},{"I29","=IF(I28>2*I26,1,0)"}}
+  put(L, "A", 2, {1, 2, 3, 5, 8, 10, 15, 20, 30, 45, 60, 90, 120, 180, 240, 360, 480, 720, 1080, 1440})
+  put(L, "B", 2, {0.65, 0.86, 0.99, 1.16, 1.31, 1.39, 1.52, 1.61, 1.75, 1.89, 1.99, 2.14, 2.26, 2.45, 2.59, 2.81, 2.98, 3.22, 3.46, 3.65})
+  fillCol(L, "C", 2, 40, "=IF(AND(A2>=$I$5,A2<=$I$6),LN(A2),\"\")")
+  fillCol(L, "D", 2, 40, "=IF(A2>0,$I$9*LN(A2)+INTERCEPT($B$2:$B$40,$C$2:$C$40),\"\")")
+  fillCol(L, "E", 2, 40, "=IF(A2>0,B2-D2,\"\")")
+  fillCol(L, "F", 2, 40, "=IF(A2>=$I$7,LN(A2),\"\")")
+  T("CERT P2b Cooper-Jacob+borde", "elija tramo en I5:I6; t en min", L)
+end
+do -- P2d recuperacion con t'
+  local L = {{"A1","'t' min"},{"B1","'s' m"},{"C1","'t/t'"},{"D1","'ln tramo"},
+    {"F1","'tf min"},{"G1","1440"},{"F2","'Q m3/s"},{"G2","0.025"},{"F3","'t/t' min"},{"G3","20"},{"H3","'usar t/t'>=G3"},
+    {"F5","'a=ds/ln"},{"G5","=SLOPE(B2:B30,D2:D30)"},{"F6","'ds/ciclo"},{"G6","=2.303*G5"},{"H6","'m"},
+    {"F7","'T recup"},{"G7","=CJT(G2,G5)"},{"H7","'m2/s"},{"F8","'R^2"},{"G8","=RSQ(B2:B30,D2:D30)"},
+    {"F10","'T bombeo"},{"G10","0.0057"},{"F11","'dif %"},{"G11","=100*(G7-G10)/G10"}}
+  put(L, "A", 2, {1, 2, 5, 10, 20, 30, 60, 120, 240, 480})
+  put(L, "B", 2, {3.00, 2.78, 2.49, 2.26, 2.04, 1.91, 1.68, 1.43, 1.15, 0.85})
+  fillCol(L, "C", 2, 30, "=IF(A2>0,($G$1+A2)/A2,\"\")")
+  fillCol(L, "D", 2, 30, "=IF(A2>0,IF(C2>=$G$3,LN(C2),\"\"),\"\")")
+  T("CERT P2d Recuperacion (t')", "t' desde que se detiene", L)
+end
+do -- P3a-c cuneta, sumidero y separacion
+  local L = {{"A1","'DATOS"},{"A2","'S long"},{"B2","0.025"},{"A3","'n cuneta"},{"B3","0.016"},{"A4","'b max"},{"B4","1.5"},{"C4","'m"},
+    {"A5","'i bombeo"},{"B5","0.03"},{"A6","'C"},{"B6","0.75"},{"A7","'I mm/h"},{"B7","42"},
+    {"A8","'w sumid"},{"B8","0.6"},{"C8","'m"},{"A9","'L sumid"},{"B9","1"},{"C9","'m"},{"A10","'e barra"},{"B10","0.02"},{"C10","'m"},
+    {"A11","'nL"},{"B11","7"},{"A12","'nT"},{"B12","3"},{"A13","'eta"},{"B13","0.75"},{"A14","'F seg"},{"B14","0.8"},{"C14","'tabla MDU"},
+    {"A15","'calzada e"},{"B15","8"},{"C15","'m"},{"A16","'doble 1/0"},{"B16","1"},{"A17","'wc lateral"},{"B17","15"},{"C17","'m"},
+    {"D1","'RESULTADO"},{"D2","'a) Qmax"},{"E2","=CUNETA(B2,B3,B4,B5)"},{"F2","'m3/s"},
+    {"D3","'y=b i"},{"E3","=B4*B5"},{"F3","'m"},{"D4","'y<=0.15?"},{"E4","=IF(E3<=0.15,1,0)"},
+    {"D5","'b) we"},{"E5","=B8-B10*B11"},{"F5","'m"},{"D6","'Le"},{"E6","=B9-B10*B12"},{"F6","'m"},
+    {"D7","'Ae"},{"E7","=E5*E6"},{"F7","'m2"},{"D8","'h limite"},{"E8","=HLIMSUM(E7,E6,E5)"},{"F8","'m"},
+    {"D9","'modo"},{"E9","=IF(E3<E8,\"VERTEDERO\",\"ORIFICIO\")"},{"D10","'Q sumid"},{"E10","=QSUMF(E6,E5,E3)"},{"F10","'m3/s"},
+    {"D11","'c) eta d"},{"E11","=B14*B13"},{"D12","'bc"},{"E12","=IF(B16=1,0.5*B15,B15)+B17"},{"F12","'m"},
+    {"D13","'L sep"},{"E13","=SEPSUM(E11,E2,B6,B7,E12)"},{"F13","'m"},{"D14","'Q captado"},{"E14","=E11*E2"},{"F14","'m3/s"},
+    {"D15","'Qcap<=Qsum?"},{"E15","=IF(E14<=E10,1,0)"}}
+  T("CERT P3a-c Cuneta/sumidero", "capacidad, modo y separacion", L)
+end
+do -- P3d-e colectores en serie + dimensionamiento
+  local L = {{"A1","'C"},{"B1","'A km2"},{"C1","'tc min"},{"D1","'L m"},{"E1","'v m/s"},{"F1","'Cmed"},{"G1","'Aacum"},{"H1","'tcI"},
+    {"I1","'i(tcI)"},{"J1","'QiI"},{"K1","'i(tci)"},{"L1","'Qi"},{"M1","'QD"},{"N1","'D adopt"},{"O1","'Q0.8D"},{"P1","'yn/D"},
+    {"A9","'IDF a"},{"B9","900"},{"A10","'IDF b"},{"B10","10"},{"A11","'IDF c"},{"B11","0.75"},{"C9","'i=a/(t+b)^c"},
+    {"A12","'n tubo"},{"B12","0.013"},{"A13","'S tubo"},{"B13","0.005"},{"A14","'y/D max"},{"B14","0.8"},
+    {"D9","'col"},{"E9","'v real"},{"F9","'Vc autol"},{"G9","'Vc>=0.6"},{"H9","'v<=vmax"},{"I9","'resp."},{"J9","'vmax"},{"J10","3.5"}}
+  put(L, "A", 2, {0.70, 0.60, 0.80}); put(L, "B", 2, {0.04, 0.06, 0.05}); put(L, "C", 2, {10, 14, 12})
+  put(L, "D", 2, {250, 300}); put(L, "E", 2, {1.2, 1.5})
+  L[#L+1] = {"F2", "=A2"}; L[#L+1] = {"G2", "=B2"}; L[#L+1] = {"H2", "=C2"}
+  fillCol(L, "F", 3, 7, "=IF(A3>0,SUM($A$2:A3)/COUNT($A$2:A3),\"\")")
+  fillCol(L, "G", 3, 7, "=IF(A3>0,G2+B3,\"\")")
+  fillCol(L, "H", 3, 7, "=IF(A3>0,MAX(H2+D2/E2/60,C3),\"\")")
+  fillCol(L, "I", 2, 7, "=IF(A2>0,IDF($B$9,$B$10,$B$11,H2),\"\")")
+  fillCol(L, "J", 2, 7, "=IF(A2>0,RACIONAL(F2,I2,G2),\"\")")
+  fillCol(L, "K", 2, 7, "=IF(A2>0,IDF($B$9,$B$10,$B$11,C2),\"\")")
+  fillCol(L, "L", 2, 7, "=IF(A2>0,RACIONAL(A2,K2,B2),\"\")")
+  L[#L+1] = {"M2", "=MAX(J2,L2)"}
+  fillCol(L, "M", 3, 7, "=IF(A3>0,MAX(M2,J3,L3),\"\")")
+  fillCol(L, "N", 2, 7, "=IF(A2>0,DCOM(M2,$B$12,$B$13,$B$14),\"\")")
+  fillCol(L, "O", 2, 7, "=IF(A2>0,QPARC(N2,$B$12,$B$13,$B$14),\"\")")
+  fillCol(L, "P", 2, 7, "=IF(A2>0,YND(M2,$B$12,$B$13,N2),\"\")")
+  for i = 1, 6 do
+    local r, s = 9 + i, 1 + i
+    L[#L+1] = {"D" .. r, "=IF(A" .. s .. ">0," .. i .. ",\"\")"}
+    L[#L+1] = {"E" .. r, "=IF(A" .. s .. ">0,VCIRC(M" .. s .. ",$B$12,$B$13,N" .. s .. "),\"\")"}
+    L[#L+1] = {"F" .. r, "=IF(A" .. s .. ">0,VAUTOL(N" .. s .. ",$B$13,$B$12),\"\")"}
+    L[#L+1] = {"G" .. r, "=IF(A" .. s .. ">0,IF(F" .. r .. ">=0.6,1,0),\"\")"}
+    L[#L+1] = {"H" .. r, "=IF(A" .. s .. ">0,IF(E" .. r .. "<=$J$10,1,0),\"\")"}
+    L[#L+1] = {"I" .. r, "=IF(A" .. s .. ">0,IF(N" .. s .. "<=0.8,\"SERVIU\",\"DOH\"),\"\")"}
+  end
+  T("CERT P3d-e Colectores", "QD en serie + diametro + v", L)
+end
+do -- Puente: Yarnell
+  local L = {{"A1","'K pila"},{"B1","0.9"},{"C1","'forma (tabla)"},{"A2","'Q"},{"B2","150"},{"C2","'m3/s"},{"A3","'b cauce"},{"B3","40"},{"C3","'m"},
+    {"A4","'h aguas ab."},{"B4","3"},{"C4","'m (h3)"},{"A5","'n pilas"},{"B5","3"},{"A6","'ancho pila"},{"B6","1.2"},{"C6","'m"},
+    {"A8","'sigma=nD/b"},{"B8","=B5*B6/B3"},{"A9","'Fr3"},{"B9","=B2/(B3*B4)/SQRT(GRAV*B4)"},
+    {"A10","'dh Yarnell"},{"B10","=YARNELL(B1,B2,B3,B4,B5,B6)"},{"C10","'m"},{"A11","'h aguas arr"},{"B11","=B4+B10"},{"C11","'m"},
+    {"A12","'v pilas"},{"B12","=B2/((B3-B5*B6)*B4)"},{"C12","'m/s"}}
+  T("Puente: remanso Yarnell", "sobreelevacion por pilas", L)
+end
+do -- Riesgo y periodo de retorno
+  local L = {{"A1","'T"},{"B1","'n vida"},{"C1","'riesgo"},{"E1","'R objetivo"},{"F1","0.2"},{"E2","'n"},{"F2","30"},{"E3","'T requerido"},{"F3","=TRIESGO(F1,F2)"}}
+  put(L, "A", 2, {2, 5, 10, 25, 50, 100, 200, 500}); for i = 2, 9 do L[#L+1] = {"B" .. i, "30"} end
+  fillCol(L, "C", 2, 9, "=RIESGO(A2,B2)")
+  T("Riesgo / periodo de retorno", "R=1-(1-1/T)^n", L)
+end
 do -- Prueba de gasto constante (Cooper-Jacob)
   local L = {{"A1","'t"},{"B1","'dh"},{"C1","'ln t"},{"E1","'Q"},{"F1","0.05"},{"E2","'r"},{"F2","20"},
     {"A2","60"},{"B2","0.8"},{"A3","120"},{"B3","0.9"},{"A4","300"},{"B4","1.03"},{"A5","600"},{"B5","1.13"},{"A6","1200"},{"B6","1.24"},
