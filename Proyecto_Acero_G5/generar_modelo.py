@@ -950,8 +950,7 @@ def bloque_comun(lineas, titulo):
     hoy = datetime.datetime.now()
     lineas += ["File %s was saved on %s" % (titulo, hoy.strftime("%m/%d/%y at %H:%M:%S")), ""]
     lineas += tabla("PROGRAM CONTROL", [
-        '   ProgramName=SAP2000   Version=%s   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"   '
-        'SteelCode="AISC 360-22"   ConcCode="ACI 318-19"   RegenHinge=Yes' % SAP_VERSION])
+        '   ProgramName=SAP2000   Version=%s   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"' % SAP_VERSION])
     lineas += tabla("COORDINATE SYSTEMS", [fila(Name="GLOBAL", Type="Cartesian", X=0, Y=0, Z=0,
                                                 AboutZ=0, AboutY=0, AboutX=0)])
     mats = []
@@ -959,7 +958,7 @@ def bloque_comun(lineas, titulo):
         if m[0] not in [x[0] for x in mats]:
             mats.append((m[0], m[1], m[2], m[3]))
     lineas += tabla("MATERIAL PROPERTIES 01 - GENERAL",
-                    [fila(Material=m, Type="Steel", Grade=gr, SymType="Isotropic", TempDepend=False,
+                    [fila(Material=m, Type="Steel", SymType="Isotropic", TempDepend=False,
                           Color="Blue") for m, _, _, gr in mats])
     lineas += tabla("MATERIAL PROPERTIES 02 - BASIC MECHANICAL PROPERTIES",
                     [fila(Material=m, UnitWeight=GAMMA_ACERO, UnitMass=GAMMA_ACERO / g, E1=E, G12=G_MOD,
@@ -1082,23 +1081,6 @@ def escribir_s2k_3d(ruta):
         jl.append(fila(Joint=nid, LoadPat="EX", CoordSys="GLOBAL", F1=nl["F"], F2=0, F3=0, M1=0, M2=0, M3=0))
         jl.append(fila(Joint=nid, LoadPat="EY", CoordSys="GLOBAL", F1=0, F2=nl["F"], F3=0, M1=0, M2=0, M3=0))
     lin += tabla("JOINT LOADS - FORCE", jl)
-    # grupos útiles para seleccionar
-    grupos = {"COLUMNAS": [b for b in BARRAS if b.tipo == "COL"],
-              "VIGAS_X": [b for b in BARRAS if b.tipo == "VX"],
-              "VIGAS_Y": [b for b in BARRAS if b.tipo == "VY"],
-              "RIOSTRAS_X": [b for b in BARRAS if b.tipo == "RX"],
-              "RIOSTRAS_Y": [b for b in BARRAS if b.tipo == "RY"],
-              "EJE_2": [b for b in BARRAS if (b.tipo == "COL" and b.eje[0] == "2") or (b.tipo == "VY" and b.eje[0] == "2")]}
-    lin += tabla("GROUPS 1 - DEFINITIONS", [fila(GroupName=gname, Selection=True, SectionCut=True, Steel=True,
-                                                  Concrete=True, Aluminum=True, ColdFormed=True, Stage=True,
-                                                  Bridge=True, AutoSeismic=False, AutoWind=False, SelDesSteel=False,
-                                                  SelDesAlum=False, SelDesCold=False, MassWeight=True, Color="Red")
-                                             for gname in grupos])
-    ga = []
-    for gname, bs in grupos.items():
-        for b in bs:
-            ga.append(fila(GroupName=gname, ObjectType="Frame", ObjectLabel=b.id))
-    lin += tabla("GROUPS 2 - ASSIGNMENTS", ga)
     lin += ["END TABLE DATA"]
     with open(ruta, "w", newline="\r\n") as fh:
         fh.write("\n".join(lin) + "\n")

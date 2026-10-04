@@ -1,14 +1,14 @@
-File G5_Eje2_Pushover.s2k was saved on 10/04/26 at 20:04:16
+File G5_Eje2_Pushover.s2k was saved on 10/04/26 at 20:20:48
 
 TABLE:  "PROGRAM CONTROL"
-   ProgramName=SAP2000   Version=27.0.0   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"   SteelCode="AISC 360-22"   ConcCode="ACI 318-19"   RegenHinge=Yes
+   ProgramName=SAP2000   Version=27.0.0   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"
 
 TABLE:  "COORDINATE SYSTEMS"
    Name=GLOBAL   Type=Cartesian   X=0   Y=0   Z=0   AboutZ=0   AboutY=0   AboutX=0
 
 TABLE:  "MATERIAL PROPERTIES 01 - GENERAL"
-   Material=A572Gr50   Type=Steel   Grade="Grade 50"   SymType=Isotropic   TempDepend=No   Color=Blue
-   Material=A500GrC   Type=Steel   Grade="Grade C"   SymType=Isotropic   TempDepend=No   Color=Blue
+   Material=A572Gr50   Type=Steel   SymType=Isotropic   TempDepend=No   Color=Blue
+   Material=A500GrC   Type=Steel   SymType=Isotropic   TempDepend=No   Color=Blue
 
 TABLE:  "MATERIAL PROPERTIES 02 - BASIC MECHANICAL PROPERTIES"
    Material=A572Gr50   UnitWeight=7.85   UnitMass=0.800477   E1=2.03943e+07   G12=7.84397e+06   U12=0.3   A1=1.170000E-05

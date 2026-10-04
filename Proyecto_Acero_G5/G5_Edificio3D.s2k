@@ -1,14 +1,14 @@
-File G5_Edificio3D.s2k was saved on 10/04/26 at 20:04:16
+File G5_Edificio3D.s2k was saved on 10/04/26 at 20:20:48
 
 TABLE:  "PROGRAM CONTROL"
-   ProgramName=SAP2000   Version=27.0.0   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"   SteelCode="AISC 360-22"   ConcCode="ACI 318-19"   RegenHinge=Yes
+   ProgramName=SAP2000   Version=27.0.0   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"
 
 TABLE:  "COORDINATE SYSTEMS"
    Name=GLOBAL   Type=Cartesian   X=0   Y=0   Z=0   AboutZ=0   AboutY=0   AboutX=0
 
 TABLE:  "MATERIAL PROPERTIES 01 - GENERAL"
-   Material=A572Gr50   Type=Steel   Grade="Grade 50"   SymType=Isotropic   TempDepend=No   Color=Blue
-   Material=A500GrC   Type=Steel   Grade="Grade C"   SymType=Isotropic   TempDepend=No   Color=Blue
+   Material=A572Gr50   Type=Steel   SymType=Isotropic   TempDepend=No   Color=Blue
+   Material=A500GrC   Type=Steel   SymType=Isotropic   TempDepend=No   Color=Blue
 
 TABLE:  "MATERIAL PROPERTIES 02 - BASIC MECHANICAL PROPERTIES"
    Material=A572Gr50   UnitWeight=7.85   UnitMass=0.800477   E1=2.03943e+07   G12=7.84397e+06   U12=0.3   A1=1.170000E-05
@@ -1057,175 +1057,5 @@ TABLE:  "JOINT LOADS - FORCE"
    Joint=499   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=35.4186   F3=0   M1=0   M2=0   M3=0
    Joint=599   LoadPat=EX   CoordSys=GLOBAL   F1=74.9385   F2=0   F3=0   M1=0   M2=0   M3=0
    Joint=599   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=74.9385   F3=0   M1=0   M2=0   M3=0
-
-TABLE:  "GROUPS 1 - DEFINITIONS"
-   GroupName=COLUMNAS   Selection=Yes   SectionCut=Yes   Steel=Yes   Concrete=Yes   Aluminum=Yes   ColdFormed=Yes   Stage=Yes   Bridge=Yes   AutoSeismic=No   AutoWind=No   SelDesSteel=No   SelDesAlum=No   SelDesCold=No   MassWeight=Yes   Color=Red
-   GroupName=VIGAS_X   Selection=Yes   SectionCut=Yes   Steel=Yes   Concrete=Yes   Aluminum=Yes   ColdFormed=Yes   Stage=Yes   Bridge=Yes   AutoSeismic=No   AutoWind=No   SelDesSteel=No   SelDesAlum=No   SelDesCold=No   MassWeight=Yes   Color=Red
-   GroupName=VIGAS_Y   Selection=Yes   SectionCut=Yes   Steel=Yes   Concrete=Yes   Aluminum=Yes   ColdFormed=Yes   Stage=Yes   Bridge=Yes   AutoSeismic=No   AutoWind=No   SelDesSteel=No   SelDesAlum=No   SelDesCold=No   MassWeight=Yes   Color=Red
-   GroupName=RIOSTRAS_X   Selection=Yes   SectionCut=Yes   Steel=Yes   Concrete=Yes   Aluminum=Yes   ColdFormed=Yes   Stage=Yes   Bridge=Yes   AutoSeismic=No   AutoWind=No   SelDesSteel=No   SelDesAlum=No   SelDesCold=No   MassWeight=Yes   Color=Red
-   GroupName=RIOSTRAS_Y   Selection=Yes   SectionCut=Yes   Steel=Yes   Concrete=Yes   Aluminum=Yes   ColdFormed=Yes   Stage=Yes   Bridge=Yes   AutoSeismic=No   AutoWind=No   SelDesSteel=No   SelDesAlum=No   SelDesCold=No   MassWeight=Yes   Color=Red
-   GroupName=EJE_2   Selection=Yes   SectionCut=Yes   Steel=Yes   Concrete=Yes   Aluminum=Yes   ColdFormed=Yes   Stage=Yes   Bridge=Yes   AutoSeismic=No   AutoWind=No   SelDesSteel=No   SelDesAlum=No   SelDesCold=No   MassWeight=Yes   Color=Red
-
-TABLE:  "GROUPS 2 - ASSIGNMENTS"
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=1
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=2
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=3
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=4
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=5
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=6
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=7
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=8
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=9
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=10
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=11
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=12
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=13
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=14
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=15
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=16
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=17
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=18
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=19
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=20
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=21
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=22
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=23
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=24
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=25
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=26
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=27
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=28
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=29
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=30
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=31
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=32
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=33
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=34
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=35
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=36
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=37
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=38
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=39
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=40
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=41
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=42
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=43
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=44
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=45
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=46
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=47
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=48
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=49
-   GroupName=COLUMNAS   ObjectType=Frame   ObjectLabel=50
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=51
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=52
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=53
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=54
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=55
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=56
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=57
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=58
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=59
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=60
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=61
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=62
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=63
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=64
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=65
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=66
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=67
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=68
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=69
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=70
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=71
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=72
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=73
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=74
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=75
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=76
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=77
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=78
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=79
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=80
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=81
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=82
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=83
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=84
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=85
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=86
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=87
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=88
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=89
-   GroupName=VIGAS_X   ObjectType=Frame   ObjectLabel=90
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=91
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=92
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=93
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=94
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=95
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=96
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=97
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=98
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=99
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=100
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=101
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=102
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=103
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=104
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=105
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=106
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=107
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=108
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=109
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=110
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=111
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=112
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=113
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=114
-   GroupName=VIGAS_Y   ObjectType=Frame   ObjectLabel=115
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=116
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=117
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=118
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=119
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=120
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=121
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=122
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=123
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=124
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=125
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=126
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=127
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=128
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=129
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=130
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=131
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=132
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=133
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=134
-   GroupName=RIOSTRAS_X   ObjectType=Frame   ObjectLabel=135
-   GroupName=RIOSTRAS_Y   ObjectType=Frame   ObjectLabel=136
-   GroupName=RIOSTRAS_Y   ObjectType=Frame   ObjectLabel=137
-   GroupName=RIOSTRAS_Y   ObjectType=Frame   ObjectLabel=138
-   GroupName=RIOSTRAS_Y   ObjectType=Frame   ObjectLabel=139
-   GroupName=RIOSTRAS_Y   ObjectType=Frame   ObjectLabel=140
-   GroupName=RIOSTRAS_Y   ObjectType=Frame   ObjectLabel=141
-   GroupName=RIOSTRAS_Y   ObjectType=Frame   ObjectLabel=142
-   GroupName=RIOSTRAS_Y   ObjectType=Frame   ObjectLabel=143
-   GroupName=RIOSTRAS_Y   ObjectType=Frame   ObjectLabel=144
-   GroupName=RIOSTRAS_Y   ObjectType=Frame   ObjectLabel=145
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=2
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=7
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=12
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=17
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=22
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=27
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=32
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=37
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=42
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=47
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=92
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=97
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=102
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=107
-   GroupName=EJE_2   ObjectType=Frame   ObjectLabel=112
 
 END TABLE DATA

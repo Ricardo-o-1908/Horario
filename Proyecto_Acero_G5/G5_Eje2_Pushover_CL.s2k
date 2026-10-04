@@ -1,13 +1,13 @@
-File G5_Eje2_Pushover_CL.s2k was saved on 10/04/26 at 20:04:17
+File G5_Eje2_Pushover_CL.s2k was saved on 10/04/26 at 20:20:48
 
 TABLE:  "PROGRAM CONTROL"
-   ProgramName=SAP2000   Version=27.0.0   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"   SteelCode="AISC 360-22"   ConcCode="ACI 318-19"   RegenHinge=Yes
+   ProgramName=SAP2000   Version=27.0.0   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"
 
 TABLE:  "COORDINATE SYSTEMS"
    Name=GLOBAL   Type=Cartesian   X=0   Y=0   Z=0   AboutZ=0   AboutY=0   AboutX=0
 
 TABLE:  "MATERIAL PROPERTIES 01 - GENERAL"
-   Material=A270ES   Type=Steel   Grade=A270ES   SymType=Isotropic   TempDepend=No   Color=Blue
+   Material=A270ES   Type=Steel   SymType=Isotropic   TempDepend=No   Color=Blue
 
 TABLE:  "MATERIAL PROPERTIES 02 - BASIC MECHANICAL PROPERTIES"
    Material=A270ES   UnitWeight=7.85   UnitMass=0.800477   E1=2.03943e+07   G12=7.84397e+06   U12=0.3   A1=1.170000E-05

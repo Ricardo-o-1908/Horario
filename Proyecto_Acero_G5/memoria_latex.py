@@ -977,7 +977,7 @@ def anexo_numeracion(G):
         son $100k + 99$.
   \item \textbf{Barras:} 1--50 columnas (10 por piso, piso 1 = barras 1--10), 51--90 vigas X (ejes A y B),
         91--115 vigas Y (ejes 1 a 5), 116--135 riostras X (ejes A y B) y 136--145 riostras Y (ejes 1 y 5).
-  \item \textbf{Grupos} definidos en SAP2000: COLUMNAS, VIGAS\_X, VIGAS\_Y, RIOSTRAS\_X, RIOSTRAS\_Y y EJE\_2.
+  \item \textbf{Grupos} definidos en SAP2000 (creados por el script de la API): COLUMNAS, VIGAS\_X, VIGAS\_Y, RIOSTRAS\_X, RIOSTRAS\_Y y EJE\_2.
 \end{itemize}
 """
 

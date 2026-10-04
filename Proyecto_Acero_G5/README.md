@@ -20,17 +20,30 @@ La configuración chilena usa **solo perfiles soldados armados con planchas**, n
 | `G5_Eje2_Pushover[_CL].s2k` | Modelo 2D del eje 2 para el análisis plástico (pushover) |
 | `Memoria_Tarea1_G5[_CL].tex` | Memoria de la Tarea 1 en LaTeX. Se pega en Overleaf y compila con pdfLaTeX |
 | `Memoria_Tarea1_G5[_CL].pdf` | La memoria ya compilada, para revisarla |
+| `crear_modelo_SAP_API.py` | Construye los modelos directamente en SAP2000 v27 vía API y guarda los `.sdb` |
 | `generar_modelo.py` + `memoria_latex.py` | Generan todo: `python3 generar_modelo.py` (ambas configuraciones) o `python3 generar_modelo.py CL` (solo una). Requiere numpy |
 | `resultados_G5[_CL].json` | Resultados del análisis propio, usados para verificar el modelo |
 
 ## Cómo obtener el `.sdb` en SAP2000 v27
-1. **File → Import → SAP2000 .s2k Text File…** y elegir `G5_Edificio3D_CL.s2k` (o el de la versión AISC).
-2. Revisar el log de importación, ejecutar el análisis (F5) y guardar como `.sdb`.
-3. Repetir lo mismo con `G5_Eje2_Pushover_CL.s2k`. Luego asignar las rótulas M3 y crear los casos no lineales
-   (CGNL y PUSHOVER) como se indica en el Anexo B de la memoria.
 
-Nota: el enunciado exige que el `.s2k` se pueda abrir en SAP2000 19.2.1. Un `.s2k` exportado desde v27 puede traer
-tablas o campos que v19 no reconoce. Antes de entregar, conviene probar que el archivo se abre en el PC10.
+### Opción A (recomendada): crear el modelo con la API de SAP2000
+Con este script, SAP2000 construye el modelo y lo guarda como `.sdb`. No hay que importar ningún `.s2k`.
+1. En el PC con SAP2000 v27 (Windows), instalar Python 3 y luego ejecutar `pip install numpy comtypes`.
+2. Abrir una terminal en la carpeta `Proyecto_Acero_G5` y ejecutar:
+   ```
+   python crear_modelo_SAP_API.py CL
+   ```
+   Para la versión con perfiles W/HSS se usa `AISC` en vez de `CL`. Si se agrega `--correr`, el script también ejecuta el análisis.
+3. Se crean `G5_Edificio3D_CL.sdb` y `G5_Eje2_Pushover_CL.sdb`. El modelo del eje 2 ya trae los casos `CGNL` y `PUSHOVER`.
+   Solo faltan las rótulas M3 (*Assign → Frame → Hinges*, ver el Anexo B de la memoria).
+4. Si aparece un error de que no se encuentra `SAP2000v1.Helper`, hay que registrar la API.
+   Se ejecuta `RegisterSAP2000.exe` como administrador, desde la carpeta de instalación de SAP2000.
+
+### Opción B: importar el `.s2k`
+El `.s2k` **no se abre con File → Open**. Ese comando solo acepta `.sdb` y da el error
+*"Error opening file. May not be a valid SAP2000 model file"*. Hay que usar:
+**File → Import → SAP2000 .s2k, .$2k, .xlsx, .mdb File…** y elegir `G5_Edificio3D_CL.s2k`.
+Después se guarda como `.sdb`.
 
 ## Supuestos del modelo
 - Las columnas están empotradas en la base. Las uniones viga-columna son rígidas. Las riostras están rotuladas (M2 y M3 liberados).
