@@ -3,12 +3,18 @@
 Proyecto Diseño en Acero (CIV-336) - USM - Segundo Semestre 2026 - GRUPO 5
 ==========================================================================
 
-Genera, a partir de los datos del enunciado (L = 10 m, H = 3.0 m):
+Genera, a partir de los datos del enunciado (L = 10 m, H = 3.0 m), para SAP2000 v27:
 
-  1. G5_Edificio3D.s2k     -> modelo 3D completo para SAP2000 (File > Import > SAP2000 .s2k)
-  2. G5_Eje2_Pushover.s2k  -> modelo 2D del eje 2 para el análisis plástico (pushover)
-  3. resultados_G5.json    -> resultados del análisis lineal propio (verificación del modelo)
-  4. Memoria_Tarea1_G5.tex -> memoria de cálculo Tarea 1 en LaTeX (autocontenida)
+  1. G5_Edificio3D<suf>.s2k     -> modelo 3D completo (File > Import > SAP2000 .s2k)
+  2. G5_Eje2_Pushover<suf>.s2k  -> modelo 2D del eje 2 para el análisis plástico (pushover)
+  3. resultados_G5<suf>.json    -> resultados del análisis lineal propio (verificación del modelo)
+  4. Memoria_Tarea1_G5<suf>.tex -> memoria de cálculo Tarea 1 en LaTeX (autocontenida)
+
+Dos configuraciones de perfiles (argumento de línea de comandos):
+  AISC -> perfiles laminados W y HSS (ASTM A572 Gr.50 / A500 Gr.C)          <suf> = ""
+  CL   -> perfiles chilenos SOLDADOS (no conformados en frío): HN, IN y
+          cajones soldados de planchas, acero NCh203 A270ES                  <suf> = "_CL"
+Sin argumento se generan ambas.
 
 Además resuelve el modelo con un análisis matricial propio (pórtico 3D con diafragma
 rígido) para tener los esfuerzos de diseño, y realiza el pushover del eje 2
@@ -16,10 +22,11 @@ rígido) para tener los esfuerzos de diseño, y realiza el pushover del eje 2
 
 Unidades internas: tonf, m.
 
-Uso:  python3 generar_modelo.py
+Uso:  python3 generar_modelo.py [AISC|CL]
 Requiere: numpy
 """
 import json
+import sys
 import math
 import datetime
 import numpy as np
@@ -47,11 +54,23 @@ Q_TECHO = Q_TECHO_KPA * KPA
 FRAC_SC_SISMO = 0.25    # 25 % de la sobrecarga de uso en el peso sísmico
 C_SISMO = 0.18          # Q = 0.18 P
 
-# Acero
-FY_W = 345.0            # MPa  ASTM A572 Gr.50 (perfiles W)
-FU_W = 450.0
-FY_HSS = 345.0          # MPa  ASTM A500 Gr.C (HSS rectangulares/cuadrados, Fy=50 ksi)
-FU_HSS = 427.0          # MPa  (62 ksi)
+# Configuración de perfiles: "AISC" (W + HSS) o "CL" (perfiles soldados chilenos)
+CATALOGO = sys.argv[1].upper() if len(sys.argv) > 1 and sys.argv[1].upper() in ("AISC", "CL") else "AISC"
+SUF = "" if CATALOGO == "AISC" else "_CL"
+SAP_VERSION = "27.0.0"
+
+# Acero  (nombre SAP, Fy [MPa], Fu [MPa], grado, descripción)
+if CATALOGO == "AISC":
+    MAT_PERFIL = ("A572Gr50", 345.0, 450.0, "Grade 50", "ASTM A572 Gr.50")
+    MAT_RIOSTRA = ("A500GrC", 345.0, 427.0, "Grade C", "ASTM A500 Gr.C")
+    MAT_PLANCHA = ("A36", 248.0, 400.0, "Grade 36", "ASTM A36")
+else:
+    # NCh203.Of2006: A270ES -> Fy = 270 MPa, Fu = 410 MPa (perfiles soldados y planchas)
+    MAT_PERFIL = ("A270ES", 270.0, 410.0, "A270ES", "NCh203 A270ES")
+    MAT_RIOSTRA = MAT_PERFIL
+    MAT_PLANCHA = MAT_PERFIL
+FY_W, FU_W = MAT_PERFIL[1], MAT_PERFIL[2]
+FY_HSS, FU_HSS = MAT_RIOSTRA[1], MAT_RIOSTRA[2]
 E_ACERO = 200000.0      # MPa
 NU = 0.30
 MPA = 1e6 / (g * 1e3)   # 1 MPa -> tonf/m2  (= 101.97)
@@ -91,11 +110,25 @@ HSS_DIMS = {
     "HSS8X8X1/2": (8.0, 0.500),
 }
 
-SEC_COL = "W14X90"
-SEC_VIGA_X = "W21X50"      # vigas ejes A y B (luces 7.5 y 10 m)
-SEC_VIGA_Y = "W21X62"      # vigas ejes 1 a 5 (luz 8 m)
-SEC_RIO_X = "HSS8X8X1/2"   # riostras ejes A y B
-SEC_RIO_Y = "HSS10X10X1/2"  # riostras ejes 1 y 5
+# Perfiles soldados chilenos (nomenclatura tipo ICHA: serie, altura [cm] x peso [kgf/m]),
+# armados con planchas de espesores comerciales. Dimensiones en mm: d, bf, tf, tw
+CL_I_DIMS = {
+    "HN40": (400, 400, 20, 10),     # columnas
+    "IN50a": (500, 200, 14, 8),     # vigas X
+    "IN50b": (500, 200, 16, 8),     # vigas Y
+}
+# Cajones soldados de 4 planchas (b, t en mm), no conformados en frío
+CL_BOX_DIMS = {
+    "CAJ250": (250, 12),            # riostras ejes 1 y 5
+    "CAJ200": (200, 12),            # riostras ejes A y B
+}
+
+if CATALOGO == "AISC":
+    SEC_COL = "W14X90"
+    SEC_VIGA_X = "W21X50"      # vigas ejes A y B (luces 7.5 y 10 m)
+    SEC_VIGA_Y = "W21X62"      # vigas ejes 1 a 5 (luz 8 m)
+    SEC_RIO_X = "HSS8X8X1/2"   # riostras ejes A y B
+    SEC_RIO_Y = "HSS10X10X1/2"  # riostras ejes 1 y 5
 
 
 def props_I(d, bf, tf, tw):
@@ -146,15 +179,39 @@ def props_hss_aisc(b, tn, n=1500):
 
 
 SECCIONES = {}
-for nom, (d, bf, tf, tw) in W_DIMS.items():
-    p = props_I(d * IN, bf * IN, tf * IN, tw * IN)
-    p.update(tipo="I", mat="A572Gr50", t3=d * IN, t2=bf * IN, tf=tf * IN, tw=tw * IN, Fy=FY_W, Fu=FU_W)
-    SECCIONES[nom] = p
-for nom, (b, tn) in HSS_DIMS.items():
-    t = 0.93 * tn * IN
-    p = props_box(b * IN, b * IN, t)
-    p.update(tipo="BOX", mat="A500GrC", t3=b * IN, t2=b * IN, tf=t, tw=t, Fy=FY_HSS, Fu=FU_HSS)
-    SECCIONES[nom] = p
+if CATALOGO == "AISC":
+    for nom, (d, bf, tf, tw) in W_DIMS.items():
+        p = props_I(d * IN, bf * IN, tf * IN, tw * IN)
+        p.update(tipo="I", mat=MAT_PERFIL[0], t3=d * IN, t2=bf * IN, tf=tf * IN, tw=tw * IN, Fy=FY_W, Fu=FU_W)
+        SECCIONES[nom] = p
+    for nom, (b, tn) in HSS_DIMS.items():
+        t = 0.93 * tn * IN
+        p = props_box(b * IN, b * IN, t)
+        p.update(tipo="BOX", mat=MAT_RIOSTRA[0], t3=b * IN, t2=b * IN, tf=t, tw=t, Fy=FY_HSS, Fu=FU_HSS)
+        SECCIONES[nom] = p
+else:
+    _cl = {}
+    for clave, (d, bf, tf, tw) in CL_I_DIMS.items():
+        p = props_I(d / 1e3, bf / 1e3, tf / 1e3, tw / 1e3)
+        peso = p["A"] * GAMMA_ACERO * 1000          # kgf/m
+        nom = "%s%gx%.0f" % (clave[:2], d / 10, peso)
+        p.update(tipo="I", mat=MAT_PERFIL[0], t3=d / 1e3, t2=bf / 1e3, tf=tf / 1e3, tw=tw / 1e3, Fy=FY_W, Fu=FU_W,
+                 dims_mm=(d, bf, tf, tw), peso=peso)
+        SECCIONES[nom] = p
+        _cl[clave] = nom
+    for clave, (b, t) in CL_BOX_DIMS.items():
+        p = props_box(b / 1e3, b / 1e3, t / 1e3)
+        peso = p["A"] * GAMMA_ACERO * 1000
+        nom = "CAJ%dx%dx%d" % (b, b, t)
+        p.update(tipo="BOX", mat=MAT_RIOSTRA[0], t3=b / 1e3, t2=b / 1e3, tf=t / 1e3, tw=t / 1e3, Fy=FY_HSS,
+                 Fu=FU_HSS, dims_mm=(b, t), peso=peso)
+        SECCIONES[nom] = p
+        _cl[clave] = nom
+    SEC_COL = _cl["HN40"]
+    SEC_VIGA_X = _cl["IN50a"]
+    SEC_VIGA_Y = _cl["IN50b"]
+    SEC_RIO_X = _cl["CAJ200"]
+    SEC_RIO_Y = _cl["CAJ250"]
 
 E = E_ACERO * MPA
 G_MOD = E / (2 * (1 + NU))
@@ -820,10 +877,16 @@ def disenar_traccion(resumen):
     Tu, bid, combo, tipo = max(cand)
     b = [x for x in BARRAS if x.id == bid][0]
     Lb = largo(b)
-    bb, tn = HSS_DIMS[b.sec]
-    h = props_hss_aisc(bb, tn)
-    cm = 2.54
-    A = h["A"] * cm ** 2; t = h["t"] * cm; B = bb * cm; r = h["r"] * cm
+    if CATALOGO == "AISC":
+        bb, tn = HSS_DIMS[b.sec]
+        h = props_hss_aisc(bb, tn)                      # esquinas redondeadas, t = 0.93 t_nom
+        cm = 2.54
+        A = h["A"] * cm ** 2; t = h["t"] * cm; B = bb * cm; r = h["r"] * cm
+        b_t = h["b_t"]
+    else:
+        s_ = SECCIONES[b.sec]                           # cajón soldado: esquinas rectas, t nominal
+        A = s_["A"] * 1e4; t = s_["tf"] * 100; B = s_["t2"] * 100; r = s_["r33"] * 100
+        b_t = (B - 2 * t) / t
     Fy = FY_HSS * 10.197; Fu = FU_HSS * 10.197          # kgf/cm2
     # Fluencia en área bruta
     phiTn_y = 0.90 * Fy * A / 1000.0                    # tonf
@@ -848,7 +911,7 @@ def disenar_traccion(resumen):
     phiTn = min(phiTn_y, phiTn_u)
     # Gusset: fluencia en sección de Whitmore y bloque de corte
     Lw = B + 2 * l * math.tan(math.radians(30))
-    Fy_g = 2530.0; Fu_g = 4080.0                         # A36 kgf/cm2
+    Fy_g = MAT_PLANCHA[1] * 10.197; Fu_g = MAT_PLANCHA[2] * 10.197   # plancha gusset, kgf/cm2
     phiRn_whit = 0.90 * Fy_g * Lw * tg / 1000.0
     Agv = 2 * l * tg; Ant = B * tg
     phiRn_bs = 0.75 * min(0.6 * Fu_g * Agv + Fu_g * Ant, 0.6 * Fy_g * Agv + Fu_g * Ant) / 1000.0
@@ -858,7 +921,8 @@ def disenar_traccion(resumen):
                 xbar=xbar, l=l, l_req=l_req, U=U, Ae=Ae, phiTn_u=phiTn_u, phiTn=phiTn,
                 FU=Tu / phiTn, w=w, w_min=w_min, Rw_cm=Rw_cm, Rbase_cm=Rbase_cm, FEXX=FEXX,
                 Lw=Lw, phiRn_whit=phiRn_whit, phiRn_bs=phiRn_bs, Agv=Agv, Ant=Ant,
-                Fy_g=Fy_g, Fu_g=Fu_g, esbeltez=esbeltez, b_t=h["b_t"])
+                Fy_g=Fy_g, Fu_g=Fu_g, esbeltez=esbeltez, b_t=b_t,
+                mat_g=MAT_PLANCHA[4], mat_r=MAT_RIOSTRA[4], catalogo=CATALOGO)
 
 
 # =============================================================================
@@ -886,11 +950,14 @@ def bloque_comun(lineas, titulo):
     hoy = datetime.datetime.now()
     lineas += ["File %s was saved on %s" % (titulo, hoy.strftime("%m/%d/%y at %H:%M:%S")), ""]
     lineas += tabla("PROGRAM CONTROL", [
-        '   ProgramName=SAP2000   Version=19.2.1   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"   '
-        'SteelCode="AISC 360-10"   ConcCode="ACI 318-14"   AlumCode="AA-ASD 2000"   ColdCode=AISI-ASD96   RegenHinge=Yes'])
+        '   ProgramName=SAP2000   Version=%s   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"   '
+        'SteelCode="AISC 360-22"   ConcCode="ACI 318-19"   RegenHinge=Yes' % SAP_VERSION])
     lineas += tabla("COORDINATE SYSTEMS", [fila(Name="GLOBAL", Type="Cartesian", X=0, Y=0, Z=0,
                                                 AboutZ=0, AboutY=0, AboutX=0)])
-    mats = [("A572Gr50", FY_W, FU_W, "Grade 50"), ("A500GrC", FY_HSS, FU_HSS, "Grade C")]
+    mats = []
+    for m in (MAT_PERFIL, MAT_RIOSTRA):
+        if m[0] not in [x[0] for x in mats]:
+            mats.append((m[0], m[1], m[2], m[3]))
     lineas += tabla("MATERIAL PROPERTIES 01 - GENERAL",
                     [fila(Material=m, Type="Steel", Grade=gr, SymType="Isotropic", TempDepend=False,
                           Color="Blue") for m, _, _, gr in mats])
@@ -921,7 +988,7 @@ def filas_secciones(nombres):
 
 def escribir_s2k_3d(ruta):
     lin = []
-    bloque_comun(lin, "G5_Edificio3D.s2k")
+    bloque_comun(lin, "G5_Edificio3D%s.s2k" % SUF)
     lin += tabla("ACTIVE DEGREES OF FREEDOM", ["   UX=Yes   UY=Yes   UZ=Yes   RX=Yes   RY=Yes   RZ=Yes"])
     g_ = []
     for ix, x in enumerate(XS):
@@ -1040,7 +1107,7 @@ def escribir_s2k_3d(ruta):
 def escribir_s2k_eje2(ruta, po):
     """Modelo 2D del eje 2 (plano YZ, X = 7.5 m) para el pushover."""
     lin = []
-    bloque_comun(lin, "G5_Eje2_Pushover.s2k")
+    bloque_comun(lin, "G5_Eje2_Pushover%s.s2k" % SUF)
     lin += tabla("ACTIVE DEGREES OF FREEDOM", ["   UX=No   UY=Yes   UZ=Yes   RX=Yes   RY=No   RZ=No"])
     g_ = [fila(CoordSys="GLOBAL", AxisDir="X", GridID="2", XRYZCoord=XS[1], LineType="Primary",
                LineColor="Gray8Dark", Visible=True, BubbleLoc="End", AllVisible=True, BubbleSize=1.25)]
@@ -1129,15 +1196,21 @@ def escribir_s2k_eje2(ruta, po):
 # =============================================================================
 if __name__ == "__main__":
     import os
+    import subprocess
     import memoria_latex
+    if len(sys.argv) == 1:      # sin argumento: generar ambas configuraciones
+        for cat in ("AISC", "CL"):
+            print("=" * 20, cat, "=" * 20)
+            subprocess.run([sys.executable, os.path.abspath(__file__), cat], check=True)
+        sys.exit(0)
     aqui = os.path.dirname(os.path.abspath(__file__))
     U, res, pos = analizar_3d()
     env = envolventes(res)
     resumen = resumen_por_tipo(env)
     po = pushover_eje2()
     trac = disenar_traccion(resumen)
-    escribir_s2k_3d(os.path.join(aqui, "G5_Edificio3D.s2k"))
-    escribir_s2k_eje2(os.path.join(aqui, "G5_Eje2_Pushover.s2k"), po)
+    escribir_s2k_3d(os.path.join(aqui, "G5_Edificio3D%s.s2k" % SUF))
+    escribir_s2k_eje2(os.path.join(aqui, "G5_Eje2_Pushover%s.s2k" % SUF), po)
 
     # reacciones verticales totales (chequeo de equilibrio)
     ids = sorted(NUDOS)
@@ -1149,9 +1222,9 @@ if __name__ == "__main__":
     datos = dict(niveles=NIVELES, P_total=P_TOTAL, Q=Q_BASAL, resumen=resumen, desp=desp,
                  pushover={k: v for k, v in po.items() if k not in ("Pcol", "elems2d")},
                  traccion=trac, peso_acero_tipo=peso_acero_tipo)
-    with open(os.path.join(aqui, "resultados_G5.json"), "w") as fh:
+    with open(os.path.join(aqui, "resultados_G5%s.json" % SUF), "w") as fh:
         json.dump(datos, fh, indent=1, default=lambda o: o.tolist() if hasattr(o, "tolist") else str(o))
-    memoria_latex.escribir(os.path.join(aqui, "Memoria_Tarea1_G5.tex"), globals(), datos, po, trac, resumen, env)
+    memoria_latex.escribir(os.path.join(aqui, "Memoria_Tarea1_G5%s.tex" % SUF), globals(), datos, po, trac, resumen, env)
     print("P total = %.1f tonf ; Q = %.1f tonf" % (P_TOTAL, Q_BASAL))
     for n in NIVELES:
         print("  nivel %d  P=%.1f  A=%.4f  F=%.2f" % (n["k"], n["P"], n["A"], n["F"]))

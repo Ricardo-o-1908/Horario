@@ -1,4 +1,4 @@
-File G5_Edificio3D.s2k was saved on 10/04/26 at 20:04:16
+File G5_Edificio3D_CL.s2k was saved on 10/04/26 at 20:04:17
 
 TABLE:  "PROGRAM CONTROL"
    ProgramName=SAP2000   Version=27.0.0   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"   SteelCode="AISC 360-22"   ConcCode="ACI 318-19"   RegenHinge=Yes
@@ -7,16 +7,13 @@ TABLE:  "COORDINATE SYSTEMS"
    Name=GLOBAL   Type=Cartesian   X=0   Y=0   Z=0   AboutZ=0   AboutY=0   AboutX=0
 
 TABLE:  "MATERIAL PROPERTIES 01 - GENERAL"
-   Material=A572Gr50   Type=Steel   Grade="Grade 50"   SymType=Isotropic   TempDepend=No   Color=Blue
-   Material=A500GrC   Type=Steel   Grade="Grade C"   SymType=Isotropic   TempDepend=No   Color=Blue
+   Material=A270ES   Type=Steel   Grade=A270ES   SymType=Isotropic   TempDepend=No   Color=Blue
 
 TABLE:  "MATERIAL PROPERTIES 02 - BASIC MECHANICAL PROPERTIES"
-   Material=A572Gr50   UnitWeight=7.85   UnitMass=0.800477   E1=2.03943e+07   G12=7.84397e+06   U12=0.3   A1=1.170000E-05
-   Material=A500GrC   UnitWeight=7.85   UnitMass=0.800477   E1=2.03943e+07   G12=7.84397e+06   U12=0.3   A1=1.170000E-05
+   Material=A270ES   UnitWeight=7.85   UnitMass=0.800477   E1=2.03943e+07   G12=7.84397e+06   U12=0.3   A1=1.170000E-05
 
 TABLE:  "MATERIAL PROPERTIES 03A - STEEL DATA"
-   Material=A572Gr50   Fy=35180.2   Fu=45887.2   EffFy=38698.2   EffFu=50476   SSCurveOpt=Simple   SSHysType=Kinematic   SHard=0.02   SMax=0.14   SRup=0.2   FinalSlope=-0.1   CoupModType="Von Mises"
-   Material=A500GrC   Fy=35180.2   Fu=43541.9   EffFy=38698.2   EffFu=47896.1   SSCurveOpt=Simple   SSHysType=Kinematic   SHard=0.02   SMax=0.14   SRup=0.2   FinalSlope=-0.1   CoupModType="Von Mises"
+   Material=A270ES   Fy=27532.3   Fu=41808.4   EffFy=30285.6   EffFu=45989.2   SSCurveOpt=Simple   SSHysType=Kinematic   SHard=0.02   SMax=0.14   SRup=0.2   FinalSlope=-0.1   CoupModType="Von Mises"
 
 TABLE:  "ACTIVE DEGREES OF FREEDOM"
    UX=Yes   UY=Yes   UZ=Yes   RX=Yes   RY=Yes   RZ=Yes
@@ -332,158 +329,158 @@ TABLE:  "JOINT CONSTRAINT ASSIGNMENTS"
    Joint=599   Constraint=DIAF5   Type=Diaphragm
 
 TABLE:  "FRAME SECTION PROPERTIES 01 - GENERAL"
-   SectionName=W14X90   Material=A572Gr50   Shape="I/Wide Flange"   t3=0.3556   t2=0.3683   tf=0.018034   tw=0.011176   t2b=0.3683   tfb=0.018034   Area=0.0168549   TorsConst=1.597151E-06   I33=4.091704E-04   I22=1.501943E-04   I23=0   AS2=0.00397419   AS3=0.0110699   S33=0.0023013   S22=8.156085E-04   Z33=0.00252736   Z22=0.00123309   R33=0.155808   R22=0.0943981   ConcCol=No   ConcBeam=No   Color=Cyan   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
-   SectionName=W21X50   Material=A572Gr50   Shape="I/Wide Flange"   t3=0.52832   t2=0.165862   tf=0.013589   tw=0.009652   t2b=0.165862   tfb=0.013589   Area=0.00934482   TorsConst=4.317518E-07   I33=3.998845E-04   I22=1.037175E-05   I23=0   AS2=0.00509934   AS3=0.0037565   S33=0.0015138   S22=1.250649E-04   Z33=0.00176616   Z22=1.985898E-04   R33=0.206863   R22=0.0333151   ConcCol=No   ConcBeam=No   Color=Cyan   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
-   SectionName=W21X62   Material=A572Gr50   Shape="I/Wide Flange"   t3=0.5334   t2=0.209296   tf=0.015621   tw=0.01016   t2b=0.209296   tfb=0.015621   Area=0.0116408   TorsConst=7.128693E-07   I33=5.455993E-04   I22=2.391323E-05   I23=0   AS2=0.00541934   AS3=0.00544902   S33=0.00204574   S22=2.285111E-04   Z33=0.00233333   Z22=3.550964E-04   R33=0.216494   R22=0.045324   ConcCol=No   ConcBeam=No   Color=Cyan   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
-   SectionName="HSS8X8X1/2"   Material=A500GrC   Shape="Box/Tube"   t3=0.2032   t2=0.2032   tf=0.011811   tw=0.011811   Area=0.00904198   TorsConst=8.280138E-05   I33=5.541115E-05   I22=5.541115E-05   I23=0   AS2=0.00479999   AS3=0.00479999   S33=5.453853E-04   S22=5.453853E-04   Z33=6.497748E-04   Z22=6.497748E-04   R33=0.0782829   R22=0.0782829   ConcCol=No   ConcBeam=No   Color=Red   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
-   SectionName="HSS10X10X1/2"   Material=A500GrC   Shape="Box/Tube"   t3=0.254   t2=0.254   tf=0.011811   tw=0.011811   Area=0.011442   TorsConst=1.677838E-04   I33=1.121219E-04   I22=1.121219E-04   I23=0   AS2=0.00599999   AS3=0.00599999   S33=8.828493E-04   S22=8.828493E-04   Z33=0.00103999   Z22=0.00103999   R33=0.0989907   R22=0.0989907   ConcCol=No   ConcBeam=No   Color=Red   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
+   SectionName=HN40x154   Material=A270ES   Shape="I/Wide Flange"   t3=0.4   t2=0.4   tf=0.02   tw=0.01   t2b=0.4   tfb=0.02   Area=0.0196   TorsConst=2.260000E-06   I33=6.170133E-04   I22=2.133633E-04   I23=0   AS2=0.004   AS3=0.0133333   S33=0.00308507   S22=0.00106682   Z33=0.003364   Z22=0.001609   R33=0.177427   R22=0.104335   ConcCol=No   ConcBeam=No   Color=Cyan   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
+   SectionName=IN50x74   Material=A270ES   Shape="I/Wide Flange"   t3=0.5   t2=0.2   tf=0.014   tw=0.008   t2b=0.2   tfb=0.014   Area=0.009376   TorsConst=4.488107E-07   I33=4.008686E-04   I22=1.868681E-05   I23=0   AS2=0.004   AS3=0.00466667   S33=0.00160347   S22=1.868681E-04   Z33=0.00180637   Z22=2.875520E-04   R33=0.206772   R22=0.0446436   ConcCol=No   ConcBeam=No   Color=Cyan   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
+   SectionName=IN50x80   Material=A270ES   Shape="I/Wide Flange"   t3=0.5   t2=0.2   tf=0.016   tw=0.008   t2b=0.2   tfb=0.016   Area=0.010144   TorsConst=6.287360E-07   I33=4.432816E-04   I22=2.135330E-05   I23=0   AS2=0.004   AS3=0.00533333   S33=0.00177313   S22=2.135330E-04   Z33=0.00198685   Z22=3.274880E-04   R33=0.209043   R22=0.0458805   ConcCol=No   ConcBeam=No   Color=Cyan   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
+   SectionName=CAJ200x200x12   Material=A270ES   Shape="Box/Tube"   t3=0.2   t2=0.2   tf=0.012   tw=0.012   Area=0.009024   TorsConst=7.973606E-05   I33=5.337395E-05   I22=5.337395E-05   I23=0   AS2=0.0048   AS3=0.0048   S33=5.337395E-04   S22=5.337395E-04   Z33=6.370560E-04   Z22=6.370560E-04   R33=0.0769069   R22=0.0769069   ConcCol=No   ConcBeam=No   Color=Red   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
+   SectionName=CAJ250x250x12   Material=A270ES   Shape="Box/Tube"   t3=0.25   t2=0.25   tf=0.012   tw=0.012   Area=0.011424   TorsConst=1.617753E-04   I33=1.081244E-04   I22=1.081244E-04   I23=0   AS2=0.006   AS3=0.006   S33=8.649948E-04   S22=8.649948E-04   Z33=0.00102046   Z22=0.00102046   R33=0.0972865   R22=0.0972865   ConcCol=No   ConcBeam=No   Color=Red   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
 
 TABLE:  "FRAME SECTION ASSIGNMENTS"
-   Frame=1   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=2   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=3   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=4   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=5   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=6   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=7   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=8   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=9   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=10   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=11   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=12   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=13   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=14   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=15   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=16   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=17   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=18   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=19   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=20   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=21   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=22   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=23   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=24   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=25   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=26   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=27   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=28   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=29   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=30   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=31   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=32   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=33   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=34   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=35   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=36   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=37   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=38   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=39   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=40   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=41   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=42   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=43   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=44   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=45   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=46   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=47   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=48   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=49   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=50   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=51   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=52   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=53   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=54   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=55   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=56   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=57   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=58   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=59   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=60   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=61   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=62   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=63   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=64   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=65   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=66   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=67   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=68   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=69   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=70   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=71   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=72   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=73   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=74   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=75   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=76   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=77   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=78   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=79   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=80   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=81   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=82   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=83   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=84   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=85   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=86   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=87   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=88   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=89   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=90   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X50   DesignSect=W21X50   MatProp=Default
-   Frame=91   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=92   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=93   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=94   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=95   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=96   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=97   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=98   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=99   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=100   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=101   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=102   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=103   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=104   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=105   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=106   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=107   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=108   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=109   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=110   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=111   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=112   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=113   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=114   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=115   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=116   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=117   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=118   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=119   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=120   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=121   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=122   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=123   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=124   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=125   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=126   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=127   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=128   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=129   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=130   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=131   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=132   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=133   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=134   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=135   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS8X8X1/2"   DesignSect="HSS8X8X1/2"   MatProp=Default
-   Frame=136   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS10X10X1/2"   DesignSect="HSS10X10X1/2"   MatProp=Default
-   Frame=137   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS10X10X1/2"   DesignSect="HSS10X10X1/2"   MatProp=Default
-   Frame=138   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS10X10X1/2"   DesignSect="HSS10X10X1/2"   MatProp=Default
-   Frame=139   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS10X10X1/2"   DesignSect="HSS10X10X1/2"   MatProp=Default
-   Frame=140   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS10X10X1/2"   DesignSect="HSS10X10X1/2"   MatProp=Default
-   Frame=141   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS10X10X1/2"   DesignSect="HSS10X10X1/2"   MatProp=Default
-   Frame=142   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS10X10X1/2"   DesignSect="HSS10X10X1/2"   MatProp=Default
-   Frame=143   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS10X10X1/2"   DesignSect="HSS10X10X1/2"   MatProp=Default
-   Frame=144   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS10X10X1/2"   DesignSect="HSS10X10X1/2"   MatProp=Default
-   Frame=145   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect="HSS10X10X1/2"   DesignSect="HSS10X10X1/2"   MatProp=Default
+   Frame=1   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=2   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=3   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=4   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=5   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=6   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=7   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=8   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=9   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=10   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=11   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=12   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=13   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=14   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=15   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=16   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=17   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=18   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=19   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=20   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=21   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=22   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=23   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=24   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=25   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=26   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=27   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=28   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=29   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=30   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=31   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=32   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=33   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=34   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=35   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=36   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=37   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=38   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=39   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=40   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=41   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=42   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=43   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=44   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=45   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=46   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=47   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=48   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=49   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=50   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=51   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=52   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=53   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=54   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=55   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=56   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=57   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=58   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=59   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=60   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=61   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=62   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=63   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=64   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=65   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=66   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=67   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=68   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=69   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=70   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=71   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=72   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=73   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=74   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=75   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=76   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=77   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=78   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=79   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=80   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=81   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=82   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=83   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=84   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=85   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=86   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=87   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=88   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=89   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=90   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x74   DesignSect=IN50x74   MatProp=Default
+   Frame=91   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=92   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=93   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=94   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=95   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=96   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=97   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=98   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=99   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=100   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=101   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=102   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=103   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=104   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=105   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=106   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=107   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=108   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=109   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=110   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=111   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=112   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=113   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=114   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=115   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=116   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=117   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=118   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=119   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=120   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=121   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=122   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=123   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=124   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=125   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=126   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=127   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=128   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=129   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=130   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=131   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=132   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=133   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=134   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=135   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ200x200x12   DesignSect=CAJ200x200x12   MatProp=Default
+   Frame=136   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ250x250x12   DesignSect=CAJ250x250x12   MatProp=Default
+   Frame=137   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ250x250x12   DesignSect=CAJ250x250x12   MatProp=Default
+   Frame=138   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ250x250x12   DesignSect=CAJ250x250x12   MatProp=Default
+   Frame=139   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ250x250x12   DesignSect=CAJ250x250x12   MatProp=Default
+   Frame=140   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ250x250x12   DesignSect=CAJ250x250x12   MatProp=Default
+   Frame=141   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ250x250x12   DesignSect=CAJ250x250x12   MatProp=Default
+   Frame=142   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ250x250x12   DesignSect=CAJ250x250x12   MatProp=Default
+   Frame=143   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ250x250x12   DesignSect=CAJ250x250x12   MatProp=Default
+   Frame=144   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ250x250x12   DesignSect=CAJ250x250x12   MatProp=Default
+   Frame=145   SectionType="Box/Tube"   AutoSelect=N.A.   AnalSect=CAJ250x250x12   DesignSect=CAJ250x250x12   MatProp=Default
 
 TABLE:  "FRAME LOCAL AXES ASSIGNMENTS 1 - TYPICAL"
    Frame=1   Angle=90   AdvanceAxes=No
@@ -1047,16 +1044,16 @@ TABLE:  "FRAME LOADS - DISTRIBUTED"
    Frame=115   LoadPat=LR   CoordSys=GLOBAL   Type=Force   Dir=Gravity   DistType=RelDist   RelDistA=0.53125   RelDistB=1   AbsDistA=4.25   AbsDistB=8   FOverLA=0.764787   FOverLB=0
 
 TABLE:  "JOINT LOADS - FORCE"
-   Joint=199   LoadPat=EX   CoordSys=GLOBAL   F1=22.1145   F2=0   F3=0   M1=0   M2=0   M3=0
-   Joint=199   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=22.1145   F3=0   M1=0   M2=0   M3=0
-   Joint=299   LoadPat=EX   CoordSys=GLOBAL   F1=22.9118   F2=0   F3=0   M1=0   M2=0   M3=0
-   Joint=299   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=22.9118   F3=0   M1=0   M2=0   M3=0
-   Joint=399   LoadPat=EX   CoordSys=GLOBAL   F1=27.1776   F2=0   F3=0   M1=0   M2=0   M3=0
-   Joint=399   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=27.1776   F3=0   M1=0   M2=0   M3=0
-   Joint=499   LoadPat=EX   CoordSys=GLOBAL   F1=35.4186   F2=0   F3=0   M1=0   M2=0   M3=0
-   Joint=499   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=35.4186   F3=0   M1=0   M2=0   M3=0
-   Joint=599   LoadPat=EX   CoordSys=GLOBAL   F1=74.9385   F2=0   F3=0   M1=0   M2=0   M3=0
-   Joint=599   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=74.9385   F3=0   M1=0   M2=0   M3=0
+   Joint=199   LoadPat=EX   CoordSys=GLOBAL   F1=22.1496   F2=0   F3=0   M1=0   M2=0   M3=0
+   Joint=199   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=22.1496   F3=0   M1=0   M2=0   M3=0
+   Joint=299   LoadPat=EX   CoordSys=GLOBAL   F1=22.9442   F2=0   F3=0   M1=0   M2=0   M3=0
+   Joint=299   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=22.9442   F3=0   M1=0   M2=0   M3=0
+   Joint=399   LoadPat=EX   CoordSys=GLOBAL   F1=27.2161   F2=0   F3=0   M1=0   M2=0   M3=0
+   Joint=399   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=27.2161   F3=0   M1=0   M2=0   M3=0
+   Joint=499   LoadPat=EX   CoordSys=GLOBAL   F1=35.4687   F2=0   F3=0   M1=0   M2=0   M3=0
+   Joint=499   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=35.4687   F3=0   M1=0   M2=0   M3=0
+   Joint=599   LoadPat=EX   CoordSys=GLOBAL   F1=74.9103   F2=0   F3=0   M1=0   M2=0   M3=0
+   Joint=599   LoadPat=EY   CoordSys=GLOBAL   F1=0   F2=74.9103   F3=0   M1=0   M2=0   M3=0
 
 TABLE:  "GROUPS 1 - DEFINITIONS"
    GroupName=COLUMNAS   Selection=Yes   SectionCut=Yes   Steel=Yes   Concrete=Yes   Aluminum=Yes   ColdFormed=Yes   Stage=Yes   Bridge=Yes   AutoSeismic=No   AutoWind=No   SelDesSteel=No   SelDesAlum=No   SelDesCold=No   MassWeight=Yes   Color=Red

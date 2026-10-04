@@ -17,6 +17,8 @@ def escribir(ruta, G, datos, po, trac, resumen, env):
     NUDOS = G["NUDOS"]
     COMBOS = G["COMBOS"]
     MPA = G["MPA"]
+    CL = G["CATALOGO"] == "CL"
+    suf = G["SUF"].replace("_", "\\_")
     out = []
     w = out.append
 
@@ -50,7 +52,7 @@ def escribir(ruta, G, datos, po, trac, resumen, env):
 \pagestyle{fancy}
 \fancyhf{}
 \lhead{CIV-336 Diseño en Acero}
-\rhead{Proyecto -- Tarea 1 -- Grupo 5}
+\rhead{Proyecto -- Tarea 1 -- Grupo 5""" + (r" (perfiles chilenos)" if CL else "") + r"""}
 \cfoot{\thepage}
 \renewcommand{\arraystretch}{1.15}
 \newcommand{\tonf}{\,\mathrm{tonf}}
@@ -71,6 +73,9 @@ def escribir(ruta, G, datos, po, trac, resumen, env):
 {\LARGE Tarea 1: Cargas, Modelación, Análisis Plástico\\ y Diseño a Tracción\par}
 \vspace{2cm}
 {\Large\bfseries Grupo 5\par}
+""" + (r"""\vspace{0.3cm}
+{\large Configuración con perfiles soldados chilenos (acero NCh203 A270ES)\par}
+""" if CL else "") + r"""
 \vspace{0.3cm}
 {\large $L = 10\ \mathrm{m}$ \quad -- \quad $H = 3{,}0\ \mathrm{m}$\par}
 \vfill
@@ -140,8 +145,11 @@ Altura total $H_{total}$ & $1{,}1H + 4H$ & $""" + n(Htot) + r"""$ m \\
   \item NCh3171.Of2010: Diseño estructural -- Disposiciones generales y combinaciones de carga.
   \item NCh433.Of1996 Mod.2009 (referencial, para el peso sísmico y la distribución de fuerzas).
   \item ANSI/AISC 360-16: \emph{Specification for Structural Steel Buildings} (método LRFD).
-  \item AISC \emph{Steel Construction Manual}, 15\textsuperscript{a} edición (propiedades de perfiles).
-\end{itemize}
+""" + (r"""  \item NCh427/1:2016: Construcción -- Estructuras de acero -- Requisitos para el cálculo de estructuras de edificios.
+  \item NCh203.Of2006: Acero para uso estructural -- Requisitos (acero A270ES).
+  \item Instituto Chileno del Acero (ICHA): \emph{Manual de Diseño para Estructuras de Acero} (perfiles soldados).
+""" if CL else r"""  \item AISC \emph{Steel Construction Manual}, 15\textsuperscript{a} edición (propiedades de perfiles).
+""") + r"""\end{itemize}
 
 \subsection{Materiales}
 \begin{table}[H]
@@ -151,9 +159,9 @@ Altura total $H_{total}$ & $1{,}1H + 4H$ & $""" + n(Htot) + r"""$ m \\
 \toprule
 Elemento & Material & $F_y$ [MPa] & $F_u$ [MPa] \\
 \midrule
-Vigas y columnas (perfiles W) & ASTM A572 Gr.50 & """ + n(G["FY_W"], 0) + r""" & """ + n(G["FU_W"], 0) + r""" \\
-Riostras (HSS cuadrados) & ASTM A500 Gr.C & """ + n(G["FY_HSS"], 0) + r""" & """ + n(G["FU_HSS"], 0) + r""" \\
-Planchas de conexión (gusset) & ASTM A36 & 248 & 400 \\
+Vigas y columnas (""" + ("perfiles soldados HN, IN" if CL else "perfiles W") + r""") & """ + G["MAT_PERFIL"][4] + r""" & """ + n(G["FY_W"], 0) + r""" & """ + n(G["FU_W"], 0) + r""" \\
+Riostras (""" + ("cajones soldados" if CL else "HSS cuadrados") + r""") & """ + G["MAT_RIOSTRA"][4] + r""" & """ + n(G["FY_HSS"], 0) + r""" & """ + n(G["FU_HSS"], 0) + r""" \\
+Planchas de conexión (gusset) & """ + G["MAT_PLANCHA"][4] + r""" & """ + n(G["MAT_PLANCHA"][1], 0) + r""" & """ + n(G["MAT_PLANCHA"][2], 0) + r""" \\
 Soldadura & Electrodo E70XX & -- & $F_{EXX} = 482$ \\
 Losa & Hormigón armado & \multicolumn{2}{c}{$\gamma = 2500\ \mathrm{kgf/m^3}$} \\
 \bottomrule
@@ -318,8 +326,8 @@ ENVOLVENTE & Envolvente de C1 a C11 \\
 \section{Modelo estructural en SAP2000}
 
 \subsection{Descripción del modelo}
-Se realizó un modelo tridimensional en SAP2000 (archivo \texttt{G5\_Edificio3D.sdb}, entregado también
-en formato \texttt{.s2k} compatible con la versión 19.2.1). Las principales características y supuestos son:
+Se realizó un modelo tridimensional en SAP2000 v27 (archivo \texttt{G5\_Edificio3D""" + suf + r""".sdb}, entregado también
+en formato de texto \texttt{G5\_Edificio3D""" + suf + r""".s2k}). Las principales características y supuestos son:
 \begin{itemize}
   \item Unidades del modelo: tonf, m, $^\circ$C. Eje X según los ejes 1--5, eje Y según los ejes A--B y eje Z vertical.
   \item Columnas, vigas y riostras se modelan con elementos tipo \emph{frame} ubicados en los ejes
@@ -352,6 +360,7 @@ Elemento & Perfil & $A$ [cm$^2$] & $I_{33}$ [cm$^4$] & $I_{22}$ [cm$^4$] & $Z_{3
 \bottomrule
 \end{tabular}
 \end{table}
+""" + (tabla_dims_cl(G, n) if CL else "") + r"""
 Las secciones corresponden a un prediseño y serán verificadas/ajustadas en las Tareas 2 y 3.
 """)
 
@@ -456,7 +465,7 @@ Nivel & $u_X$ [cm] & $\Delta_X/h$ [$\times 10^{-3}$] & $u_Y$ [cm] & $\Delta_Y/h$
         $F_c = """ + n(mec["F"], 1) + r"""\tonf$ (mecanismo \emph{""" + mec["nombre"] + r"""}), coincidente con el
         análisis incremental, ya que este último corresponde a la solución exacta del problema rígido-plástico
         con rótulas en los extremos de los elementos.
-  \item La riostra más traccionada se diseña con un perfil """ + trac["sec"] + r""" (A500 Gr.C) con un factor de utilización
+  \item La riostra más traccionada se diseña con un perfil """ + trac["sec"] + r""" (""" + trac["mat_r"] + r""") con un factor de utilización
         de $""" + n(trac["FU"], 2) + r"""$ a tracción. La sección queda holgada en tracción, pero se escogió anticipando el
         diseño a compresión de la Tarea 2 (la misma riostra se comprime al invertir el sismo).
 \end{itemize}
@@ -746,7 +755,7 @@ involucra traslaciones horizontales de las vigas, las cargas gravitacionales no 
 
 Por ejemplo, para el mecanismo que controla (pisos """ + str(j) + r""" a """ + str(m) + r"""):
 \[
-W_i = \left[2M_{pc} + """ + str(2 * (m - j)) + r"""\,M_{pb} + 2M_{pc}\right]\theta
+W_i = \left[""" + expr_wi(po, j, m, len(ZS) - 1) + r"""\right]\theta
      = """ + n(m0["Wi"], 1) + r"""\,\theta \ \mathrm{tonf\cdot m},
 \qquad
 W_e = F\,\theta\sum_k \alpha_k\,\delta_k/\theta = """ + n(m0["We"], 3) + r"""\,F\,\theta\ \mathrm{m}
@@ -837,12 +846,11 @@ Su largo es $L = """ + n(t["L"], 2) + r"""$ m y la combinación que controla es 
 \[
 T_u = """ + n(t["Tu"], 1) + r"""\tonf .
 \]
-La riostra simétrica del eje 5 (mismo piso) presenta una demanda equivalente.
+La riostra simétrica del eje """ + {"1": "5", "5": "1"}.get(t["eje"][0], "B" if t["eje"][0] == "A" else "A") + r""" (mismo piso) presenta una demanda equivalente.
 
 \subsection{Sección propuesta}
-Se propone un perfil tubular cuadrado \textbf{""" + t["sec"] + r"""} de acero ASTM A500 Gr.C
-($F_y = """ + n(t["Fy"], 0) + r"""\ \mathrm{kgf/cm^2}$, $F_u = """ + n(t["Fu"], 0) + r"""\ \mathrm{kgf/cm^2}$), con espesor de diseño
-$t = 0{,}93\,t_{nom} = """ + n(t["t"], 2) + r"""$ cm, $A_g = """ + n(t["A"], 1) + r"""\ \mathrm{cm^2}$ y
+Se propone un """ + ("perfil cajón soldado (cuatro planchas soldadas, no conformado en frío)" if t["catalogo"] == "CL" else "perfil tubular cuadrado") + r""" \textbf{""" + t["sec"] + r"""} de acero """ + t["mat_r"] + r"""
+($F_y = """ + n(t["Fy"], 0) + r"""\ \mathrm{kgf/cm^2}$, $F_u = """ + n(t["Fu"], 0) + r"""\ \mathrm{kgf/cm^2}$), con """ + (r"espesor de plancha $t = " if t["catalogo"] == "CL" else r"espesor de diseño $t = 0{,}93\,t_{nom} = ") + n(t["t"], 2) + r"""$ cm, $A_g = """ + n(t["A"], 1) + r"""\ \mathrm{cm^2}$ y
 $r = """ + n(t["r"], 2) + r"""$ cm.
 
 \subsection{Verificaciones (AISC 360-16, Capítulo D)}
@@ -865,7 +873,7 @@ una ranura del tubo de ancho $t_g + """ + n(t["holgura"] * 10, 0) + r"""$ mm, y 
 A_n = A_g - 2\,t\,(t_g + 0{,}2) = """ + n(t["A"], 1) + r""" - 2\cdot""" + n(t["t"], 2) + r"""\cdot(""" + n(t["tg"], 1) + r"""+0{,}2)
 = """ + n(t["An"], 1) + r"""\ \mathrm{cm^2}
 \]
-Factor de corte diferido (Tabla D3.1, caso 6, HSS rectangular con una plancha concéntrica, $l \ge H$):
+Factor de corte diferido (Tabla D3.1, caso 6, HSS rectangular con una plancha concéntrica, $l \ge H$""" + ("; el cajón soldado se asimila a un tubo rectangular" if t["catalogo"] == "CL" else "") + r"""):
 \[
 \bar{x} = \frac{B^2 + 2BH}{4(B+H)} = """ + n(t["xbar"], 2) + r"""\ \mathrm{cm},
 \qquad
@@ -885,7 +893,7 @@ A_e = U A_n = """ + n(t["Ae"], 1) + r"""\ \mathrm{cm^2}
 \]
 
 \subsection{Conexión preliminar}
-Se propone una conexión soldada con plancha gusset de acero A36, $t_g = """ + n(t["tg"] * 10, 0) + r"""$ mm, insertada
+Se propone una conexión soldada con plancha gusset de acero """ + t["mat_g"] + r""", $t_g = """ + n(t["tg"] * 10, 0) + r"""$ mm, insertada
 en el tubo ranurado y unida mediante cuatro cordones de soldadura de filete E70XX.
 
 \textbf{Soldadura.} Tamaño de filete $w = """ + n(t["w"] * 10, 0) + r"""$ mm (mínimo según Tabla J2.4: 5 mm para
@@ -936,11 +944,11 @@ def fig_conexion(t, n):
 \begin{tikzpicture}[x=0.095cm,y=0.095cm,font=\small]
 % gusset
 \draw[thick,fill=gray!15] (-42,-30) -- (""" + "%g" % (l + 10) + r""",-30) -- (""" + "%g" % (l + 10) + r""",30) -- (-42,30) -- cycle;
-\node[align=center] at (-5,-38) {Gusset $t_g = """ + n(t["tg"] * 10, 0) + r"""$ mm (A36)};
+\node[align=center] at (-5,-38) {Gusset $t_g = """ + n(t["tg"] * 10, 0) + r"""$ mm (""" + t["mat_g"] + r""")};
 % tubo
 \draw[thick,fill=white] (0,""" + "%g" % (B / 2) + r""") -- (90,""" + "%g" % (B / 2) + r""") -- (90,""" + "%g" % (-B / 2) + r""") -- (0,""" + "%g" % (-B / 2) + r""") -- cycle;
 \draw[dashed] (0,0) -- (90,0);
-\node at (50,0) [above] {""" + t["sec"] + r"""};
+\node at (28,0) [above] {""" + t["sec"] + r"""};
 % soldaduras
 \draw[red,line width=2pt] (0,""" + "%g" % (B / 2) + r""") -- (""" + "%g" % l + r""",""" + "%g" % (B / 2) + r""");
 \draw[red,line width=2pt] (0,""" + "%g" % (-B / 2) + r""") -- (""" + "%g" % l + r""",""" + "%g" % (-B / 2) + r""");
@@ -978,7 +986,7 @@ def anexo_sap_pushover(G, po, n):
     fk = po["fk"]
     return r"""
 \section{Análisis no lineal en SAP2000 (eje 2)}
-Se utiliza el modelo 2D \texttt{G5\_Eje2\_Pushover} (plano YZ), que contiene la geometría, las secciones,
+Se utiliza el modelo 2D \texttt{G5\_Eje2\_Pushover""" + G["SUF"].replace("_", "\\_") + r"""} (SAP2000 v27, plano YZ), que contiene la geometría, las secciones,
 las cargas gravitacionales tributarias del eje 2 (patrones \texttt{PP}, \texttt{SCP}, \texttt{L}, \texttt{LR})
 y el patrón lateral \texttt{PUSH} (fuerzas $\alpha_k$ en cada nivel, de suma unitaria). Los pasos son:
 \begin{enumerate}
@@ -997,4 +1005,55 @@ y el patrón lateral \texttt{PUSH} (fuerzas $\alpha_k$ en cada nivel, de suma un
   \item Ejecutar y obtener la curva en \emph{Display $\rightarrow$ Show Static Pushover Curve} (corte basal vs.
         desplazamiento del nudo de techo).
 \end{enumerate}
+"""
+
+
+def expr_wi(po, j, m, ntop):
+    """Expresión del trabajo interno del mecanismo (pisos j a m)."""
+    Mpb, Mpc = po["Mp_b"], po["Mp_c"]
+    t = ["2M_{pc}"]
+    nb = 0
+    nc = 2                                  # rótulas al pie del piso j
+    if m - j > 0:
+        if Mpb <= 2 * Mpc:
+            nb += 2 * (m - j)
+        else:
+            nc += 4 * (m - j)
+    if m == ntop and Mpb <= Mpc:
+        nb += 2
+    else:
+        nc += 2
+    t = []
+    if nc:
+        t.append("%d\\,M_{pc}" % nc)
+    if nb:
+        t.append("%d\\,M_{pb}" % nb)
+    return " + ".join(t)
+
+
+def tabla_dims_cl(G, n):
+    filas = []
+    for nom in (G["SEC_COL"], G["SEC_VIGA_X"], G["SEC_VIGA_Y"]):
+        d, bf, tf, tw = G["SECCIONES"][nom]["dims_mm"]
+        filas.append(r"%s & %d & %d & %d & %d & $%s$ \\" % (nom, d, bf, tf, tw, n(G["SECCIONES"][nom]["peso"], 1)))
+    for nom in (G["SEC_RIO_X"], G["SEC_RIO_Y"]):
+        b, t = G["SECCIONES"][nom]["dims_mm"]
+        filas.append(r"%s & %d & %d & %d & %d & $%s$ \\" % (nom, b, b, t, t, n(G["SECCIONES"][nom]["peso"], 1)))
+    return r"""
+\begin{table}[H]
+\centering
+\caption{Dimensiones de los perfiles soldados (planchas A270ES). Designación tipo ICHA: serie, altura [cm] $\times$ peso [kgf/m];
+cajones: CAJ $b \times b \times t$ [mm].}
+\begin{tabular}{lccccc}
+\toprule
+Perfil & $d$ o $b$ [mm] & $b_f$ [mm] & $t_f$ [mm] & $t_w$ [mm] & Peso [kgf/m] \\
+\midrule
+""" + "\n".join(filas) + r"""
+\bottomrule
+\end{tabular}
+\end{table}
+Al ser perfiles soldados (sin filetes de laminación ni esquinas redondeadas), las propiedades que calcula SAP2000
+a partir de las dimensiones coinciden con las propiedades exactas de la sección. Las dimensiones se eligieron con
+espesores comerciales de plancha; se recomienda verificar la existencia del perfil equivalente en el catálogo ICHA
+o especificarlo como perfil soldado a pedido.
 """

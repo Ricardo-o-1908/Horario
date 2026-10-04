@@ -27,7 +27,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \lhead{CIV-336 Diseño en Acero}
-\rhead{Proyecto -- Tarea 1 -- Grupo 5}
+\rhead{Proyecto -- Tarea 1 -- Grupo 5 (perfiles chilenos)}
 \cfoot{\thepage}
 \renewcommand{\arraystretch}{1.15}
 \newcommand{\tonf}{\,\mathrm{tonf}}
@@ -48,6 +48,8 @@
 {\LARGE Tarea 1: Cargas, Modelación, Análisis Plástico\\ y Diseño a Tracción\par}
 \vspace{2cm}
 {\Large\bfseries Grupo 5\par}
+\vspace{0.3cm}
+{\large Configuración con perfiles soldados chilenos (acero NCh203 A270ES)\par}
 
 \vspace{0.3cm}
 {\large $L = 10\ \mathrm{m}$ \quad -- \quad $H = 3{,}0\ \mathrm{m}$\par}
@@ -232,7 +234,9 @@ Altura total $H_{total}$ & $1{,}1H + 4H$ & $15{,}30$ m \\
   \item NCh3171.Of2010: Diseño estructural -- Disposiciones generales y combinaciones de carga.
   \item NCh433.Of1996 Mod.2009 (referencial, para el peso sísmico y la distribución de fuerzas).
   \item ANSI/AISC 360-16: \emph{Specification for Structural Steel Buildings} (método LRFD).
-  \item AISC \emph{Steel Construction Manual}, 15\textsuperscript{a} edición (propiedades de perfiles).
+  \item NCh427/1:2016: Construcción -- Estructuras de acero -- Requisitos para el cálculo de estructuras de edificios.
+  \item NCh203.Of2006: Acero para uso estructural -- Requisitos (acero A270ES).
+  \item Instituto Chileno del Acero (ICHA): \emph{Manual de Diseño para Estructuras de Acero} (perfiles soldados).
 \end{itemize}
 
 \subsection{Materiales}
@@ -243,9 +247,9 @@ Altura total $H_{total}$ & $1{,}1H + 4H$ & $15{,}30$ m \\
 \toprule
 Elemento & Material & $F_y$ [MPa] & $F_u$ [MPa] \\
 \midrule
-Vigas y columnas (perfiles W) & ASTM A572 Gr.50 & 345 & 450 \\
-Riostras (HSS cuadrados) & ASTM A500 Gr.C & 345 & 427 \\
-Planchas de conexión (gusset) & ASTM A36 & 248 & 400 \\
+Vigas y columnas (perfiles soldados HN, IN) & NCh203 A270ES & 270 & 410 \\
+Riostras (cajones soldados) & NCh203 A270ES & 270 & 410 \\
+Planchas de conexión (gusset) & NCh203 A270ES & 270 & 410 \\
 Soldadura & Electrodo E70XX & -- & $F_{EXX} = 482$ \\
 Losa & Hormigón armado & \multicolumn{2}{c}{$\gamma = 2500\ \mathrm{kgf/m^3}$} \\
 \bottomrule
@@ -281,10 +285,10 @@ Sobrecarga permanente (SCP) & losa + tabiques & $550\ \mathrm{kgf/m^2}$ \\
 El peso propio de los elementos de acero se considera en el patrón \texttt{PP} con un multiplicador de
 peso propio igual a $1{,}10$, lo que incluye el $10\%$ adicional por conexiones. La losa y los tabiques
 se consideran en el patrón \texttt{SCP}. El peso de acero resultante del prediseño es:
-columnas $22{,}3\tonf$, vigas X $28{,}2\tonf$,
-vigas Y $20{,}1\tonf$, riostras X $12{,}7\tonf$ y
+columnas $25{,}9\tonf$, vigas X $28{,}3\tonf$,
+vigas Y $17{,}5\tonf$, riostras X $12{,}6\tonf$ y
 riostras Y $8{,}5\tonf$ (incluye el $10\%$ de conexiones), con un total de
-$91{,}7\tonf$.
+$92{,}8\tonf$.
 
 \subsection{\texorpdfstring{Cargas de uso (L y L\textsubscript{r})}{Cargas de uso (L y Lr)}}
 \begin{itemize}
@@ -342,20 +346,20 @@ con $H_{total} = 15{,}30$ m.
 \toprule
 Nivel & $Z_k$ [m] & Acero [tonf] & SCP [tonf] & $0{,}25\,L$ [tonf] & $P_k$ [tonf] & $A_k$ & $F_k$ [tonf] \\
 \midrule
-1 & $3{,}30$ & $18{,}5$ & $154{,}0$ & $35{,}7$ & $208{,}2$ & $0{,}1144$ & $22{,}11$ \\
-2 & $6{,}30$ & $18{,}2$ & $154{,}0$ & $35{,}7$ & $207{,}9$ & $0{,}1186$ & $22{,}91$ \\
-3 & $9{,}30$ & $18{,}2$ & $154{,}0$ & $35{,}7$ & $207{,}9$ & $0{,}1407$ & $27{,}18$ \\
-4 & $12{,}30$ & $18{,}2$ & $154{,}0$ & $35{,}7$ & $207{,}9$ & $0{,}1834$ & $35{,}42$ \\
-5 & $15{,}30$ & $14{,}0$ & $154{,}0$ & $14{,}3$ & $182{,}2$ & $0{,}4428$ & $74{,}94$ \\
+1 & $3{,}30$ & $18{,}7$ & $154{,}0$ & $35{,}7$ & $208{,}4$ & $0{,}1144$ & $22{,}15$ \\
+2 & $6{,}30$ & $18{,}5$ & $154{,}0$ & $35{,}7$ & $208{,}1$ & $0{,}1186$ & $22{,}94$ \\
+3 & $9{,}30$ & $18{,}5$ & $154{,}0$ & $35{,}7$ & $208{,}1$ & $0{,}1407$ & $27{,}22$ \\
+4 & $12{,}30$ & $18{,}5$ & $154{,}0$ & $35{,}7$ & $208{,}1$ & $0{,}1834$ & $35{,}47$ \\
+5 & $15{,}30$ & $13{,}8$ & $154{,}0$ & $14{,}3$ & $182{,}1$ & $0{,}4428$ & $74{,}91$ \\
 \midrule
-$\Sigma$ & & & & & $1014{,}2$ & $1{,}0000$ & $182{,}56$ \\
+$\Sigma$ & & & & & $1014{,}9$ & $1{,}0000$ & $182{,}69$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \[
-P = 1014{,}2\tonf \quad\Rightarrow\quad Q = 0{,}18 \times 1014{,}2 = 182{,}6\tonf
-\qquad \left(\textstyle\sum A_j P_j = 196{,}58\tonf\right)
+P = 1014{,}9\tonf \quad\Rightarrow\quad Q = 0{,}18 \times 1014{,}9 = 182{,}7\tonf
+\qquad \left(\textstyle\sum A_j P_j = 196{,}64\tonf\right)
 \]
 
 Las fuerzas $F_k$ se aplican en el centro de masas (CM) de cada piso, ubicado en
@@ -394,8 +398,8 @@ ENVOLVENTE & Envolvente de C1 a C11 \\
 \section{Modelo estructural en SAP2000}
 
 \subsection{Descripción del modelo}
-Se realizó un modelo tridimensional en SAP2000 v27 (archivo \texttt{G5\_Edificio3D.sdb}, entregado también
-en formato de texto \texttt{G5\_Edificio3D.s2k}). Las principales características y supuestos son:
+Se realizó un modelo tridimensional en SAP2000 v27 (archivo \texttt{G5\_Edificio3D\_CL.sdb}, entregado también
+en formato de texto \texttt{G5\_Edificio3D\_CL.s2k}). Las principales características y supuestos son:
 \begin{itemize}
   \item Unidades del modelo: tonf, m, $^\circ$C. Eje X según los ejes 1--5, eje Y según los ejes A--B y eje Z vertical.
   \item Columnas, vigas y riostras se modelan con elementos tipo \emph{frame} ubicados en los ejes
@@ -424,14 +428,35 @@ en formato de texto \texttt{G5\_Edificio3D.s2k}). Las principales característic
 \toprule
 Elemento & Perfil & $A$ [cm$^2$] & $I_{33}$ [cm$^4$] & $I_{22}$ [cm$^4$] & $Z_{33}$ [cm$^3$] \\
 \midrule
-Columnas (todas) & W14X90 & $168{,}5$ & $40917$ & $15019$ & $2527$ \\
-Vigas ejes A y B & W21X50 & $93{,}4$ & $39988$ & $1037$ & $1766$ \\
-Vigas ejes 1 a 5 & W21X62 & $116{,}4$ & $54560$ & $2391$ & $2333$ \\
-Riostras ejes A y B & HSS8X8X1/2 & $90{,}4$ & $5541$ & $5541$ & $650$ \\
-Riostras ejes 1 y 5 & HSS10X10X1/2 & $114{,}4$ & $11212$ & $11212$ & $1040$ \\
+Columnas (todas) & HN40x154 & $196{,}0$ & $61701$ & $21336$ & $3364$ \\
+Vigas ejes A y B & IN50x74 & $93{,}8$ & $40087$ & $1869$ & $1806$ \\
+Vigas ejes 1 a 5 & IN50x80 & $101{,}4$ & $44328$ & $2135$ & $1987$ \\
+Riostras ejes A y B & CAJ200x200x12 & $90{,}2$ & $5337$ & $5337$ & $637$ \\
+Riostras ejes 1 y 5 & CAJ250x250x12 & $114{,}2$ & $10812$ & $10812$ & $1020$ \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{table}[H]
+\centering
+\caption{Dimensiones de los perfiles soldados (planchas A270ES). Designación tipo ICHA: serie, altura [cm] $\times$ peso [kgf/m];
+cajones: CAJ $b \times b \times t$ [mm].}
+\begin{tabular}{lccccc}
+\toprule
+Perfil & $d$ o $b$ [mm] & $b_f$ [mm] & $t_f$ [mm] & $t_w$ [mm] & Peso [kgf/m] \\
+\midrule
+HN40x154 & 400 & 400 & 20 & 10 & $153{,}9$ \\
+IN50x74 & 500 & 200 & 14 & 8 & $73{,}6$ \\
+IN50x80 & 500 & 200 & 16 & 8 & $79{,}6$ \\
+CAJ200x200x12 & 200 & 200 & 12 & 12 & $70{,}8$ \\
+CAJ250x250x12 & 250 & 250 & 12 & 12 & $89{,}7$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+Al ser perfiles soldados (sin filetes de laminación ni esquinas redondeadas), las propiedades que calcula SAP2000
+a partir de las dimensiones coinciden con las propiedades exactas de la sección. Las dimensiones se eligieron con
+espesores comerciales de plancha; se recomienda verificar la existencia del perfil equivalente en el catálogo ICHA
+o especificarlo como perfil soldado a pedido.
 
 Las secciones corresponden a un prediseño y serán verificadas/ajustadas en las Tareas 2 y 3.
 
@@ -452,23 +477,23 @@ presentan esfuerzo axial en el modelo. Los diagramas de esfuerzos internos se ad
 \toprule
 Elemento & Esfuerzo & Valor & Barra & Ubicación & Comb. \\
 \midrule
-\multirow{5}{*}{Columnas} & $P_u$ compresión [tonf] & $280{,}3$ & 3 & Col. 3A, piso 1 & C2 \\
- & $P_u$ tracción [tonf] & $82{,}9$ & 1 & Col. 1A, piso 1 & C10 \\
- & $M_{u3}$ [tonf$\cdot$m] & $23{,}2$ & 18 & Col. 3B, piso 2 & C6 \\
- & $M_{u2}$ [tonf$\cdot$m] & $8{,}6$ & 12 & Col. 2A, piso 2 & C5 \\
+\multirow{5}{*}{Columnas} & $P_u$ compresión [tonf] & $279{,}7$ & 3 & Col. 3A, piso 1 & C2 \\
+ & $P_u$ tracción [tonf] & $84{,}2$ & 5 & Col. 5A, piso 1 & C10 \\
+ & $M_{u3}$ [tonf$\cdot$m] & $25{,}8$ & 3 & Col. 3A, piso 1 & C7 \\
+ & $M_{u2}$ [tonf$\cdot$m] & $9{,}8$ & 14 & Col. 4A, piso 2 & C4 \\
  & $V_{u2}$ [tonf] & $15{,}0$ & 18 & Col. 3B, piso 2 & C6 \\
 \midrule
-\multirow{2}{*}{Vigas X (ejes A, B)} & $M_{u3}$ [tonf$\cdot$m] & $38{,}9$ & 52 & Eje A (2-3), nivel 1 & C2 \\
- & $V_{u2}$ [tonf] & $18{,}7$ & 52 & Eje A (2-3), nivel 1 & C2 \\
+\multirow{2}{*}{Vigas X (ejes A, B)} & $M_{u3}$ [tonf$\cdot$m] & $38{,}7$ & 52 & Eje A (2-3), nivel 1 & C2 \\
+ & $V_{u2}$ [tonf] & $18{,}6$ & 52 & Eje A (2-3), nivel 1 & C2 \\
 \midrule
-\multirow{2}{*}{Vigas Y (ejes 1 a 5)} & $M_{u3}$ [tonf$\cdot$m] & $40{,}8$ & 93 & Eje 3 (A-B), nivel 1 & C7 \\
+\multirow{2}{*}{Vigas Y (ejes 1 a 5)} & $M_{u3}$ [tonf$\cdot$m] & $40{,}7$ & 93 & Eje 3 (A-B), nivel 1 & C7 \\
  & $V_{u2}$ [tonf] & $24{,}1$ & 93 & Eje 3 (A-B), nivel 1 & C2 \\
 \midrule
-\multirow{2}{*}{Riostras X (ejes A, B)} & $P_u$ compresión [tonf] & $79{,}5$ & 118 & Eje B (1-2), piso 1 & C5 \\
- & $P_u$ tracción [tonf] & $57{,}3$ & 119 & Eje B (4-5), piso 1 & C9 \\
+\multirow{2}{*}{Riostras X (ejes A, B)} & $P_u$ compresión [tonf] & $75{,}8$ & 118 & Eje B (1-2), piso 1 & C5 \\
+ & $P_u$ tracción [tonf] & $56{,}4$ & 118 & Eje B (1-2), piso 1 & C8 \\
 \midrule
-\multirow{2}{*}{Riostras Y (ejes 1, 5)} & $P_u$ compresión [tonf] & $108{,}0$ & 136 & Eje 1, piso 1 & C6 \\
- & $P_u$ tracción [tonf] & $102{,}4$ & 136 & Eje 1, piso 1 & C11 \\
+\multirow{2}{*}{Riostras Y (ejes 1, 5)} & $P_u$ compresión [tonf] & $108{,}3$ & 139 & Eje 5, piso 2 & C7 \\
+ & $P_u$ tracción [tonf] & $103{,}2$ & 139 & Eje 5, piso 2 & C10 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -485,11 +510,11 @@ de $0{,}002$ de la NCh433.
 \toprule
 Nivel & $u_X$ [cm] & $\Delta_X/h$ [$\times 10^{-3}$] & $u_Y$ [cm] & $\Delta_Y/h$ [$\times 10^{-3}$] \\
 \midrule
-1 & $0{,}25$ & $0{,}747$ & $0{,}34$ & $1{,}021$ \\
-2 & $0{,}49$ & $0{,}816$ & $0{,}71$ & $1{,}234$ \\
-3 & $0{,}73$ & $0{,}789$ & $1{,}06$ & $1{,}173$ \\
-4 & $0{,}94$ & $0{,}720$ & $1{,}38$ & $1{,}061$ \\
-5 & $1{,}12$ & $0{,}592$ & $1{,}64$ & $0{,}860$ \\
+1 & $0{,}24$ & $0{,}719$ & $0{,}31$ & $0{,}953$ \\
+2 & $0{,}47$ & $0{,}785$ & $0{,}68$ & $1{,}219$ \\
+3 & $0{,}70$ & $0{,}748$ & $1{,}02$ & $1{,}144$ \\
+4 & $0{,}90$ & $0{,}673$ & $1{,}33$ & $1{,}022$ \\
+5 & $1{,}06$ & $0{,}543$ & $1{,}58$ & $0{,}824$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -498,7 +523,7 @@ Nivel & $u_X$ [cm] & $\Delta_X/h$ [$\times 10^{-3}$] & $u_Y$ [cm] & $\Delta_Y/h$
 
 \subsection{Modelo y supuestos}
 Se estudia el marco rígido del eje 2 como un problema plano (plano YZ): un vano de $8{,}0$ m entre los ejes
-A y B y cinco pisos, con columnas W14X90 (flexión en torno al eje fuerte) y vigas W21X62,
+A y B y cinco pisos, con columnas HN40x154 (flexión en torno al eje fuerte) y vigas IN50x80,
 empotrado en la base. Se adoptan los siguientes supuestos:
 \begin{itemize}
   \item Comportamiento elastoplástico perfecto, con rótulas plásticas concentradas en los extremos de vigas y
@@ -520,12 +545,12 @@ empotrado en la base. Se adoptan los siguientes supuestos:
 \begin{tabular}{lcc}
 \toprule
  & Columna & Viga \\
- & W14X90 & W21X62 \\
+ & HN40x154 & IN50x80 \\
 \midrule
-$S_x$ [cm$^3$] & $2301$ & $2046$ \\
-$Z_x$ [cm$^3$] & $2527$ & $2333$ \\
-$M_y = S_x F_y$ [tonf$\cdot$m] & $81{,}0$ & $72{,}0$ \\
-$M_p = Z_x F_y$ [tonf$\cdot$m] & $88{,}9$ & $82{,}1$ \\
+$S_x$ [cm$^3$] & $3085$ & $1773$ \\
+$Z_x$ [cm$^3$] & $3364$ & $1987$ \\
+$M_y = S_x F_y$ [tonf$\cdot$m] & $84{,}9$ & $48{,}8$ \\
+$M_p = Z_x F_y$ [tonf$\cdot$m] & $92{,}6$ & $54{,}7$ \\
 \bottomrule
 \end{tabular}
 \end{minipage}\hfill
@@ -536,11 +561,11 @@ $M_p = Z_x F_y$ [tonf$\cdot$m] & $88{,}9$ & $82{,}1$ \\
 \toprule
 Nivel & $Z_k$ [m] & $\alpha_k = F_k/Q$ \\
 \midrule
-1 & $3{,}30$ & $0{,}1211$ \\
-2 & $6{,}30$ & $0{,}1255$ \\
-3 & $9{,}30$ & $0{,}1489$ \\
-4 & $12{,}30$ & $0{,}1940$ \\
-5 & $15{,}30$ & $0{,}4105$ \\
+1 & $3{,}30$ & $0{,}1212$ \\
+2 & $6{,}30$ & $0{,}1256$ \\
+3 & $9{,}30$ & $0{,}1490$ \\
+4 & $12{,}30$ & $0{,}1941$ \\
+5 & $15{,}30$ & $0{,}4100$ \\
 \bottomrule
 \end{tabular}
 \end{minipage}
@@ -556,14 +581,14 @@ no lineales en SAP2000 se detalla en el Anexo~B.
 \textbf{Primera fluencia.} Se define como el instante en que la fibra extrema de alguna sección alcanza $F_y$, es
 decir, $|M_{grav} + F\,m_{lat}| = M_y$. Esto ocurre en la viga del nivel 2 para
 \[
-F_{y} = 47{,}2\tonf \qquad (\delta_{techo} = 10{,}17\ \mathrm{cm}).
+F_{y} = 28{,}7\tonf \qquad (\delta_{techo} = 6{,}34\ \mathrm{cm}).
 \]
 
-\textbf{Primera rótula plástica} ($M = M_p$): $F = 55{,}9\tonf$.
+\textbf{Primera rótula plástica} ($M = M_p$): $F = 34{,}1\tonf$.
 
-\textbf{Colapso.} El mecanismo se forma con la rótula N$^\circ$11 para
+\textbf{Colapso.} El mecanismo se forma con la rótula N$^\circ$12 para
 \[
-F_{c} = 83{,}4\tonf \qquad (\delta_{techo} = 60{,}3\ \mathrm{cm}).
+F_{c} = 65{,}2\tonf \qquad (\delta_{techo} = 51{,}9\ \mathrm{cm}).
 \]
 
 \begin{figure}[H]
@@ -571,14 +596,14 @@ F_{c} = 83{,}4\tonf \qquad (\delta_{techo} = 60{,}3\ \mathrm{cm}).
 \begin{tikzpicture}
 \begin{axis}[width=0.85\textwidth,height=7.5cm,grid=major,
   xlabel={Desplazamiento de techo $\delta$ [cm]},ylabel={Carga lateral total $F$ [tonf]},
-  xmin=0,xmax=77,ymin=0,ymax=104,
+  xmin=0,xmax=66,ymin=0,ymax=81,
   legend pos=south east,legend style={font=\small}]
-\addplot[thick,blue,mark=*,mark size=1.5pt] coordinates {(0.013,0.000) (12.042,55.946) (12.348,57.047) (14.575,63.268) (17.014,68.601) (17.605,69.758) (21.883,74.415) (22.661,74.886) (26.896,76.359) (32.957,78.232) (59.771,83.369) (60.263,83.448) (75.329,83.448)};
+\addplot[thick,blue,mark=*,mark size=1.5pt] coordinates {(0.016,0.000) (7.542,34.126) (8.380,37.148) (8.599,37.796) (11.950,45.534) (17.250,55.681) (17.703,56.456) (20.356,58.892) (22.514,60.366) (24.560,61.114) (24.587,61.120) (38.027,63.719) (51.924,65.157) (64.905,65.157)};
 \addlegendentry{Pushover (evento a evento)}
-\addplot[red,dashed,thick] coordinates {(0,83.448) (76.84,83.448)};
-\addlegendentry{Método cinemático $F_c = 83{,}4$ tonf}
-\addplot[only marks,mark=square*,black,mark size=2.5pt] coordinates {(10.167,47.223)};
-\addlegendentry{Primera fluencia $F_y = 47{,}2$ tonf}
+\addplot[red,dashed,thick] coordinates {(0,65.157) (66.20,65.157)};
+\addlegendentry{Método cinemático $F_c = 65{,}2$ tonf}
+\addplot[only marks,mark=square*,black,mark size=2.5pt] coordinates {(6.345,28.695)};
+\addlegendentry{Primera fluencia $F_y = 28{,}7$ tonf}
 \end{axis}
 \end{tikzpicture}
 \caption{Curva de capacidad del eje 2 (corte basal versus desplazamiento de techo).}
@@ -592,17 +617,18 @@ F_{c} = 83{,}4\tonf \qquad (\delta_{techo} = 60{,}3\ \mathrm{cm}).
 \toprule
 N$^\circ$ & Ubicación & $F$ [tonf] & $\delta_{techo}$ [cm] \\
 \midrule
-1 & Viga nivel 2, extremo eje B & $55{,}9$ & $12{,}04$ \\
-2 & Viga nivel 1, extremo eje B & $57{,}0$ & $12{,}35$ \\
-3 & Viga nivel 3, extremo eje B & $63{,}3$ & $14{,}57$ \\
-4 & Columna eje B, piso 1 (extremo inferior) & $68{,}6$ & $17{,}01$ \\
-5 & Columna eje A, piso 1 (extremo inferior) & $69{,}8$ & $17{,}61$ \\
-6 & Viga nivel 1, extremo eje A & $74{,}4$ & $21{,}88$ \\
-7 & Viga nivel 2, extremo eje A & $74{,}9$ & $22{,}66$ \\
-8 & Viga nivel 4, extremo eje B & $76{,}4$ & $26{,}90$ \\
-9 & Viga nivel 3, extremo eje A & $78{,}2$ & $32{,}96$ \\
-10 & Columna eje B, piso 3 (extremo superior) & $83{,}4$ & $59{,}77$ \\
-11 & Columna eje A, piso 3 (extremo superior) & $83{,}4$ & $60{,}26$ \\
+1 & Viga nivel 2, extremo eje B & $34{,}1$ & $7{,}54$ \\
+2 & Viga nivel 1, extremo eje B & $37{,}1$ & $8{,}38$ \\
+3 & Viga nivel 3, extremo eje B & $37{,}8$ & $8{,}60$ \\
+4 & Viga nivel 4, extremo eje B & $45{,}5$ & $11{,}95$ \\
+5 & Columna eje B, piso 1 (extremo inferior) & $55{,}7$ & $17{,}25$ \\
+6 & Columna eje A, piso 1 (extremo inferior) & $56{,}5$ & $17{,}70$ \\
+7 & Viga nivel 2, extremo eje A & $58{,}9$ & $20{,}36$ \\
+8 & Viga nivel 1, extremo eje A & $60{,}4$ & $22{,}51$ \\
+9 & Viga nivel 3, extremo eje A & $61{,}1$ & $24{,}56$ \\
+10 & Viga nivel 5, extremo eje B & $61{,}1$ & $24{,}59$ \\
+11 & Viga nivel 4, extremo eje A & $63{,}7$ & $38{,}03$ \\
+12 & Viga nivel 5, extremo eje A & $65{,}2$ & $51{,}92$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -624,15 +650,15 @@ y en la cabeza de las columnas del piso $m$ (o en las vigas de techo si $m = 5$)
 mecanismo de piso blando, y para $j=1,\ m=5$ el mecanismo global de vigas. Como el mecanismo solo
 involucra traslaciones horizontales de las vigas, las cargas gravitacionales no realizan trabajo.
 
-Por ejemplo, para el mecanismo que controla (pisos 1 a 3):
+Por ejemplo, para el mecanismo que controla (pisos 1 a 5):
 \[
-W_i = \left[4\,M_{pc} + 4\,M_{pb}\right]\theta
-     = 684{,}0\,\theta \ \mathrm{tonf\cdot m},
+W_i = \left[2\,M_{pc} + 10\,M_{pb}\right]\theta
+     = 732{,}3\,\theta \ \mathrm{tonf\cdot m},
 \qquad
-W_e = F\,\theta\sum_k \alpha_k\,\delta_k/\theta = 8{,}197\,F\,\theta\ \mathrm{m}
+W_e = F\,\theta\sum_k \alpha_k\,\delta_k/\theta = 11{,}238\,F\,\theta\ \mathrm{m}
 \]
 \[
-\Rightarrow\quad F_c = \frac{684{,}0}{8{,}197} = 83{,}4\tonf .
+\Rightarrow\quad F_c = \frac{732{,}3}{11{,}238} = 65{,}2\tonf .
 \]
 
 \begin{table}[H]
@@ -642,14 +668,14 @@ W_e = F\,\theta\sum_k \alpha_k\,\delta_k/\theta = 8{,}197\,F\,\theta\ \mathrm{m}
 \toprule
 Mecanismo & $W_i/\theta$ [tonf$\cdot$m] & $W_e/(F\theta)$ [m] & $F$ [tonf] \\
 \midrule
-Combinado pisos 1 a 3 & $684{,}0$ & $8{,}197$ & $83{,}4$ \\
-Combinado pisos 1 a 4 & $848{,}2$ & $10{,}010$ & $84{,}7$ \\
-Combinado pisos 1 a 2 & $519{,}8$ & $5{,}937$ & $87{,}6$ \\
-Global (vigas + base) & $998{,}7$ & $11{,}242$ & $88{,}8$ \\
-Combinado pisos 2 a 4 & $684{,}0$ & $6{,}710$ & $101{,}9$ \\
-Combinado pisos 2 a 5 & $834{,}5$ & $7{,}942$ & $105{,}1$ \\
-Combinado pisos 2 a 3 & $519{,}8$ & $4{,}897$ & $106{,}2$ \\
-Piso 1 (piso blando) & $355{,}7$ & $3{,}300$ & $107{,}8$ \\
+Global (vigas + base) & $732{,}3$ & $11{,}238$ & $65{,}2$ \\
+Combinado pisos 1 a 4 & $698{,}7$ & $10{,}008$ & $69{,}8$ \\
+Combinado pisos 1 a 3 & $589{,}3$ & $8{,}196$ & $71{,}9$ \\
+Combinado pisos 2 a 5 & $622{,}9$ & $7{,}938$ & $78{,}5$ \\
+Combinado pisos 1 a 2 & $479{,}9$ & $5{,}936$ & $80{,}8$ \\
+Combinado pisos 2 a 4 & $589{,}3$ & $6{,}708$ & $87{,}8$ \\
+Combinado pisos 3 a 5 & $513{,}5$ & $5{,}302$ & $96{,}8$ \\
+Combinado pisos 2 a 3 & $479{,}9$ & $4{,}896$ & $98{,}0$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -666,15 +692,17 @@ Piso 1 (piso blando) & $355{,}7$ & $3{,}300$ & $107{,}8$ \\
 \draw[thick] (0,9.3) -- (8,9.3);
 \draw[thick] (0,12.3) -- (8,12.3);
 \draw[thick] (0,15.3) -- (8,15.3);
-\draw[-{Stealth},blue,thick] (-2.22681,3.3) -- (0,3.3) node[midway,above,font=\tiny]{$0{,}121 F$};
-\draw[-{Stealth},blue,thick] (-2.25301,6.3) -- (0,6.3) node[midway,above,font=\tiny]{$0{,}126 F$};
-\draw[-{Stealth},blue,thick] (-2.39321,9.3) -- (0,9.3) node[midway,above,font=\tiny]{$0{,}149 F$};
-\draw[-{Stealth},blue,thick] (-2.66406,12.3) -- (0,12.3) node[midway,above,font=\tiny]{$0{,}194 F$};
-\draw[-{Stealth},blue,thick] (-3.96291,15.3) -- (0,15.3) node[midway,above,font=\tiny]{$0{,}410 F$};
+\draw[-{Stealth},blue,thick] (-2.22745,3.3) -- (0,3.3) node[midway,above,font=\tiny]{$0{,}121 F$};
+\draw[-{Stealth},blue,thick] (-2.25355,6.3) -- (0,6.3) node[midway,above,font=\tiny]{$0{,}126 F$};
+\draw[-{Stealth},blue,thick] (-2.39385,9.3) -- (0,9.3) node[midway,above,font=\tiny]{$0{,}149 F$};
+\draw[-{Stealth},blue,thick] (-2.66489,12.3) -- (0,12.3) node[midway,above,font=\tiny]{$0{,}194 F$};
+\draw[-{Stealth},blue,thick] (-3.96026,15.3) -- (0,15.3) node[midway,above,font=\tiny]{$0{,}410 F$};
 \fill[red] (0,0.5) circle (0.35); \fill[red] (8,0.5) circle (0.35);
 \fill[red] (0.6,3.3) circle (0.35); \fill[red] (7.4,3.3) circle (0.35);
 \fill[red] (0.6,6.3) circle (0.35); \fill[red] (7.4,6.3) circle (0.35);
-\fill[red] (0,8.8) circle (0.35); \fill[red] (8,8.8) circle (0.35);
+\fill[red] (0.6,9.3) circle (0.35); \fill[red] (7.4,9.3) circle (0.35);
+\fill[red] (0.6,12.3) circle (0.35); \fill[red] (7.4,12.3) circle (0.35);
+\fill[red] (0.6,15.3) circle (0.35); \fill[red] (7.4,15.3) circle (0.35);
 \node[below] at (0,-0.8) {A}; \node[below] at (8,-0.8) {B};
 \end{tikzpicture}
 \caption{Mecanismo de colapso del eje 2 (rótulas plásticas en rojo).}
@@ -689,12 +717,12 @@ Piso 1 (piso blando) & $355{,}7$ & $3{,}300$ & $107{,}8$ \\
 \toprule
 Parámetro & Valor \\
 \midrule
-Carga de primera fluencia $F_y$ & $47{,}2\tonf$ \\
-Carga de primera rótula plástica & $55{,}9\tonf$ \\
-Carga de colapso, pushover $F_c$ & $83{,}4\tonf$ \\
-Carga de colapso, método cinemático & $83{,}4\tonf$ \\
+Carga de primera fluencia $F_y$ & $28{,}7\tonf$ \\
+Carga de primera rótula plástica & $34{,}1\tonf$ \\
+Carga de colapso, pushover $F_c$ & $65{,}2\tonf$ \\
+Carga de colapso, método cinemático & $65{,}2\tonf$ \\
 Diferencia & $0{,}00\%$ \\
-Sobrerresistencia $F_c/F_y$ & $1{,}77$ \\
+Sobrerresistencia $F_c/F_y$ & $2{,}27$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -706,90 +734,90 @@ resultado de SAP2000 se deben a: (i) la definición de las rótulas (si se utili
 ASCE~41 con endurecimiento, la curva no presenta una meseta perfectamente horizontal), (ii) la
 interacción P--M en las columnas si se usan rótulas tipo P--M2--M3 y (iii) los efectos P--$\Delta$,
 que reducen la capacidad lateral. El momento máximo de tramo de las vigas bajo cargas gravitacionales es
-$17{,}4\tonfm < M_{pb}$, por lo que no se forman rótulas en el interior de las vigas
+$17{,}9\tonfm < M_{pb}$, por lo que no se forman rótulas en el interior de las vigas
 y es válido considerar rótulas solo en los extremos.
-La razón $F_c/F_y = 1{,}77$ refleja la reserva de resistencia del
+La razón $F_c/F_y = 2{,}27$ refleja la reserva de resistencia del
 marco hiperestático por redistribución de momentos luego de la primera fluencia.
 
 \section{Diseño de la riostra más traccionada}
 
 \subsection{Demanda}
-Del análisis, la riostra más traccionada corresponde a la barra 136 del modelo,
-ubicada en el \textbf{eje 1, piso 1}, que une el nudo 101
-$(X,Y,Z) = (0{,}0;0{,}0;3{,}3)$ con el nudo 11
-$(0{,}0;8{,}0;0{,}0)$ (ver Figuras~\ref{fig:planta} y \ref{fig:elev}).
-Su largo es $L = 8{,}65$ m y la combinación que controla es C11 ($0.9D - 1.4E_y$):
+Del análisis, la riostra más traccionada corresponde a la barra 139 del modelo,
+ubicada en el \textbf{eje 5, piso 2}, que une el nudo 105
+$(X,Y,Z) = (35{,}0;0{,}0;3{,}3)$ con el nudo 215
+$(35{,}0;8{,}0;6{,}3)$ (ver Figuras~\ref{fig:planta} y \ref{fig:elev}).
+Su largo es $L = 8{,}54$ m y la combinación que controla es C10 ($0.9D + 1.4E_y$):
 \[
-T_u = 102{,}4\tonf .
+T_u = 103{,}2\tonf .
 \]
-La riostra simétrica del eje 5 (mismo piso) presenta una demanda equivalente.
+La riostra simétrica del eje 1 (mismo piso) presenta una demanda equivalente.
 
 \subsection{Sección propuesta}
-Se propone un perfil tubular cuadrado \textbf{HSS10X10X1/2} de acero ASTM A500 Gr.C
-($F_y = 3518\ \mathrm{kgf/cm^2}$, $F_u = 4354\ \mathrm{kgf/cm^2}$), con espesor de diseño $t = 0{,}93\,t_{nom} = 1{,}18$ cm, $A_g = 111{,}2\ \mathrm{cm^2}$ y
-$r = 9{,}80$ cm.
+Se propone un perfil cajón soldado (cuatro planchas soldadas, no conformado en frío) \textbf{CAJ250x250x12} de acero NCh203 A270ES
+($F_y = 2753\ \mathrm{kgf/cm^2}$, $F_u = 4181\ \mathrm{kgf/cm^2}$), con espesor de plancha $t = 1{,}20$ cm, $A_g = 114{,}2\ \mathrm{cm^2}$ y
+$r = 9{,}73$ cm.
 
 \subsection{Verificaciones (AISC 360-16, Capítulo D)}
 
 \textbf{Esbeltez (recomendación D1).}
 \[
-\frac{L}{r} = \frac{865{,}4}{9{,}80} = 88{,}3 \le 300 \quad \checkmark
+\frac{L}{r} = \frac{854{,}4}{9{,}73} = 87{,}8 \le 300 \quad \checkmark
 \]
 
 \textbf{Fluencia en el área bruta (D2-a), $\phi_t = 0{,}90$.}
 \[
-\phi_t P_n = 0{,}90 \cdot F_y \cdot A_g = 0{,}90 \cdot 3518 \cdot 111{,}2
-= 352{,}0\tonf
+\phi_t P_n = 0{,}90 \cdot F_y \cdot A_g = 0{,}90 \cdot 2753 \cdot 114{,}2
+= 283{,}1\tonf
 \]
 
 \textbf{Ruptura en el área neta efectiva (D2-b), $\phi_t = 0{,}75$.}
 La conexión se materializa con una plancha gusset concéntrica de espesor $t_g = 2{,}2$ cm insertada en
 una ranura del tubo de ancho $t_g + 2$ mm, y soldada con cuatro cordones de filete de largo $l$.
 \[
-A_n = A_g - 2\,t\,(t_g + 0{,}2) = 111{,}2 - 2\cdot1{,}18\cdot(2{,}2+0{,}2)
-= 105{,}5\ \mathrm{cm^2}
+A_n = A_g - 2\,t\,(t_g + 0{,}2) = 114{,}2 - 2\cdot1{,}20\cdot(2{,}2+0{,}2)
+= 108{,}5\ \mathrm{cm^2}
 \]
-Factor de corte diferido (Tabla D3.1, caso 6, HSS rectangular con una plancha concéntrica, $l \ge H$):
+Factor de corte diferido (Tabla D3.1, caso 6, HSS rectangular con una plancha concéntrica, $l \ge H$; el cajón soldado se asimila a un tubo rectangular):
 \[
-\bar{x} = \frac{B^2 + 2BH}{4(B+H)} = 9{,}53\ \mathrm{cm},
+\bar{x} = \frac{B^2 + 2BH}{4(B+H)} = 9{,}38\ \mathrm{cm},
 \qquad
-U = 1 - \frac{\bar{x}}{l} = 1 - \frac{9{,}53}{30} = 0{,}682
+U = 1 - \frac{\bar{x}}{l} = 1 - \frac{9{,}38}{25} = 0{,}625
 \]
 \[
-A_e = U A_n = 72{,}0\ \mathrm{cm^2}
+A_e = U A_n = 67{,}8\ \mathrm{cm^2}
 \qquad\Rightarrow\qquad
-\phi_t P_n = 0{,}75 \cdot 4354 \cdot 72{,}0 = 235{,}2\tonf
+\phi_t P_n = 0{,}75 \cdot 4181 \cdot 67{,}8 = 212{,}6\tonf
 \]
 
 \textbf{Resistencia de diseño.}
 \[
-\phi_t P_n = \min(352{,}0;\ 235{,}2) = 235{,}2\tonf
-\ \ge\ T_u = 102{,}4\tonf \quad \checkmark
-\qquad \text{F.U.} = 0{,}44
+\phi_t P_n = \min(283{,}1;\ 212{,}6) = 212{,}6\tonf
+\ \ge\ T_u = 103{,}2\tonf \quad \checkmark
+\qquad \text{F.U.} = 0{,}49
 \]
 
 \subsection{Conexión preliminar}
-Se propone una conexión soldada con plancha gusset de acero ASTM A36, $t_g = 22$ mm, insertada
+Se propone una conexión soldada con plancha gusset de acero NCh203 A270ES, $t_g = 22$ mm, insertada
 en el tubo ranurado y unida mediante cuatro cordones de soldadura de filete E70XX.
 
 \textbf{Soldadura.} Tamaño de filete $w = 8$ mm (mínimo según Tabla J2.4: 5 mm para
-$6 < t \le 13$ mm; máximo $t - 2 = 9{,}8$ mm).
+$6 < t \le 13$ mm; máximo $t - 2 = 10{,}0$ mm).
 Resistencia por unidad de largo de un cordón (J2.4), $\phi = 0{,}75$:
 \[
 \phi R_n/l = 0{,}75 \cdot 0{,}60 F_{EXX} \cdot 0{,}707\,w
 = 0{,}75 \cdot 0{,}60 \cdot 4920 \cdot 0{,}707 \cdot 0{,}8
 = 1252\ \mathrm{kgf/cm}
 \]
-Corte del metal base (pared del tubo): $0{,}75\cdot 0{,}60\,F_u\,t = 2314\ \mathrm{kgf/cm}$ (no controla).
+Corte del metal base (pared del tubo): $0{,}75\cdot 0{,}60\,F_u\,t = 2258\ \mathrm{kgf/cm}$ (no controla).
 Largo requerido de cada cordón:
 \[
-l_{req} = \frac{T_u}{4\,\phi R_n/l} = \frac{102378}{4 \cdot 1252}
-= 20{,}4\ \mathrm{cm}
-\quad\Rightarrow\quad l = 30\ \mathrm{cm} \ (\ge B = 25{,}4\ \mathrm{cm})
+l_{req} = \frac{T_u}{4\,\phi R_n/l} = \frac{103244}{4 \cdot 1252}
+= 20{,}6\ \mathrm{cm}
+\quad\Rightarrow\quad l = 25\ \mathrm{cm} \ (\ge B = 25{,}0\ \mathrm{cm})
 \]
 
-\textbf{Plancha gusset.} Ancho de Whitmore $L_w = B + 2\,l\tan 30^\circ = 60{,}0$ cm;
-área de corte $A_{gv} = 2\,l\,t_g = 132{,}0\ \mathrm{cm^2}$; área en tracción $A_{nt} = B\,t_g = 55{,}9\ \mathrm{cm^2}$.
+\textbf{Plancha gusset.} Ancho de Whitmore $L_w = B + 2\,l\tan 30^\circ = 53{,}9$ cm;
+área de corte $A_{gv} = 2\,l\,t_g = 110{,}0\ \mathrm{cm^2}$; área en tracción $A_{nt} = B\,t_g = 55{,}0\ \mathrm{cm^2}$.
 
 \begin{table}[H]
 \centering
@@ -798,12 +826,12 @@ l_{req} = \frac{T_u}{4\,\phi R_n/l} = \frac{102378}{4 \cdot 1252}
 \toprule
 Estado límite & Expresión & $\phi R_n$ [tonf] & $T_u/\phi R_n$ \\
 \midrule
-Fluencia en área bruta & $\phi_t F_y A_g$ & $352{,}0$ & $0{,}29$ \\
-Ruptura en área neta efectiva & $\phi_t F_u A_e$ & $235{,}2$ & $0{,}44$ \\
-Soldaduras (4 cordones) & $4\,l\,\phi R_n/l$ & $150{,}3$ & $0{,}68$ \\
-Plancha gusset: fluencia (Whitmore) & $\phi F_y L_w t_g$ & $300{,}6$ & $0{,}34$ \\
-Plancha gusset: bloque de corte & $\phi R_{bs}$ & $321{,}2$ & $0{,}32$ \\
-Plancha gusset: ruptura por corte & $\phi\,0{,}6F_u\,2l\,t_g$ & $242{,}3$ & $0{,}42$ \\
+Fluencia en área bruta & $\phi_t F_y A_g$ & $283{,}1$ & $0{,}36$ \\
+Ruptura en área neta efectiva & $\phi_t F_u A_e$ & $212{,}6$ & $0{,}49$ \\
+Soldaduras (4 cordones) & $4\,l\,\phi R_n/l$ & $125{,}2$ & $0{,}82$ \\
+Plancha gusset: fluencia (Whitmore) & $\phi F_y L_w t_g$ & $293{,}6$ & $0{,}35$ \\
+Plancha gusset: bloque de corte & $\phi R_{bs}$ & $308{,}7$ & $0{,}33$ \\
+Plancha gusset: ruptura por corte & $\phi\,0{,}6F_u\,2l\,t_g$ & $206{,}9$ & $0{,}50$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -812,22 +840,22 @@ Plancha gusset: ruptura por corte & $\phi\,0{,}6F_u\,2l\,t_g$ & $242{,}3$ & $0{,
 \centering
 \begin{tikzpicture}[x=0.095cm,y=0.095cm,font=\small]
 % gusset
-\draw[thick,fill=gray!15] (-42,-30) -- (40,-30) -- (40,30) -- (-42,30) -- cycle;
-\node[align=center] at (-5,-38) {Gusset $t_g = 22$ mm (ASTM A36)};
+\draw[thick,fill=gray!15] (-42,-30) -- (35,-30) -- (35,30) -- (-42,30) -- cycle;
+\node[align=center] at (-5,-38) {Gusset $t_g = 22$ mm (NCh203 A270ES)};
 % tubo
-\draw[thick,fill=white] (0,12.7) -- (90,12.7) -- (90,-12.7) -- (0,-12.7) -- cycle;
+\draw[thick,fill=white] (0,12.5) -- (90,12.5) -- (90,-12.5) -- (0,-12.5) -- cycle;
 \draw[dashed] (0,0) -- (90,0);
-\node at (28,0) [above] {HSS10X10X1/2};
+\node at (28,0) [above] {CAJ250x250x12};
 % soldaduras
-\draw[red,line width=2pt] (0,12.7) -- (30,12.7);
-\draw[red,line width=2pt] (0,-12.7) -- (30,-12.7);
-\draw[<->] (0,17.7) -- node[above]{$l = 30$ cm} (30,17.7);
-\draw[<->] (82,-12.7) -- node[left,fill=white,inner sep=1pt]{$B = 25{,}4$ cm} (82,12.7);
-\node[red] at (15,-17.7) {4 filetes $w = 8$ mm, E70XX};
+\draw[red,line width=2pt] (0,12.5) -- (25,12.5);
+\draw[red,line width=2pt] (0,-12.5) -- (25,-12.5);
+\draw[<->] (0,17.5) -- node[above]{$l = 25$ cm} (25,17.5);
+\draw[<->] (82,-12.5) -- node[left,fill=white,inner sep=1pt]{$B = 25{,}0$ cm} (82,12.5);
+\node[red] at (12.5,-17.5) {4 filetes $w = 8$ mm, E70XX};
 % Whitmore
-\draw[blue,dashed] (0,12.7) -- (-30,30.0205);
-\draw[blue,dashed] (0,-12.7) -- (-30,-30.0205);
-\draw[blue] (-30,-30.0205) -- node[left]{$L_w$} (-30,30.0205);
+\draw[blue,dashed] (0,12.5) -- (-25,26.9338);
+\draw[blue,dashed] (0,-12.5) -- (-25,-26.9338);
+\draw[blue] (-25,-26.9338) -- node[left]{$L_w$} (-25,26.9338);
 \draw[->,very thick] (92,0) -- (108,0) node[right]{$T_u$};
 \end{tikzpicture}
 \caption{Esquema de la conexión preliminar riostra--gusset (vista en elevación de la riostra).}
@@ -836,24 +864,24 @@ Plancha gusset: ruptura por corte & $\phi\,0{,}6F_u\,2l\,t_g$ & $242{,}3$ & $0{,
 
 \textbf{Comentario.} La sección queda con un factor de utilización bajo a tracción; sin embargo, la misma riostra
 trabaja en compresión al invertirse el sentido del sismo ($P_u \approx T_u$), condición que controlará su diseño
-en la Tarea 2, por lo que se mantiene el perfil HSS10X10X1/2. La razón ancho--espesor del tubo es
-$b/t = 18{,}5$.
+en la Tarea 2, por lo que se mantiene el perfil CAJ250x250x12. La razón ancho--espesor del tubo es
+$b/t = 18{,}8$.
 
 \section{Conclusiones}
 \begin{itemize}
-  \item El peso sísmico de la estructura es $P = 1014{,}2\tonf$, lo que resulta en un corte
-        basal $Q = 182{,}6\tonf$, aplicado en el centro de masas de cada piso con la distribución
+  \item El peso sísmico de la estructura es $P = 1014{,}9\tonf$, lo que resulta en un corte
+        basal $Q = 182{,}7\tonf$, aplicado en el centro de masas de cada piso con la distribución
         en altura indicada.
   \item Los marcos arriostrados concentran la mayor parte de la carga lateral; las riostras de los ejes 1 y 5
-        (dirección Y) son las más solicitadas, con $T_u = 102{,}4\tonf$.
+        (dirección Y) son las más solicitadas, con $T_u = 103{,}2\tonf$.
   \item El análisis plástico del eje 2 entrega una carga lateral de primera fluencia
-        $F_y = 47{,}2\tonf$, una primera rótula plástica para $F = 55{,}9\tonf$ y
-        una carga de colapso $F_c = 83{,}4\tonf$. El método cinemático entrega
-        $F_c = 83{,}4\tonf$ (mecanismo \emph{Combinado pisos 1 a 3}), coincidente con el
+        $F_y = 28{,}7\tonf$, una primera rótula plástica para $F = 34{,}1\tonf$ y
+        una carga de colapso $F_c = 65{,}2\tonf$. El método cinemático entrega
+        $F_c = 65{,}2\tonf$ (mecanismo \emph{Global (vigas + base)}), coincidente con el
         análisis incremental, ya que este último corresponde a la solución exacta del problema rígido-plástico
         con rótulas en los extremos de los elementos.
-  \item La riostra más traccionada se diseña con un perfil HSS10X10X1/2 (ASTM A500 Gr.C) con un factor de utilización
-        de $0{,}44$ a tracción. La sección queda holgada en tracción, pero se escogió anticipando el
+  \item La riostra más traccionada se diseña con un perfil CAJ250x250x12 (NCh203 A270ES) con un factor de utilización
+        de $0{,}49$ a tracción. La sección queda holgada en tracción, pero se escogió anticipando el
         diseño a compresión de la Tarea 2 (la misma riostra se comprime al invertir el sismo).
 \end{itemize}
 
@@ -869,14 +897,14 @@ $b/t = 18{,}5$.
 \end{itemize}
 
 \section{Análisis no lineal en SAP2000 (eje 2)}
-Se utiliza el modelo 2D \texttt{G5\_Eje2\_Pushover} (SAP2000 v27, plano YZ), que contiene la geometría, las secciones,
+Se utiliza el modelo 2D \texttt{G5\_Eje2\_Pushover\_CL} (SAP2000 v27, plano YZ), que contiene la geometría, las secciones,
 las cargas gravitacionales tributarias del eje 2 (patrones \texttt{PP}, \texttt{SCP}, \texttt{L}, \texttt{LR})
 y el patrón lateral \texttt{PUSH} (fuerzas $\alpha_k$ en cada nivel, de suma unitaria). Los pasos son:
 \begin{enumerate}
   \item \emph{Define $\rightarrow$ Section Properties $\rightarrow$ Hinge Properties}: crear rótulas
         \texttt{RC} (columna) y \texttt{RV} (viga) tipo \emph{Moment M3}, comportamiento elastoplástico perfecto
-        (\emph{Deformation Controlled}), con $M_p = 88{,}9\tonfm$ y
-        $M_p = 82{,}1\tonfm$ respectivamente, y meseta horizontal (puntos B--C con igual momento).
+        (\emph{Deformation Controlled}), con $M_p = 92{,}6\tonfm$ y
+        $M_p = 54{,}7\tonfm$ respectivamente, y meseta horizontal (puntos B--C con igual momento).
         Alternativamente, rótulas automáticas \emph{Auto M3} según ASCE 41-13 Tabla 9-6.
   \item Seleccionar todas las barras y asignar (\emph{Assign $\rightarrow$ Frame $\rightarrow$ Hinges}) rótulas a
         distancias relativas $0$ y $1$.

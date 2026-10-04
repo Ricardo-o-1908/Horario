@@ -1,4 +1,4 @@
-File G5_Eje2_Pushover.s2k was saved on 10/04/26 at 20:04:16
+File G5_Eje2_Pushover_CL.s2k was saved on 10/04/26 at 20:04:17
 
 TABLE:  "PROGRAM CONTROL"
    ProgramName=SAP2000   Version=27.0.0   ProgLevel=Ultimate   CurrUnits="Tonf, m, C"   SteelCode="AISC 360-22"   ConcCode="ACI 318-19"   RegenHinge=Yes
@@ -7,16 +7,13 @@ TABLE:  "COORDINATE SYSTEMS"
    Name=GLOBAL   Type=Cartesian   X=0   Y=0   Z=0   AboutZ=0   AboutY=0   AboutX=0
 
 TABLE:  "MATERIAL PROPERTIES 01 - GENERAL"
-   Material=A572Gr50   Type=Steel   Grade="Grade 50"   SymType=Isotropic   TempDepend=No   Color=Blue
-   Material=A500GrC   Type=Steel   Grade="Grade C"   SymType=Isotropic   TempDepend=No   Color=Blue
+   Material=A270ES   Type=Steel   Grade=A270ES   SymType=Isotropic   TempDepend=No   Color=Blue
 
 TABLE:  "MATERIAL PROPERTIES 02 - BASIC MECHANICAL PROPERTIES"
-   Material=A572Gr50   UnitWeight=7.85   UnitMass=0.800477   E1=2.03943e+07   G12=7.84397e+06   U12=0.3   A1=1.170000E-05
-   Material=A500GrC   UnitWeight=7.85   UnitMass=0.800477   E1=2.03943e+07   G12=7.84397e+06   U12=0.3   A1=1.170000E-05
+   Material=A270ES   UnitWeight=7.85   UnitMass=0.800477   E1=2.03943e+07   G12=7.84397e+06   U12=0.3   A1=1.170000E-05
 
 TABLE:  "MATERIAL PROPERTIES 03A - STEEL DATA"
-   Material=A572Gr50   Fy=35180.2   Fu=45887.2   EffFy=38698.2   EffFu=50476   SSCurveOpt=Simple   SSHysType=Kinematic   SHard=0.02   SMax=0.14   SRup=0.2   FinalSlope=-0.1   CoupModType="Von Mises"
-   Material=A500GrC   Fy=35180.2   Fu=43541.9   EffFy=38698.2   EffFu=47896.1   SSCurveOpt=Simple   SSHysType=Kinematic   SHard=0.02   SMax=0.14   SRup=0.2   FinalSlope=-0.1   CoupModType="Von Mises"
+   Material=A270ES   Fy=27532.3   Fu=41808.4   EffFy=30285.6   EffFu=45989.2   SSCurveOpt=Simple   SSHysType=Kinematic   SHard=0.02   SMax=0.14   SRup=0.2   FinalSlope=-0.1   CoupModType="Von Mises"
 
 TABLE:  "ACTIVE DEGREES OF FREEDOM"
    UX=No   UY=Yes   UZ=Yes   RX=Yes   RY=No   RZ=No
@@ -68,25 +65,25 @@ TABLE:  "JOINT RESTRAINT ASSIGNMENTS"
    Joint=2   U1=Yes   U2=Yes   U3=Yes   R1=Yes   R2=Yes   R3=Yes
 
 TABLE:  "FRAME SECTION PROPERTIES 01 - GENERAL"
-   SectionName=W14X90   Material=A572Gr50   Shape="I/Wide Flange"   t3=0.3556   t2=0.3683   tf=0.018034   tw=0.011176   t2b=0.3683   tfb=0.018034   Area=0.0168549   TorsConst=1.597151E-06   I33=4.091704E-04   I22=1.501943E-04   I23=0   AS2=0.00397419   AS3=0.0110699   S33=0.0023013   S22=8.156085E-04   Z33=0.00252736   Z22=0.00123309   R33=0.155808   R22=0.0943981   ConcCol=No   ConcBeam=No   Color=Cyan   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
-   SectionName=W21X62   Material=A572Gr50   Shape="I/Wide Flange"   t3=0.5334   t2=0.209296   tf=0.015621   tw=0.01016   t2b=0.209296   tfb=0.015621   Area=0.0116408   TorsConst=7.128693E-07   I33=5.455993E-04   I22=2.391323E-05   I23=0   AS2=0.00541934   AS3=0.00544902   S33=0.00204574   S22=2.285111E-04   Z33=0.00233333   Z22=3.550964E-04   R33=0.216494   R22=0.045324   ConcCol=No   ConcBeam=No   Color=Cyan   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
+   SectionName=HN40x154   Material=A270ES   Shape="I/Wide Flange"   t3=0.4   t2=0.4   tf=0.02   tw=0.01   t2b=0.4   tfb=0.02   Area=0.0196   TorsConst=2.260000E-06   I33=6.170133E-04   I22=2.133633E-04   I23=0   AS2=0.004   AS3=0.0133333   S33=0.00308507   S22=0.00106682   Z33=0.003364   Z22=0.001609   R33=0.177427   R22=0.104335   ConcCol=No   ConcBeam=No   Color=Cyan   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
+   SectionName=IN50x80   Material=A270ES   Shape="I/Wide Flange"   t3=0.5   t2=0.2   tf=0.016   tw=0.008   t2b=0.2   tfb=0.016   Area=0.010144   TorsConst=6.287360E-07   I33=4.432816E-04   I22=2.135330E-05   I23=0   AS2=0.004   AS3=0.00533333   S33=0.00177313   S22=2.135330E-04   Z33=0.00198685   Z22=3.274880E-04   R33=0.209043   R22=0.0458805   ConcCol=No   ConcBeam=No   Color=Cyan   FromFile=No   AMod=1   A2Mod=1   A3Mod=1   JMod=1   I2Mod=1   I3Mod=1   MMod=1   WMod=1
 
 TABLE:  "FRAME SECTION ASSIGNMENTS"
-   Frame=1   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=2   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=3   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=4   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=5   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=6   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=7   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=8   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=9   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=10   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W14X90   DesignSect=W14X90   MatProp=Default
-   Frame=11   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=12   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=13   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=14   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
-   Frame=15   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=W21X62   DesignSect=W21X62   MatProp=Default
+   Frame=1   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=2   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=3   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=4   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=5   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=6   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=7   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=8   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=9   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=10   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=HN40x154   DesignSect=HN40x154   MatProp=Default
+   Frame=11   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=12   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=13   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=14   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
+   Frame=15   SectionType="I/Wide Flange"   AutoSelect=N.A.   AnalSect=IN50x80   DesignSect=IN50x80   MatProp=Default
 
 TABLE:  "FRAME LOCAL AXES ASSIGNMENTS 1 - TYPICAL"
    Frame=1   Angle=90   AdvanceAxes=No
@@ -174,40 +171,40 @@ TABLE:  "FRAME LOADS - DISTRIBUTED"
    Frame=15   LoadPat=LR   CoordSys=GLOBAL   Type=Force   Dir=Gravity   DistType=RelDist   RelDistA=0.5   RelDistB=1   AbsDistA=4   AbsDistB=8   FOverLA=0.815773   FOverLB=0
 
 TABLE:  "JOINT LOADS - FORCE"
-   Joint=11   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.70606   M1=0   M2=0   M3=0
+   Joint=11   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.708415   M1=0   M2=0   M3=0
    Joint=11   LoadPat=SCP   CoordSys=GLOBAL   F1=0   F2=0   F3=-10.4672   M1=0   M2=0   M3=0
    Joint=11   LoadPat=L   CoordSys=GLOBAL   F1=0   F2=0   F3=-9.70324   M1=0   M2=0   M3=0
-   Joint=12   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.70606   M1=0   M2=0   M3=0
+   Joint=12   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.708415   M1=0   M2=0   M3=0
    Joint=12   LoadPat=SCP   CoordSys=GLOBAL   F1=0   F2=0   F3=-10.4672   M1=0   M2=0   M3=0
    Joint=12   LoadPat=L   CoordSys=GLOBAL   F1=0   F2=0   F3=-9.70324   M1=0   M2=0   M3=0
-   Joint=21   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.70606   M1=0   M2=0   M3=0
+   Joint=21   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.708415   M1=0   M2=0   M3=0
    Joint=21   LoadPat=SCP   CoordSys=GLOBAL   F1=0   F2=0   F3=-10.4672   M1=0   M2=0   M3=0
    Joint=21   LoadPat=L   CoordSys=GLOBAL   F1=0   F2=0   F3=-9.70324   M1=0   M2=0   M3=0
-   Joint=22   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.70606   M1=0   M2=0   M3=0
+   Joint=22   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.708415   M1=0   M2=0   M3=0
    Joint=22   LoadPat=SCP   CoordSys=GLOBAL   F1=0   F2=0   F3=-10.4672   M1=0   M2=0   M3=0
    Joint=22   LoadPat=L   CoordSys=GLOBAL   F1=0   F2=0   F3=-9.70324   M1=0   M2=0   M3=0
-   Joint=31   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.70606   M1=0   M2=0   M3=0
+   Joint=31   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.708415   M1=0   M2=0   M3=0
    Joint=31   LoadPat=SCP   CoordSys=GLOBAL   F1=0   F2=0   F3=-10.4672   M1=0   M2=0   M3=0
    Joint=31   LoadPat=L   CoordSys=GLOBAL   F1=0   F2=0   F3=-9.70324   M1=0   M2=0   M3=0
-   Joint=32   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.70606   M1=0   M2=0   M3=0
+   Joint=32   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.708415   M1=0   M2=0   M3=0
    Joint=32   LoadPat=SCP   CoordSys=GLOBAL   F1=0   F2=0   F3=-10.4672   M1=0   M2=0   M3=0
    Joint=32   LoadPat=L   CoordSys=GLOBAL   F1=0   F2=0   F3=-9.70324   M1=0   M2=0   M3=0
-   Joint=41   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.70606   M1=0   M2=0   M3=0
+   Joint=41   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.708415   M1=0   M2=0   M3=0
    Joint=41   LoadPat=SCP   CoordSys=GLOBAL   F1=0   F2=0   F3=-10.4672   M1=0   M2=0   M3=0
    Joint=41   LoadPat=L   CoordSys=GLOBAL   F1=0   F2=0   F3=-9.70324   M1=0   M2=0   M3=0
-   Joint=42   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.70606   M1=0   M2=0   M3=0
+   Joint=42   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.708415   M1=0   M2=0   M3=0
    Joint=42   LoadPat=SCP   CoordSys=GLOBAL   F1=0   F2=0   F3=-10.4672   M1=0   M2=0   M3=0
    Joint=42   LoadPat=L   CoordSys=GLOBAL   F1=0   F2=0   F3=-9.70324   M1=0   M2=0   M3=0
-   Joint=51   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.70606   M1=0   M2=0   M3=0
+   Joint=51   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.708415   M1=0   M2=0   M3=0
    Joint=51   LoadPat=SCP   CoordSys=GLOBAL   F1=0   F2=0   F3=-10.4672   M1=0   M2=0   M3=0
    Joint=51   LoadPat=LR   CoordSys=GLOBAL   F1=0   F2=0   F3=-3.88129   M1=0   M2=0   M3=0
-   Joint=52   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.70606   M1=0   M2=0   M3=0
+   Joint=52   LoadPat=PP   CoordSys=GLOBAL   F1=0   F2=0   F3=-0.708415   M1=0   M2=0   M3=0
    Joint=52   LoadPat=SCP   CoordSys=GLOBAL   F1=0   F2=0   F3=-10.4672   M1=0   M2=0   M3=0
    Joint=52   LoadPat=LR   CoordSys=GLOBAL   F1=0   F2=0   F3=-3.88129   M1=0   M2=0   M3=0
-   Joint=11   LoadPat=PUSH   CoordSys=GLOBAL   F1=0   F2=0.121135   F3=0   M1=0   M2=0   M3=0
-   Joint=21   LoadPat=PUSH   CoordSys=GLOBAL   F1=0   F2=0.125502   F3=0   M1=0   M2=0   M3=0
-   Joint=31   LoadPat=PUSH   CoordSys=GLOBAL   F1=0   F2=0.148869   F3=0   M1=0   M2=0   M3=0
-   Joint=41   LoadPat=PUSH   CoordSys=GLOBAL   F1=0   F2=0.19401   F3=0   M1=0   M2=0   M3=0
-   Joint=51   LoadPat=PUSH   CoordSys=GLOBAL   F1=0   F2=0.410485   F3=0   M1=0   M2=0   M3=0
+   Joint=11   LoadPat=PUSH   CoordSys=GLOBAL   F1=0   F2=0.121242   F3=0   M1=0   M2=0   M3=0
+   Joint=21   LoadPat=PUSH   CoordSys=GLOBAL   F1=0   F2=0.125592   F3=0   M1=0   M2=0   M3=0
+   Joint=31   LoadPat=PUSH   CoordSys=GLOBAL   F1=0   F2=0.148975   F3=0   M1=0   M2=0   M3=0
+   Joint=41   LoadPat=PUSH   CoordSys=GLOBAL   F1=0   F2=0.194148   F3=0   M1=0   M2=0   M3=0
+   Joint=51   LoadPat=PUSH   CoordSys=GLOBAL   F1=0   F2=0.410043   F3=0   M1=0   M2=0   M3=0
 
 END TABLE DATA
